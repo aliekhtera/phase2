@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.front.ScnLogin">
+   <children>
+      <Separator layoutX="293.0" orientation="VERTICAL" prefHeight="458.0" prefWidth="14.0" />
+      <Pane prefHeight="450.0" prefWidth="300.0">
+         <children>
+            <Button layoutX="61.0" layoutY="399.0" mnemonicParsing="false" onAction="#login" prefHeight="44.0" prefWidth="166.0" text="Button" />
+            <TextField fx:id="txtLun" layoutX="40.0" layoutY="83.0" onKeyTyped="#txtLunChecker" prefHeight="33.0" prefWidth="208.0" promptText="Enter User Name..." />
+            <Label layoutX="61.0" layoutY="14.0" text="Login" />
+            <TextField fx:id="txtLp" layoutX="40.0" layoutY="132.0" onKeyTyped="#txtLpChecker" prefHeight="33.0" prefWidth="208.0" promptText=" Enter Password..." />
+            <Button layoutX="61.0" layoutY="273.0" mnemonicParsing="false" onAction="#recoverPassWord" prefHeight="33.0" prefWidth="131.0" text="Recovery Password" />
+         </children>
+      </Pane>
+      <Pane layoutX="300.0" layoutY="8.0" prefHeight="450.0" prefWidth="300.0">
+         <children>
+            <TextField fx:id="txtSun" layoutX="36.0" layoutY="38.0" onKeyTyped="#txtSunChecker" prefHeight="33.0" prefWidth="208.0" promptText="Enter User Name..." />
+            <TextField fx:id="txtSp" layoutX="36.0" layoutY="77.0" onKeyTyped="#txtSpChecker" prefHeight="33.0" prefWidth="208.0" promptText=" Enter Password..." />
+            <TextField fx:id="txtSSA" layoutX="36.0" layoutY="274.0" onKeyTyped="#txtSSAChecker" prefHeight="33.0" prefWidth="208.0" promptText=" Enter Answer..." />
+            <ChoiceBox fx:id="cmbSSQ" layoutX="36.0" layoutY="237.0" prefHeight="33.0" prefWidth="208.0" />
+            <TextField fx:id="txtSFirst" layoutX="36.0" layoutY="141.0" onKeyTyped="#txtSFirstChecker"  prefHeight="33.0" prefWidth="208.0" promptText=" Enter First Name..." />
+            <TextField fx:id="txtSLast" layoutX="36.0" layoutY="183.0" onKeyTyped="#txtSLastChecker" prefHeight="33.0" prefWidth="208.0" promptText=" Enter Last Name..." />
+            <ChoiceBox fx:id="cmbSut" layoutX="36.0" layoutY="334.0" prefHeight="33.0" prefWidth="208.0" />
+            <Button layoutX="57.0" layoutY="392.0" mnemonicParsing="false" onAction="#signUp" prefHeight="44.0" prefWidth="166.0" text="Button" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

@@ -1,0 +1,8 @@
+package com.front;
+
+public enum ControllerType {
+    NEW_USERNAME,
+    OLD_USERNAME,
+    PASSWORD,
+    FIRST_NAME, LAST_NAME, SECURITY_ANSWER
+}
