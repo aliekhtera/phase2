@@ -4,7 +4,9 @@ import com.back.GeneralMethods;
 import com.back.MethodReturns;
 import com.dataBase.DataBaseGetter;
 import com.dataBase.DataBaseSetter;
+import javafx.scene.image.Image;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,10 +51,10 @@ public class User {
     // add new user to DB and login
     // return DONE if E.T goes well , DATABASE... if data base return error , BAD_INPUT if null username or pass, DUPLICATE if user with same username exists.
     public static MethodReturns signUpNewUser(String userName, String passWord, String firstName, String lastName, UserType userType, String sa, int sq) throws SQLException {
-        if (!GeneralMethods.getInstance().notEmptyStrings(userName, passWord)) {
+        if (!GeneralMethods.getInstance().notEmptyStrings(userName, passWord, sa)) {
             return MethodReturns.BAD_INPUT;
         }
-        if (userName.length() >= 45 || passWord.length() < 8 || passWord.length() >= 45) {
+        if (userName.length() >= 45 || passWord.length() < 8 || passWord.length() >= 45 || sa.length() >= 45) {
             return MethodReturns.BAD_INPUT;
         }
         firstName = GeneralMethods.getInstance().cutTo45Strings(firstName);
@@ -83,11 +85,11 @@ public class User {
         return MethodReturns.DONE;
     }
 
-    public  MethodReturns securityQuestionPassEdit( String securityAnswers, String password) {
+    public MethodReturns securityQuestionPassEdit(String securityAnswers, String password) {
         if (!GeneralMethods.getInstance().notEmptyStrings(userName, securityAnswers, password)) {
             return MethodReturns.BAD_INPUT;
         }
-        User tempUser=this;
+        User tempUser = this;
 
         /*if (tempUser == null) {
             return MethodReturns.NO_SUCH_OBJECT;
@@ -98,7 +100,7 @@ public class User {
         }
         try {
             DataBaseSetter.getInstance().editPassWord(userName, password);
-         //   User.setLoggedInUser(tempUser);
+            //   User.setLoggedInUser(tempUser);
         } catch (Exception e) {
             return MethodReturns.UNKNOWN_DATABASE_ERROR;
         }
@@ -200,12 +202,12 @@ public class User {
         if (User.getLoggedInUser().isUserNameEqual(un)) {
             return false;
         }
-        User user=DataBaseGetter.getInstance().getUser(User.getLoggedInUser().getUserName());
-        int index=user.blocked.indexOf(un);
-        if(index<0) {
+        User user = DataBaseGetter.getInstance().getUser(User.getLoggedInUser().getUserName());
+        int index = user.blocked.indexOf(un);
+        if (index < 0) {
             user.blocked.add(un);
-        }else{
-           user.blocked.remove(index);
+        } else {
+            user.blocked.remove(index);
         }
         return DataBaseSetter.getInstance().editUserBlock(user);
     }
@@ -218,14 +220,46 @@ public class User {
         return blocked;
     }
 
-    public static boolean isLoggedUserBlocked(String un){
-        User user=DataBaseGetter.getInstance().getUser(un);
+    public static boolean isLoggedUserBlocked(String un) {
+        User user = DataBaseGetter.getInstance().getUser(un);
         return user.blocked.contains(User.getLoggedInUser().getUserName());
     }
 
-    public static boolean isUserBlocked(String un){
-        User user=DataBaseGetter.getInstance().getUser(User.getLoggedInUser().getUserName());
+    public static boolean isUserBlocked(String un) {
+        User user = DataBaseGetter.getInstance().getUser(User.getLoggedInUser().getUserName());
         return user.blocked.contains(un);
+    }
+
+    public String getSecurityAnswers() {
+        return securityAnswers;
+    }
+
+    public String getPassWord() {
+        return passWord;
+    }
+
+    public int getSecurityIndex() {
+        return securityQuestion;
+    }
+
+    public static MethodReturns editUser(String userName, String passWord, String firstName, String lastName, String sa, int sq, File profile) {
+
+        if (!GeneralMethods.getInstance().notEmptyStrings(userName, passWord, sa)) {
+            return MethodReturns.BAD_INPUT;
+        }
+        if (userName.length() >= 45 || passWord.length() < 8 || passWord.length() >= 45 || sa.length() >= 45) {
+            return MethodReturns.BAD_INPUT;
+        }
+        firstName = GeneralMethods.getInstance().cutTo45Strings(firstName);
+        lastName = GeneralMethods.getInstance().cutTo45Strings(lastName);
+        sa = GeneralMethods.getInstance().cutTo45Strings(sa);
+
+        if (DataBaseGetter.getInstance().getUser(userName) == null) {
+            return MethodReturns.NO_SUCH_OBJECT;
+        }
+        User temp = new User(userName, passWord, firstName, lastName, null, sa, sq, new ArrayList<>());
+
+        return DataBaseSetter.getInstance().editAllUserFields(temp, profile);
     }
 
 }

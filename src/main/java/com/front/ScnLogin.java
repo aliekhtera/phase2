@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -15,7 +16,10 @@ import java.util.ResourceBundle;
 
 public class ScnLogin implements Initializable {
     @FXML
-    private TextField txtSun, txtLun, txtLp, txtSp, txtSFirst, txtSLast, txtSSA;
+    private TextField txtSun, txtLun, txtSFirst, txtSLast, txtSSA;
+
+    @FXML
+    private PasswordField txtLp,txtSp;
 
     @FXML
     private ChoiceBox<String> cmbSut, cmbSSQ;
@@ -41,7 +45,7 @@ public class ScnLogin implements Initializable {
     private void login() {
         try {
             if (StageManager.getInstance().showDialog(User.loginUser(txtLun.getText(), txtLp.getText()))) {
-                // todo Next Scene
+                StageManager.getInstance().changeScene(SceneManager.getInstance().getNewMainScene());
             }
         } catch (Exception e) {
             StageManager.getInstance().showDialog(MethodReturns.UNKNOWN_DATABASE_ERROR);

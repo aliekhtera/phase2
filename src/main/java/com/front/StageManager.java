@@ -75,6 +75,7 @@ public class StageManager {
         return false;
     }
 
+
     void changeScene(Scene scene) {
         try {
             mainStage.setScene(scene);

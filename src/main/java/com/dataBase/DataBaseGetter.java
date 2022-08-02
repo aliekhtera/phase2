@@ -9,8 +9,11 @@ import com.back.messengers.PV;
 import com.back.messengers.Page;
 import com.back.usersPackage.User;
 import com.back.usersPackage.UserType;
+import javafx.scene.image.Image;
 
 import javax.xml.transform.sax.SAXResult;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,6 +45,18 @@ public class DataBaseGetter {
         } catch (SQLException e) {
             return null;
         }
+    }
+
+    public Image getUserProfile(String userName){
+        try {
+            ResultSet resultSet = DataBaseManager.getInstance().getStatement().executeQuery("SELECT * FROM tbl_users WHERE username =" + "'" + userName + "'" + " ;");
+            resultSet.next();
+            Blob pic=resultSet.getBlob("profile");
+            return new Image(pic.getBinaryStream());
+        }catch (Exception e){
+            return null;
+        }
+
     }
 
     public ArrayList<String> getBusinessUserNames() {

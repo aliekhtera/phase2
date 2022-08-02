@@ -1,9 +1,6 @@
 package com.dataBase;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class DataBaseManager {
     private DataBaseManager(){}
@@ -19,7 +16,12 @@ public class DataBaseManager {
         }
     }
 
+
     public Statement getStatement() throws SQLException {
         return connection.createStatement();
+    }
+
+    public PreparedStatement getPreparedStatement(String sql) throws SQLException {
+        return connection.prepareStatement(sql);
     }
 }
