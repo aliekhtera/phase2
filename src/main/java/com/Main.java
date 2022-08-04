@@ -1,5 +1,6 @@
 package com;
 
+import com.back.messages.Message;
 import com.back.messengers.PV;
 import com.back.usersPackage.User;
 import com.dataBase.DataBaseManager;
@@ -19,12 +20,6 @@ import java.sql.SQLException;
 public class Main  {
     public static void main(String[] args) throws SQLException {
         DataBaseManager.getInstance().initialize();
-        PV.openPV("ali","ali");
-        PV.openPV("1","ali");
-        PV.openPV("2","ali");
-        PV.openPV("3","ali");
-        PV.openPV("4","ali");
-        PV.openPV("5","ali");
         FrontManager.startProgram(args);
     }
 }

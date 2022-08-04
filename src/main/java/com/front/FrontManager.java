@@ -1,7 +1,9 @@
 package com.front;
 
+import com.back.MethodReturns;
 import com.dataBase.DataBaseGetter;
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,7 +23,6 @@ public class FrontManager extends Application {
     public void start(Stage stage) throws IOException {
         stage.setTitle("");// todo title
         stage.setResizable(false);
-        stage.setTitle("Hello!");
         stage.setScene(SceneManager.getInstance().getNewLoginScene());
         stage.show();
         StageManager.getInstance().setMainStage(stage);
@@ -70,26 +71,27 @@ public class FrontManager extends Application {
         }
     }
 
+
     static String openImage(ImageView imageView) {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Image Files",
                 "*.png", "*.jpg", "*.jpeg");
         fileChooser.setSelectedExtensionFilter(extensionFilter);
         File result = fileChooser.showOpenDialog(imageView.getScene().getWindow());
-        return fileToImage(imageView,result);
+        return fileToImage(imageView, result);
     }
 
-    public static String fileToImage(ImageView imageView,File file){
-        if(file==null){
+    public static String fileToImage(ImageView imageView, File file) {
+        if (file == null) {
             return null;
         }
         Image oldImage = new Image(file.toURI().toString());
-        Image newImage=cropImage(oldImage);
+        Image newImage = cropImage(oldImage);
         imageView.setImage(newImage);
         return file.getAbsolutePath();
     }
 
-    public static Image cropImage(Image oldImage){
+    public static Image cropImage(Image oldImage) {
         Image newImage;
         if (oldImage.getWidth() != oldImage.getHeight()) {
             int x, y, a;
@@ -109,5 +111,57 @@ public class FrontManager extends Application {
         return newImage;
     }
 
+    /* public static File messageFileFiller(Node node){
+         FileChooser fileChooser=new FileChooser();
+         File file=fileChooser.showOpenDialog(node.getScene().getWindow());
+         file.getName();
+     }*/
+    static String getIcnLiked(boolean isLiked) {
+        if (isLiked) {
+            return FrontManager.class.getResource("nullUserImage.png").toString();
+        } else {
+            return FrontManager.class.getResource("nullUserImage.png").toString();
+        }
+    }
+
+
+    static String getIcnEdited(boolean isEdited) {
+        if (isEdited)
+            return FrontManager.class.getResource("nullUserImage.png").toString();
+        else
+            return FrontManager.class.getResource("nullUserImage.png").toString();
+    }
+
+
+    static String getIcnReply() {
+        return FrontManager.class.getResource("nullUserImage.png").toString();
+    }
+
+    static String getIcnReplied() {
+        return FrontManager.class.getResource("nullUserImage.png").toString();
+    }
+
+    static String getIcnForward(boolean isForwarded) {
+        if (isForwarded)
+            return FrontManager.class.getResource("nullUserImage.png").toString();
+        else
+            return FrontManager.class.getResource("nullUserImage.png").toString();
+    }
+
+    static String getIcnDelete() {
+        return FrontManager.class.getResource("nullUserImage.png").toString();
+    }
+
+    static String getIcnViews() {
+        return FrontManager.class.getResource("nullUserImage.png").toString();
+    }
+
+    static String getIcnShowLikes() {
+        return FrontManager.class.getResource("nullUserImage.png").toString();
+    }
+
+    static String getIcnFile() {
+        return FrontManager.class.getResource("nullUserImage.png").toString();
+    }
 
 }

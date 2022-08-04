@@ -16,7 +16,7 @@ public class Message {
     protected int keyID;//-1 for null
     protected User sender;
     protected String text;
-    //  private String mediaAddress;
+    private String fileName;
     protected String sentTime;
     protected String sentDate;
     protected boolean isEdited;
@@ -37,6 +37,7 @@ public class Message {
         this.views = new ArrayList<>(views);
         this.likes = new ArrayList<>(likes);
         this.isForwarded = isForwarded;
+        fileName = null;
     }
 
     private Message(Message m) {
@@ -195,16 +196,16 @@ public class Message {
 
 
     public void likeDislikeByLoggedInUser() {
-        int index=-1;
-        for (int i = 0; i < likes.size() && index==-1; i++) {
-            if(User.getLoggedInUser().isUserNameEqual(likes.get(i).getUserName())){
-                index=i;
+        int index = -1;
+        for (int i = 0; i < likes.size() && index == -1; i++) {
+            if (User.getLoggedInUser().isUserNameEqual(likes.get(i).getUserName())) {
+                index = i;
                 break;
             }
         }
-        if(index==-1){
+        if (index == -1) {
             likes.add(new LikeView());
-        }else{
+        } else {
             likes.remove(index);
         }
         DataBaseSetter.getInstance().editMessageLikes(this);
@@ -259,8 +260,8 @@ public class Message {
 
                 temp += "Likes = " + message.likes.size();
                 temp += "  / Views = " + message.views.size();
-                if(message.isLoggedUserLiked()){
-                    temp+="  "+"Liked By You!";
+                if (message.isLoggedUserLiked()) {
+                    temp += "  " + "Liked By You!";
                 }
                 temp += "\n";
                 temp += message.text + "\n";
@@ -274,7 +275,7 @@ public class Message {
     public static ArrayList<String> commentToStringToPrint(int postID, ArrayList<Message> comments) {
         String temp;
         ArrayList<String> result = new ArrayList<>();
-        ArrayList <Message> added=new ArrayList<>();
+        ArrayList<Message> added = new ArrayList<>();
         for (int i = 0; i < comments.size(); i++) {
             temp = "";
             Message comment = comments.get(i);
@@ -283,8 +284,8 @@ public class Message {
                     added.add(comment);
                     temp += "Likes = " + comment.likes.size();
                     temp += "  / Views = " + comment.views.size();
-                    if(comment.isLoggedUserLiked()){
-                        temp+="  "+"Liked By You!";
+                    if (comment.isLoggedUserLiked()) {
+                        temp += "  " + "Liked By You!";
                     }
                     temp += "\n";
                     temp += comment.text + "\n";
@@ -293,17 +294,17 @@ public class Message {
                 } else {
                     int index = -1;
                     for (int i1 = 0; i1 < added.size() && index == -1; i1++) {
-                        if (comment.getRepliedTo() == added.get(i1).getKeyID()){
-                            index=i1;
+                        if (comment.getRepliedTo() == added.get(i1).getKeyID()) {
+                            index = i1;
                         }
                     }
-                    if(index!=-1){
+                    if (index != -1) {
                         added.add(comment);
-                        temp += " REPLIED TO:" + (index + 1)+"  ";
+                        temp += " REPLIED TO:" + (index + 1) + "  ";
                         temp += "Likes = " + comment.likes.size();
                         temp += "  / Views = " + comment.views.size();
-                        if(comment.isLoggedUserLiked()){
-                            temp+="  "+"Liked By You!";
+                        if (comment.isLoggedUserLiked()) {
+                            temp += "  " + "Liked By You!";
                         }
                         temp += "\n";
                         temp += comment.text + "\n";
@@ -317,16 +318,43 @@ public class Message {
         return result;
     }
 
-    public boolean isLoggedUserLiked(){
+    public boolean isLoggedUserLiked() {
         for (LikeView like : likes) {
-            if(User.getLoggedInUser().isUserNameEqual(like.getUserName())){
+            if (User.getLoggedInUser().isUserNameEqual(like.getUserName())) {
                 return true;
             }
         }
         return false;
     }
 
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setAllFields(Message m) {
+        this.keyID = m.keyID;
+        this.sender = m.sender;
+        this.text = m.text;
+        this.sentTime = m.sentTime;
+        this.sentDate = m.sentDate;
+        this.isEdited = m.isEdited;
+        this.views = new ArrayList<>(m.views);
+        this.likes = new ArrayList<>(m.likes);
+        this.isForwarded = m.isForwarded;
+        this.repliedTo = m.repliedTo;
+        this.fileName = m.fileName;
+    }
+
+    public boolean getBooleanIsEdited(){
+        return isEdited;
+    }
+    public boolean getBooleanIsForwarded(){
+        return isForwarded;
+    }
 
 
 }

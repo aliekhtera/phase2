@@ -38,7 +38,14 @@ public class Group extends Messenger {
         }
         String userName = User.getLoggedInUser().getUserName();
 
-        ArrayList<Group> result = DataBaseGetter.getInstance().getGroupsOfUser(userName);
+        ArrayList<Group> groups = DataBaseGetter.getInstance().getGroupsOfUser(userName);
+        ArrayList<Group> result = new ArrayList<>();
+
+        for (Group group : groups) {
+            if (group.getMembers().contains(User.getLoggedInUser())) {
+                result.add(group);
+            }
+        }
         return result;
     }
 
@@ -99,15 +106,14 @@ public class Group extends Messenger {
         return null;
     }
 
-    public static MethodReturns createNewGroupInDB(String name,String id) {
-        User user=DataBaseGetter.getInstance().getUser(User.getLoggedInUser().getUserName());
-        if (User.getLoggedInUser() == null) {
+    private static Group createNewGroupInDB(Group group, User user) {
+        if (user == null) {
             return null;
         }
-        ArrayList<User> members=new ArrayList<>();
-        members.add(user);
-        Group temp = new Group(members, new ArrayList<>(), user,  user, name, id,new ArrayList<>());
-        return  DataBaseSetter.getInstance().addNewGroupToDataBase(temp);
+        Group temp = new Group(group.getMembers(), group.getMessages(), user,  user, group.getGroupName(), group.getGroupID(), group.bannedAccounts);
+        if (DataBaseSetter.getInstance().addNewGroupToDataBase(group).equals(MethodReturns.DONE)) {
+            return group;
+        } else return null;
     }
 
     public User getUser() {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
@@ -8,6 +9,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1229.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.front.ScnMain">
    <children>
@@ -53,7 +56,7 @@
                      <content>
                         <Pane fx:id="cpnMessengersList" prefHeight="678.0" prefWidth="265.0">
                            <children>
-                              <ListView fx:id="lstUsers" fixedCellSize="100.0" prefHeight="678.0" prefWidth="265.0" />
+                              <ListView fx:id="lstUsers" fixedCellSize="100.0" onMouseClicked="#messageFiller" prefHeight="678.0" prefWidth="265.0" />
                            </children>
                         </Pane>
                      </content>
@@ -62,11 +65,35 @@
             </BorderPane>
          </left>
          <center>
-            <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <children>
-                  <ImageView fitHeight="691.0" fitWidth="991.0" pickOnBounds="true" preserveRatio="true" />
-               </children>
-            </Pane>
+            <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <center>
+                  <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <ImageView fitHeight="691.0" fitWidth="895.0" pickOnBounds="true" />
+                        <ScrollPane prefHeight="608.0" prefWidth="896.0" style="-fx-background-color: rgba(0,0,0,0);">
+                           <content>
+                              <VBox fx:id="vbxMessages" prefHeight="603.0" prefWidth="886.0" style="-fx-background-color: rgba(0,0,0,0);" />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </Pane>
+               </center>
+               <top>
+                  <Pane prefHeight="81.0" prefWidth="894.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <ImageView fx:id="imgTitle" fitHeight="70.0" fitWidth="70.0" layoutX="14.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="lblTitle" layoutX="113.0" layoutY="6.0" prefHeight="39.0" prefWidth="300.0">
+                           <font>
+                              <Font name="Calibri Bold" size="21.0" />
+                           </font>
+                        </Label>
+                        <Pane fx:id="cpnPVTitle" layoutX="441.0" layoutY="9.0" prefHeight="67.0" prefWidth="435.0" visible="false" />
+                        <Pane fx:id="cpnGroupTitle" layoutX="441.0" layoutY="9.0" prefHeight="67.0" prefWidth="435.0" visible="false" />
+                        <Pane fx:id="cpnPageTitle" layoutX="441.0" layoutY="9.0" prefHeight="67.0" prefWidth="435.0" visible="false" />
+                     </children>
+                  </Pane>
+               </top>
+            </BorderPane>
          </center>
       </BorderPane>
    </children>
