@@ -116,52 +116,53 @@ public class FrontManager extends Application {
          File file=fileChooser.showOpenDialog(node.getScene().getWindow());
          file.getName();
      }*/
+
     static String getIcnLiked(boolean isLiked) {
         if (isLiked) {
-            return FrontManager.class.getResource("nullUserImage.png").toString();
+            return FrontManager.class.getResource("icnLike.png").toString();
         } else {
-            return FrontManager.class.getResource("nullUserImage.png").toString();
+            return FrontManager.class.getResource("icnNLike.png").toString();
         }
     }
 
 
     static String getIcnEdited(boolean isEdited) {
         if (isEdited)
-            return FrontManager.class.getResource("nullUserImage.png").toString();
+            return FrontManager.class.getResource("icnEdited.png").toString();
         else
-            return FrontManager.class.getResource("nullUserImage.png").toString();
+            return FrontManager.class.getResource("icnNEdited.png").toString();
     }
 
 
     static String getIcnReply() {
-        return FrontManager.class.getResource("nullUserImage.png").toString();
+        return FrontManager.class.getResource("icnReply.png").toString();
     }
 
     static String getIcnReplied() {
-        return FrontManager.class.getResource("nullUserImage.png").toString();
+        return FrontManager.class.getResource("icnRepliedMessage.png").toString();
     }
 
     static String getIcnForward(boolean isForwarded) {
         if (isForwarded)
-            return FrontManager.class.getResource("nullUserImage.png").toString();
+            return FrontManager.class.getResource("icnForward.png").toString();
         else
-            return FrontManager.class.getResource("nullUserImage.png").toString();
+            return FrontManager.class.getResource("icnNForward.png").toString();
     }
 
     static String getIcnDelete() {
-        return FrontManager.class.getResource("nullUserImage.png").toString();
+        return FrontManager.class.getResource("icnDelete.png").toString();
     }
 
     static String getIcnViews() {
-        return FrontManager.class.getResource("nullUserImage.png").toString();
+        return FrontManager.class.getResource("icnViews.png").toString();
     }
 
     static String getIcnShowLikes() {
-        return FrontManager.class.getResource("nullUserImage.png").toString();
+        return FrontManager.class.getResource("icnLikes.png").toString();
     }
 
     static String getIcnFile() {
-        return FrontManager.class.getResource("nullUserImage.png").toString();
+        return FrontManager.class.getResource("icnFile.png").toString();
     }
 
 }

@@ -58,6 +58,7 @@ public class ScnMain implements Initializable {
         // lstUsers.setItems(FXCollections.observableList(m));
     }
 
+
     private Pane messageToPane(Message message) {
         double width = 530;
         ArrayList<Node> nodes = new ArrayList<>();
@@ -275,7 +276,6 @@ public class ScnMain implements Initializable {
         return result;
     }
 
-
     @FXML
     private void messengersListRefresh() {
 
@@ -352,91 +352,99 @@ public class ScnMain implements Initializable {
 
     @FXML
     private void messageFiller() {
-        if(lstUsers.getSelectionModel().getSelectedIndex()<0){
+        if (lstUsers.getSelectionModel().getSelectedIndex() < 0) {
             return;
         }
         titleFiller();
         if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 0) {
             PV pv = pvList.get(lstUsers.getSelectionModel().getSelectedIndex());
-            ArrayList<Pane> panes = new ArrayList<>();
-            double l = 0;
+            messageFiller(pv.getMessages());
+            return;
+        }
 
-            for (Message message : pv.getMessages()) {
-                Pane temp = messageToPane(message);
-                panes.add(temp);
-                l += temp.getPrefHeight();
+    }
+
+    private void messageFiller(List<Message> messages){
+        double l = 0;
+        ArrayList<Pane> panes = new ArrayList<>();
+        for (Message message : messages) {
+            Pane temp = messageToPane(message);
+            panes.add(temp);
+            l += temp.getPrefHeight();
+        }
+
+        vbxMessages.getChildren().clear();
+        vbxMessages.setPrefHeight(l);
+
+        for (int i = panes.size() - 1; i >= 0; i--) {
+            double w = vbxMessages.getWidth() - panes.get(i).getPrefWidth();
+            if (messages.get(i).getSenderUserName().equals(User.getLoggedInUser().getUserName())) {
+                w *= 3 / 4;
+            } else {
+                w *= 1 / 4;
             }
-
-            vbxMessages.getChildren().clear();
-            vbxMessages.setPrefHeight(l);
-
-            for (int i = panes.size() - 1; i >= 0; i--) {
-                double w = vbxMessages.getWidth() - panes.get(i).getPrefWidth();
-                if (pv.getMessages().get(i).getSenderUserName().equals(User.getLoggedInUser().getUserName())) {
-                    w *= 3 / 4;
-                } else {
-                    w *= 1 / 4;
-                }
-                panes.get(i).setLayoutX(w);
-                vbxMessages.getChildren().add(panes.get(i));
-            }
+            panes.get(i).setLayoutX(w);
+            vbxMessages.getChildren().add(panes.get(i));
         }
     }
 
-    @FXML
-    private void titleFiller(){
-        if(lstUsers.getSelectionModel().getSelectedIndex()<0){
+
+    private void titleFiller() {
+        if (lstUsers.getSelectionModel().getSelectedIndex() < 0) {
             imgTitle.setImage(null);
             lblTitle.setText("");
+            cpnPVTitle.setVisible(false);
+            cpnGroupTitle.setVisible(false);
+            cpnPageTitle.setVisible(false);
+            return;
+        }
+
+        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 0) {
+            PV pv = pvList.get(lstUsers.getSelectionModel().getSelectedIndex());
+            User otherUser;
+            if (pv.getUser1().getUserName().equals(User.getLoggedInUser())) {
+                otherUser = pv.getUser2();
+            } else {
+                otherUser = pv.getUser1();
+            }
+            Image image = DataBaseGetter.getInstance().getUserProfile(otherUser.getUserName());
+            if (image == null) {
+                image = new Image(ScnSettings.nullUrl);
+            }
+            imgTitle.setImage(FrontManager.cropImage(image));
+            lblTitle.setText(otherUser.getFirstName() + " " + otherUser.getLastName());
             cpnPVTitle.setVisible(true);
             cpnGroupTitle.setVisible(false);
             cpnPageTitle.setVisible(false);
             return;
         }
 
-        if(lstMessengerGroups.getSelectionModel().getSelectedIndex()==0){
-            PV pv=pvList.get(lstUsers.getSelectionModel().getSelectedIndex());
-            User otherUser;
-            if(pv.getUser1().getUserName().equals(User.getLoggedInUser())){
-                otherUser=pv.getUser2();
-            }else{
-                otherUser=pv.getUser1();
-            }
-            Image image=DataBaseGetter.getInstance().getUserProfile(otherUser.getUserName());
-            if(image==null){
-                image=new Image(ScnSettings.nullUrl);
-            }
-            imgTitle.setImage(FrontManager.cropImage(image));
-            lblTitle.setText(otherUser.getFirstName()+" "+otherUser.getLastName());
-            return;
-        }
-
-
-
 
     }
 
-    @FXML
+
+
+    //////////////// Message ///////////////////////////////////////
     private void likeMessageClick(String id) {
 
     }
 
-    @FXML
+
     private void deleteMessageClick(String id) {
 
     }
 
-    @FXML
+
     private void editMessageClick(String id) {
 
     }
 
-    @FXML
+
     private void forwardMessageClick(String id) {
 
     }
 
-    @FXML
+
     private void getRepliedMessageClick(String id) {
     }
 
@@ -444,15 +452,79 @@ public class ScnMain implements Initializable {
 
     }
 
-    @FXML
+
     private void showLikesMessageClick(String id) {
 
     }
 
-    @FXML
+
     private void showViewsMessageClick(String id) {
 
     }
+
+    ////////////////////// Group ///////////////////////
+    @FXML
+    private void removeUserGroup() {
+
+    }
+
+    @FXML
+    private void banUserGroup() {
+
+    }
+
+    @FXML
+    private void groupSettings() {
+
+    }
+
+    @FXML
+    private void sendNewMessageGroup() {
+
+    }
+
+    /////////////////// PV //////////////////
+    @FXML
+    private void sendNewMessagePV() {
+        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() != 0) {
+            return;
+        }
+        if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
+            return;
+        }
+        PV pv = pvList.get(lstUsers.getSelectionModel().getSelectedIndex());
+        User user;
+        if(pv.getUser1().isUserNameEqual(User.getLoggedInUser().getUserName())){
+            user=pv.getUser2();
+        }else{
+            user=pv.getUser1();
+        }
+        if(User.isLoggedUserBlocked(user.getUserName())){
+            StageManager.getInstance().showErrorDialog("You Are Blocked.");
+            return;
+        }
+        Message message = new Message(User.getLoggedInUser(),"","","",false,-1,false,new ArrayList<>(),new ArrayList<>());
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewNewMessageScene(message, null, false),"New Message");
+        pv.getMessages().add(message);
+    }
+    @FXML
+    private void blockPV() {
+        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() != 0) {
+            return;
+        }
+        if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
+            return;
+        }
+        PV pv = pvList.get(lstUsers.getSelectionModel().getSelectedIndex());
+        User user;
+        if(pv.getUser1().isUserNameEqual(User.getLoggedInUser().getUserName())){
+            user=pv.getUser2();
+        }else{
+            user=pv.getUser1();
+        }
+        User.blockUnBlockUser(user.getUserName());
+    }
+
 
 
 }

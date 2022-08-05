@@ -24,7 +24,7 @@ public class ScnNewMessage {
     private Message message, rep;
     private boolean fileEdit, isForwarded;
 
-    private final static Image fileImage = new Image(ScnNewMessage.class.getResource("nullUserImage.png").getPath());
+    private final static String fileAddress = ScnNewMessage.class.getResource("nullUserImage.png").getPath();
 
 
     public void setMessage(Message mainMessage, Message rep, boolean isForwarded) {
@@ -92,7 +92,7 @@ public class ScnNewMessage {
         if (file == null) {
             return;
         }
-        imageView.setImage(fileImage);
+        imageView.setImage(new Image(fileAddress));
         file=f;
     }
 
@@ -107,4 +107,5 @@ public class ScnNewMessage {
     private void close(){
         ((Stage)imageView.getScene().getWindow()).close();
     }
+
 }

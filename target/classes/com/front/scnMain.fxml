@@ -20,9 +20,9 @@
                <left>
                   <Pane prefHeight="691.0" prefWidth="59.0" BorderPane.alignment="CENTER">
                      <children>
-                        <ImageView fitHeight="59.0" fitWidth="59.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="52.0" fitWidth="46.0" layoutX="7.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../images/seetingsIcon.png" />
+                              <Image url="@../../images/settingsIcon.png" />
                            </image>
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -33,12 +33,12 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ListView>
-                        <ImageView fitHeight="59.0" fitWidth="59.0" layoutY="100.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="46.0" fitWidth="46.0" layoutX="7.0" layoutY="113.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../images/pvIcon.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="59.0" fitWidth="59.0" layoutY="200.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="46.0" fitWidth="49.0" layoutX="6.0" layoutY="213.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../images/groupIcon.png" />
                            </image>
@@ -69,10 +69,7 @@
                <center>
                   <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <ImageView fitHeight="691.0" fitWidth="895.0" pickOnBounds="true">
-                           <image>
-                              <Image url="@../../../../../../../../../../../Users/aliek/OneDrive/Desktop/8%20ball/images%20-%20Copy.jpg" />
-                           </image></ImageView>
+                        <ImageView fitHeight="691.0" fitWidth="895.0" pickOnBounds="true" />
                         <ScrollPane prefHeight="608.0" prefWidth="896.0" style="-fx-background-color: rgba(0,0,0,0);">
                            <content>
                               <VBox fx:id="vbxMessages" prefHeight="603.0" prefWidth="886.0" style="-fx-background-color: rgba(0,0,0,0);" />
@@ -90,8 +87,42 @@
                               <Font name="Calibri Bold" size="21.0" />
                            </font>
                         </Label>
-                        <Pane fx:id="cpnPVTitle" layoutX="441.0" layoutY="9.0" prefHeight="67.0" prefWidth="435.0" visible="false" />
-                        <Pane fx:id="cpnGroupTitle" layoutX="441.0" layoutY="9.0" prefHeight="67.0" prefWidth="435.0" visible="false" />
+                        <Pane fx:id="cpnPVTitle" layoutX="441.0" layoutY="9.0" prefHeight="67.0" prefWidth="435.0" visible="false">
+                           <children>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="50.0" layoutY="10.0" onMouseClicked="#sendNewMessagePV" pickOnBounds="true">
+                                 <image>
+                                    <Image url="@../../images/icnNewMessage.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="130.0" layoutY="10.0" onMouseClicked="#blockPV" pickOnBounds="true">
+                                 <image>
+                                    <Image url="@../../images/icnBan.png" />
+                                 </image>
+                              </ImageView>
+                           </children></Pane>
+                        <Pane fx:id="cpnGroupTitle" layoutX="441.0" layoutY="9.0" prefHeight="67.0" prefWidth="435.0" visible="false">
+                           <children>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="50.0" layoutY="10.0" onMouseClicked="#sendNewMessageGroup" pickOnBounds="true">
+                                 <image>
+                                    <Image url="@../../images/icnNewMessage.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="130.0" layoutY="10.0" onMouseClicked="#groupSettings" pickOnBounds="true">
+                                 <image>
+                                    <Image url="@../../images/icnSettings.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="210.0" layoutY="10.0" onMouseClicked="#removeUserGroup" pickOnBounds="true">
+                                 <image>
+                                    <Image url="@../../images/icnRemove.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="290.0" layoutY="10.0" onMouseClicked="#banUserGroup" pickOnBounds="true">
+                                 <image>
+                                    <Image url="@../../images/icnBan.png" />
+                                 </image>
+                              </ImageView>
+                           </children></Pane>
                         <Pane fx:id="cpnPageTitle" layoutX="441.0" layoutY="9.0" prefHeight="67.0" prefWidth="435.0" visible="false" />
                      </children>
                   </Pane>
