@@ -67,5 +67,45 @@ public class SceneManager {
         }
     }
 
+    Scene getNewGroupSettingScene() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("scnGroupSetting.fxml"));
+            return new Scene(fxmlLoader.load());
+        }catch (Exception e){
+            StageManager.getInstance().showErrorDialog("Unknown Error!");
+            return getNewLoginScene();
+        }
+    }
+
+    Scene getNewGroupScene() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("scnGroup.fxml"));
+            return new Scene(fxmlLoader.load());
+        }catch (Exception e){
+            StageManager.getInstance().showErrorDialog("Unknown Error!");
+            return getNewLoginScene();
+        }
+    }
+
+    Scene getNewMembersScene() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("scnMembers.fxml"));
+            return new Scene(fxmlLoader.load());
+        }catch (Exception e){
+            StageManager.getInstance().showErrorDialog("Unknown Error!");
+            return getNewLoginScene();
+        }
+    }
+
+    Scene getNewBanAndRemoveScene() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("scnBanAndRemove.fxml"));
+            return new Scene(fxmlLoader.load());
+        }catch (Exception e){
+            StageManager.getInstance().showErrorDialog("Unknown Error!");
+            return getNewLoginScene();
+        }
+    }
+
 
 }

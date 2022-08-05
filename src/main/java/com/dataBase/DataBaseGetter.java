@@ -203,48 +203,6 @@ public class DataBaseGetter {
     }
 
 
-
-
-    public ArrayList<Group> groups() {
-        ArrayList<Group> result = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM tbl_group WHERE ";
-            ResultSet resultSet = DataBaseManager.getInstance().getStatement().executeQuery(sql);
-            while (true) {
-                resultSet.next();
-                User admin = getUser(resultSet.getString("admin"));
-                String groupName = resultSet.getString("groupName");
-                String groupID = resultSet.getString("groupID") ;
-                ArrayList<User> members = new ArrayList<>();
-                ArrayList<String > users = GeneralMethods.getInstance().textDecompressor(resultSet.getString("users"));
-                ArrayList<String> banned = GeneralMethods.getInstance().textDecompressor(resultSet.getString("bannedAccounts"));
-                ArrayList<Message> messages = new ArrayList<>();
-                ArrayList<String> messageId = GeneralMethods.getInstance().textDecompressor(resultSet.getString("messages"));
-
-                for (String s : messageId) {
-                    Message temp = getMessage(s);
-                    if (temp != null) {
-                        messages.add(temp);
-                    }
-                }
-                for (String user : users) {
-                    User temp = getUser(user);
-                    if (temp != null) {
-                        members.add(temp);
-                    }
-                }
-
-                if (users != null && admin != null && groupName != null && groupID != null ) {
-                    Group group = new Group(members, messages, admin, User.getLoggedInUser(), groupName, groupID,banned );
-                    result.add(group);
-
-                }
-            }
-        } catch (SQLException e) {
-            return result;
-        }
-    }
-
     public ArrayList<Group> getGroupsOfUser(String userName) {
         ArrayList<Group> result = new ArrayList<>();
         try {
@@ -365,4 +323,57 @@ public class DataBaseGetter {
             return MethodReturns.UNKNOWN_DATABASE_ERROR;
         }
     }
+
+    public ArrayList<Group> groups() {
+        ArrayList<Group> result = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM tbl_group";
+            ResultSet resultSet = DataBaseManager.getInstance().getStatement().executeQuery(sql);
+            while (true) {
+                resultSet.next();
+                User admin = getUser(resultSet.getString("admin"));
+                String groupName = resultSet.getString("groupName");
+                String groupID = resultSet.getString("groupID");
+                ArrayList<User> members = new ArrayList<>();
+                ArrayList<String> users = GeneralMethods.getInstance().textDecompressor(resultSet.getString("users"));
+                ArrayList<String> banned = GeneralMethods.getInstance().textDecompressor(resultSet.getString("bannedAccounts"));
+                ArrayList<Message> messages = new ArrayList<>();
+                ArrayList<String> messageId = GeneralMethods.getInstance().textDecompressor(resultSet.getString("messages"));
+
+                for (String s : messageId) {
+                    Message temp = getMessage(s);
+                    if (temp != null) {
+                        messages.add(temp);
+                    }
+                }
+                for (String user : users) {
+                    User temp = getUser(user);
+                    if (temp != null) {
+                        members.add(temp);
+                    }
+                }
+
+                if (users != null && admin != null && groupName != null && groupID != null) {
+                    Group group = new Group(members, messages, admin, User.getLoggedInUser(), groupName, groupID, banned);
+                    result.add(group);
+
+                }
+            }
+        } catch (SQLException e) {
+            return result;
+        }
+    }
+
+    public Image getGroupProfile(String groupID){
+        try {
+            ResultSet resultSet = DataBaseManager.getInstance().getStatement().executeQuery("SELECT * FROM tbl_group WHERE groupID =" + "'" + groupID + "'" + " ;");
+            resultSet.next();
+            Blob pic=resultSet.getBlob("profile");
+            return new Image(pic.getBinaryStream());
+        }catch (Exception e){
+            return null;
+        }
+
+    }
+
 }

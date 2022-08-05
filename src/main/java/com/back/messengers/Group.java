@@ -1,15 +1,18 @@
 package com.back.messengers;
 
+import com.back.GeneralMethods;
 import com.back.MethodReturns;
 import com.back.messages.Message;
 import com.back.usersPackage.User;
 import com.dataBase.DataBaseGetter;
 import com.dataBase.DataBaseSetter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Group extends Messenger {
+    static private Group openedGroup;
     private int keyID;//-1 for null
     private ArrayList<User> members;
     private ArrayList <Message> messages;
@@ -168,6 +171,17 @@ public class Group extends Messenger {
         return bannedAccounts;
     }
 
+    private static void setGroup(Group openedGroup) {
+        Group.openedGroup = new Group(openedGroup.getMembers(), openedGroup.getMessages(), openedGroup.getAdmin(), openedGroup.getUser(), openedGroup.groupName, openedGroup.getGroupID(), openedGroup.getBannedAccounts());
+    }
+
+    public static Group getGroup() {
+        if (openedGroup == null) {
+            return null;
+        }
+        return new Group(openedGroup.getMembers(), openedGroup.getMessages(), openedGroup.getAdmin(), openedGroup.getUser(), openedGroup.groupName, openedGroup.getGroupID(), openedGroup.getBannedAccounts());
+    }
+
     /////////////////////////Message////////////////////////////////////////////////////////////////////////////
 
     @Override
@@ -272,6 +286,31 @@ public class Group extends Messenger {
             return null;
         }
         return null;
+    }
+
+    public static MethodReturns editGroup(String GroupName, ArrayList<User> members, File profile, String groupID) {
+
+        if (!GeneralMethods.getInstance().notEmptyStrings(GroupName)) {
+            return MethodReturns.BAD_INPUT;
+        }
+
+        GroupName = GeneralMethods.getInstance().cutTo45Strings(GroupName);
+
+
+        if (DataBaseGetter.getInstance().getGroup(groupID) == null) {
+            return MethodReturns.NO_SUCH_OBJECT;
+        }
+        Group group = DataBaseGetter.getInstance().getGroup(groupID);
+        ArrayList<String > strings = new ArrayList<>();
+        for (User member : group.getMembers()) {
+            strings.add(member.getUserName());
+        }
+        String mem = GeneralMethods.getInstance().textCompressor(strings);
+        String m = GeneralMethods.getInstance().textCompressor(group.getMessagesID());
+        String ban = GeneralMethods.getInstance().textCompressor(group.getBannedAccounts());
+        Group temp = new Group(members, group.getMessages(), group.getAdmin(), User.getLoggedInUser(), GroupName, groupID, group.getBannedAccounts() );
+
+        return DataBaseSetter.getInstance().editAllGroupFields(temp, profile);
     }
 
 }

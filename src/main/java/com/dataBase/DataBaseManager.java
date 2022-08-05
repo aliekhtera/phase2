@@ -24,4 +24,5 @@ public class DataBaseManager {
     public PreparedStatement getPreparedStatement(String sql) throws SQLException {
         return connection.prepareStatement(sql);
     }
+
 }

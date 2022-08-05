@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class User {
+    static private User selectedUser;
     private static String[] securityQ = {"What city were you born?", "What was the first concert you attended?",
             "In what city did your parent meet?", "What was the model of your first car?"};
     private final String userName;
@@ -142,6 +143,17 @@ public class User {
             return null;
         }
         return new User(loggedInUser);
+    }
+
+    public static void setSelectedUser(User selectedUser) {
+        User.selectedUser = new User(selectedUser);
+    }
+
+    public static User getSelectedUser() {
+        if (selectedUser == null) {
+            return null;
+        }
+        return new User(selectedUser);
     }
 
     @Override

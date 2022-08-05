@@ -464,5 +464,54 @@ public class DataBaseSetter {
         }
     }
 
+    public MethodReturns editAllGroupFields(Group newGroup, File image) {
+        try {
+            if (image == null) {
+                ArrayList<String > strings = new ArrayList<>();
+                for (User member : newGroup.getMembers()) {
+                    strings.add(member.getUserName());
+                }
+                String mem = GeneralMethods.getInstance().textCompressor(strings);
+                String m = GeneralMethods.getInstance().textCompressor(newGroup.getMessagesID());
+                String ban = GeneralMethods.getInstance().textCompressor(newGroup.getBannedAccounts());
+                String sql = "UPDATE tbl_group Set " +
+                        "groupName= '" + newGroup.getGroupName() + "' " +
+                        ", users= '" + mem + "' " +
+                        " , admin= '" + newGroup.getAdmin() + "' " +
+                        " , messages= " + m + " " +
+                        " , bannedAccounts= '" + ban + "' " +
+                        "WHERE groupID = '" + newGroup.getGroupID() + "' ;";
+                DataBaseManager.getInstance().getStatement().execute(sql);
+            } else {
+                FileInputStream fis = new FileInputStream(image);
+
+                ArrayList<String > strings = new ArrayList<>();
+                for (User member : newGroup.getMembers()) {
+                    strings.add(member.getUserName());
+                }
+                String mem = GeneralMethods.getInstance().textCompressor(strings);
+                String m = GeneralMethods.getInstance().textCompressor(newGroup.getMessagesID());
+                String ban = GeneralMethods.getInstance().textCompressor(newGroup.getBannedAccounts());
+
+                String sql = "UPDATE tbl_group Set " +
+                        "groupName= '" + newGroup.getGroupName() + "' " +
+                        ", users= '" + mem + "' " +
+                        " , admin= '" + newGroup.getAdmin() + "' " +
+                        " , messages= " + m + " " +
+                        " , bannedAccounts= '" + ban + "' " +
+                        ", profile= ? " +
+                        "WHERE groupID = '" + newGroup.getGroupID() + "' ;";
+
+                PreparedStatement ps = DataBaseManager.getInstance().getPreparedStatement(sql);
+                ps.setBinaryStream(1, fis, (int) image.length());
+                ps.execute();
+            }
+            return MethodReturns.DONE;
+        } catch (Exception e) {
+            return MethodReturns.UNKNOWN_DATABASE_ERROR;
+        }
+    }
+
+
 
 }
