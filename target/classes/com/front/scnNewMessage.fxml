@@ -14,8 +14,8 @@
          <center>
             <Pane prefHeight="306.0" prefWidth="555.0" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fx:id="imageView" fitHeight="306.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" visible="false" />
-                  <ImageView fitHeight="35.0" fitWidth="35.0" onMouseDragged="#removeFile" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imageView" fitHeight="306.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="35.0" fitWidth="35.0" onMouseClicked="#removeFile" pickOnBounds="true" preserveRatio="true">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>

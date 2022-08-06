@@ -4,6 +4,8 @@ import com.back.messages.Message;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
+import java.sql.Blob;
+
 public class SceneManager {
     private static SceneManager instance = new SceneManager();
 
@@ -107,5 +109,16 @@ public class SceneManager {
         }
     }
 
+    Scene getNewFileShowScene(Blob blob,String fileName){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("scnFileShow.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            ((ScnFileShow)fxmlLoader.getController()).init(blob,fileName);
+            return scene;
+        } catch (Exception e) {
+            StageManager.getInstance().showErrorDialog("Unknown Error!");
+            return getNewLoginScene();
+        }
+    }
 
 }

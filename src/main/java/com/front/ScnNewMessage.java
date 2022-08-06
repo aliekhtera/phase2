@@ -24,7 +24,7 @@ public class ScnNewMessage {
     private Message message, rep;
     private boolean fileEdit, isForwarded;
 
-    private final static String fileAddress = ScnNewMessage.class.getResource("nullUserImage.png").getPath();
+    private final static String fileAddress = ScnNewMessage.class.getResource("icnFile.png").toString();
 
 
     public void setMessage(Message mainMessage, Message rep, boolean isForwarded) {
@@ -35,11 +35,15 @@ public class ScnNewMessage {
         if (mainMessage == null) {
             return;
         }
+        if(mainMessage.getKeyID()<0){
+            return;
+        }
         try {
             Blob blob = DataBaseGetter.getInstance().getMessageFile(mainMessage);
             if (mainMessage.getFileName().contains(".png") || mainMessage.getFileName().contains(".jpg") || mainMessage.getFileName().contains(".jpeg")) {
                 imageView.setImage(new Image(blob.getBinaryStream()));
             }
+            txtText.setText(message.getText());
         } catch (Exception e) {
 
         }
@@ -61,7 +65,7 @@ public class ScnNewMessage {
         if (message.getKeyID() < 0) {
             message.setAllFields(Message.newMessage(txtText.getText(), rep, isForwarded));
         } else {
-            message.editMessage(message.getKeyID(), txtText.getText());
+            Message.editMessage(message.getKeyID(), txtText.getText());
         }
         if (fileEdit) {
             if (StageManager.getInstance().showDialog(DataBaseSetter.getInstance().editMessageFile(message.getStringKeyID(), file))) {
@@ -89,11 +93,12 @@ public class ScnNewMessage {
     private void newFile() {
         FileChooser fileChooser=new FileChooser();
         File f=fileChooser.showOpenDialog(txtText.getScene().getWindow());
-        if (file == null) {
+        if (f == null) {
             return;
         }
         imageView.setImage(new Image(fileAddress));
         file=f;
+        fileEdit=true;
     }
 
     @FXML

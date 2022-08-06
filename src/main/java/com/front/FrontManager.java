@@ -76,7 +76,7 @@ public class FrontManager extends Application {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Image Files",
                 "*.png", "*.jpg", "*.jpeg");
-        fileChooser.setSelectedExtensionFilter(extensionFilter);
+        fileChooser.getExtensionFilters().add(extensionFilter);
         File result = fileChooser.showOpenDialog(imageView.getScene().getWindow());
         return fileToImage(imageView, result);
     }

@@ -129,5 +129,17 @@ public class PV extends Messenger {
         return messenger.sendMessage(message.getText(),null,true);
     }
 
+    public MethodReturns sendMessage(Message message){
+        if(message.getKeyID()<0){
+            return MethodReturns.BAD_INPUT;
+        }
+        for (Message m : messages) {
+            if(m.getKeyID()==message.getKeyID()){
+                return MethodReturns.DUPLICATE;
+            }
+        }
+        messages.add(message);
+        return DataBaseSetter.getInstance().editMessagesOfPV(this);
+    }
 
 }
