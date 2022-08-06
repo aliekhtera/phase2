@@ -51,6 +51,7 @@ public class ScnNewMessage {
     }
 
 
+
     @FXML
     private void done() {
         try {

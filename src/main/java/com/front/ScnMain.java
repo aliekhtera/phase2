@@ -24,7 +24,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 import java.net.URL;
 import java.sql.Blob;
@@ -137,7 +136,7 @@ public class ScnMain implements Initializable {
             tempIcn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    editMessageClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
+                    replyMessageClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
                 }
             });
             nodes.add(tempIcn);
@@ -290,10 +289,10 @@ public class ScnMain implements Initializable {
         listsRefresh();
         Node c = lstUsers;
         for (Node child : cpnMessengersList.getChildren()) {
-            if(child!=null) {
+            if (child != null) {
                 if (child.getId() != null) {
                     if (child.getId().equals("lstUsers")) {
-                        c=child;
+                        c = child;
                         break;
                     }
                 }
@@ -417,7 +416,6 @@ public class ScnMain implements Initializable {
         lstUsers.setItems(FXCollections.observableList(temp));
     }
 
-
     @FXML
     private void messageFiller() {
         if (lstUsers.getSelectionModel().getSelectedIndex() < 0) {
@@ -491,6 +489,7 @@ public class ScnMain implements Initializable {
 
     }
 
+    @FXML
     private void search() {
         StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewSearchScene(), "Search!");
     }
@@ -550,11 +549,26 @@ public class ScnMain implements Initializable {
 
     }
 
+    private void replyMessageClick(String id) {
+        if (lstUsers.getSelectionModel().getSelectedIndex() < 0) {
+            return;
+        }
+        Message message = new Message(User.getLoggedInUser(), "", "", "", false, -1, false, new ArrayList<>(), new ArrayList<>());
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewNewMessageScene(message, DataBaseGetter.getInstance().getMessage(id), false), "Reply Message");
+        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 0) {
+            pvList.get(lstUsers.getSelectionModel().getSelectedIndex()).sendMessage(message);
+        } else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 1) {
+            groupList.get(lstUsers.getSelectionModel().getSelectedIndex()).sendMessage(message);
+        }
+        listsRefresh();
+    }
+
+
     ////////////////////// Group ///////////////////////
 
     @FXML
     private void groupSettings() {
-        if(lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1)  {
+        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1) {
             if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
                 groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
                 StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewGroupSettingScene(), "Group");
@@ -578,7 +592,7 @@ public class ScnMain implements Initializable {
     }
 
     private void addNewMember() {
-        if(lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1)  {
+        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1) {
             if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
                 groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
                 StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewMembersScene(), "Members");
