@@ -12,7 +12,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ScnSearchGroup implements Initializable {
-
     Group group;
 
     @FXML
@@ -32,7 +31,7 @@ public class ScnSearchGroup implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("]}}}}}}}}}}}}}}}}}}}}}}}}}");
+        System.out.println(group.getGroupID());
         groupName.setText(group.getGroupName());
         groupMembers.setText(Integer.toString(group.getMembers().size()));
         groupAdmin.setText(group.getAdmin().getUserName());
