@@ -6,5 +6,5 @@ public enum ControllerType {
     PASSWORD,
     FIRST_NAME, LAST_NAME, SECURITY_ANSWER,
     ADD_NEW_MEMBER,
-    GROUP_NAME
+    GROUP_NAME,GROUP_ID
 }

@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
+import javafx.scene.Scene;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -69,7 +70,6 @@ public class ScnMain implements Initializable {
         // lstUsers.setItems(FXCollections.observableList(m));
     }
 
-
     private Pane messageToPane(Message message) {
         double width = 530;
         ArrayList<Node> nodes = new ArrayList<>();
@@ -79,7 +79,6 @@ public class ScnMain implements Initializable {
         profile.setFitHeight(0.15 * width);
         nodes.add(profile);
 
-
         Label sender = new Label();
         sender.setWrapText(false);
         sender.setPrefWidth(width * 0.6);
@@ -87,7 +86,6 @@ public class ScnMain implements Initializable {
         sender.setLayoutX(width * 0.166);
         sender.setLayoutY(profile.getFitHeight() / 2);
         nodes.add(sender);
-
 
         double icnSize = (width * 0.6) / 9;
         double i = 0.16 * width;
@@ -363,6 +361,7 @@ public class ScnMain implements Initializable {
             lstUsers.setItems(FXCollections.observableList(temp));
         }
 
+
         if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 2) {
             ArrayList<String> f = myPage.getFollowers();
             ArrayList<User> users = new ArrayList<>();
@@ -456,8 +455,8 @@ public class ScnMain implements Initializable {
             panes.get(i).setLayoutX(w);
             vbxMessages.getChildren().add(panes.get(i));
         }
-    }
 
+    }
 
     private void titleFiller() {
         if (lstUsers.getSelectionModel().getSelectedIndex() < 0) {
@@ -492,13 +491,17 @@ public class ScnMain implements Initializable {
 
     }
 
+    private void search() {
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewSearchScene(), "Search!");
+    }
+
 
     //////////////// Message ///////////////////////////////////////
+
     private void likeMessageClick(String id) {
         DataBaseGetter.getInstance().getMessage(id).likeDislikeByLoggedInUser();
         listsRefresh();
     }
-
 
     private void deleteMessageClick(String id) {
         if (lstUsers.getSelectionModel().getSelectedIndex() < 0) {
@@ -516,18 +519,15 @@ public class ScnMain implements Initializable {
         listsRefresh();
     }
 
-
     private void editMessageClick(String id) {
         StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewNewMessageScene(DataBaseGetter.getInstance().getMessage(id), null, false), "Edit Message");
         listsRefresh();
     }
 
-
     private void forwardMessageClick(String id) {
         listsRefresh();
 
     }
-
 
     private void getRepliedMessageClick(String id) {
         listsRefresh();
@@ -540,12 +540,10 @@ public class ScnMain implements Initializable {
         listsRefresh();
     }
 
-
     private void showLikesMessageClick(String id) {
         listsRefresh();
 
     }
-
 
     private void showViewsMessageClick(String id) {
         listsRefresh();
@@ -553,19 +551,15 @@ public class ScnMain implements Initializable {
     }
 
     ////////////////////// Group ///////////////////////
-    @FXML
-    private void removeUserGroup() {
-
-    }
-
-    @FXML
-    private void banUserGroup() {
-
-    }
 
     @FXML
     private void groupSettings() {
-
+        if(lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1)  {
+            if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
+                groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
+                StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewGroupSettingScene(), "Group");
+            }
+        }
     }
 
     @FXML
@@ -581,6 +575,15 @@ public class ScnMain implements Initializable {
         StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewNewMessageScene(message, null, false), "New Message");
         group.sendMessage(message);
         listsRefresh();
+    }
+
+    private void addNewMember() {
+        if(lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1)  {
+            if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
+                groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
+                StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewMembersScene(), "Members");
+            }
+        }
     }
 
     /////////////////// PV //////////////////

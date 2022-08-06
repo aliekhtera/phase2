@@ -181,7 +181,6 @@ public class Page {
         DataBaseSetter.getInstance().editPageViews(this);
     }
 
-
     public ArrayList<LikeView> getPageViews() {
         return new ArrayList<>(pageViews);
     }

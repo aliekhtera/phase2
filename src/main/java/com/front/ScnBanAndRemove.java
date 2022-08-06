@@ -9,16 +9,16 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ScnBanAndRemove {
-    Group group = Group.getGroup();
+     Group group = Group.getGroup();
 
     @FXML
     Label label ;
 
-    public void remove() {
+    public  void remove() {
         group.removeUser(group.getAdmin(), User.getSelectedUser(), group);
     }
 
-    public void ban() {
+    public  void ban() {
         group.banMember(group.getAdmin(), group, User.getSelectedUser().getUserName());
     }
 

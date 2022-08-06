@@ -78,7 +78,6 @@ public class ScnSettings implements Initializable {
         FrontManager.textFieldSetter(txtAnswer, ControllerType.SECURITY_ANSWER);
     }
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         user = DataBaseGetter.getInstance().getUser(User.getLoggedInUser().getUserName());
