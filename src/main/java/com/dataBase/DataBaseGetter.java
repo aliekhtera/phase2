@@ -59,7 +59,6 @@ public class DataBaseGetter {
 
     }
 
-
     public ArrayList<String> getBusinessUserNames() {
         ArrayList<String> result = new ArrayList<>();
         try {

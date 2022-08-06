@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Group extends Messenger {
+    static private Group selectedGroup;
     static private Group openedGroup;
     private int keyID;//-1 for null
     private ArrayList<User> members;
@@ -325,5 +326,6 @@ public class Group extends Messenger {
 
         return DataBaseSetter.getInstance().editAllGroupFields(temp, profile);
     }
+
 
 }

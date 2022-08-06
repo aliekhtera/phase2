@@ -1,18 +1,13 @@
 package com.front;
 
 import com.back.MethodReturns;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-
-import java.io.IOException;
 
 public class StageManager {
 
@@ -49,6 +44,18 @@ public class StageManager {
         dialog.getDialogPane().getButtonTypes().add(buttonType);
         dialog.setContentText(content);
         dialog.showAndWait();
+      //  return null;
+    }
+
+    Scene showError(String content) {
+        // Alert alert=new Alert(Alert.AlertType.ERROR);
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("ERROR!");
+        ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().add(buttonType);
+        dialog.setContentText(content);
+        dialog.showAndWait();
+        return null;
     }
 
     void showDoneDialog(){
@@ -83,7 +90,6 @@ public class StageManager {
             showDialog(MethodReturns.UNKNOWN_FRONT_ERROR);
         }
     }
-
 
     void openNewStage(Scene scene, String title, Window window) {
         Stage newStage = new Stage();

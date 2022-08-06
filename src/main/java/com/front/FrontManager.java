@@ -121,11 +121,7 @@ public class FrontManager extends Application {
         return newImage;
     }
 
-    /* public static File messageFileFiller(Node node){
-         FileChooser fileChooser=new FileChooser();
-         File file=fileChooser.showOpenDialog(node.getScene().getWindow());
-         file.getName();
-     }*/
+
 
     static String getIcnLiked(boolean isLiked) {
         if (isLiked) {

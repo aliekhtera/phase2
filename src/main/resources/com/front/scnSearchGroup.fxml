@@ -21,6 +21,5 @@
          </font></Label>
       <Button layoutX="129.0" layoutY="285.0" mnemonicParsing="false" onAction="#join" prefHeight="30.0" prefWidth="86.0" text="Join" />
       <Button layoutX="394.0" layoutY="285.0" mnemonicParsing="false" onAction="#leave" prefHeight="30.0" prefWidth="86.0" text="Leave" />
-      <Button layoutX="257.0" layoutY="285.0" mnemonicParsing="false" onAction="#join" prefHeight="30.0" prefWidth="86.0" text="Cancel" />
    </children>
 </AnchorPane>

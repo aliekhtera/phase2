@@ -16,7 +16,6 @@ public class DataBaseManager {
         }
     }
 
-
     public Statement getStatement() throws SQLException {
         return connection.createStatement();
     }

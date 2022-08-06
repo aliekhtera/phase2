@@ -65,7 +65,7 @@
                      <content>
                         <Pane fx:id="cpnMessengersList" prefHeight="678.0" prefWidth="265.0">
                            <children>
-                              <ListView fixedCellSize="100.0" onMouseClicked="#messageFiller" prefHeight="678.0" prefWidth="265.0" />
+                              <ListView fx:id="lstUsers" fixedCellSize="100.0" onMouseClicked="#messageFiller" prefHeight="678.0" prefWidth="265.0" />
                            </children>
                         </Pane>
                      </content>
@@ -121,12 +121,12 @@
                                     <Image url="@../../images/icnSettings.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="210.0" layoutY="10.0" onMouseClicked="#removeUserGroup" pickOnBounds="true">
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="210.0" layoutY="10.0" pickOnBounds="true">
                                  <image>
                                     <Image url="@../../images/icnRemove.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="290.0" layoutY="10.0" onMouseClicked="#banUserGroup" pickOnBounds="true">
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="290.0" layoutY="10.0" pickOnBounds="true">
                                  <image>
                                     <Image url="@../../images/icnBan.png" />
                                  </image>

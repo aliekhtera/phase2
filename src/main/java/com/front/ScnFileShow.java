@@ -1,7 +1,11 @@
 package com.front;
 
 import com.back.MethodReturns;
+import com.back.messages.Message;
+import com.dataBase.DataBaseGetter;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -15,7 +19,10 @@ public class ScnFileShow {
     private String fileName;
     @FXML
     private ImageView imgPicture,imgFile;
-
+    @FXML
+    Button btnSave;
+    @FXML
+    TextArea txtText;
     void init(Blob blob,String fileName){
         this.blob=blob;
         this.fileName=fileName;
@@ -33,6 +40,32 @@ public class ScnFileShow {
             imgFile.setVisible(true);
         }
     }
+
+    void init(String messageId){
+        Message message= DataBaseGetter.getInstance().getMessage(messageId);
+        blob=DataBaseGetter.getInstance().getMessageFile(message);
+        txtText.setText(message.getText());
+        txtText.setVisible(true);
+        if(blob==null){
+            btnSave.setVisible(false);
+            return;
+        }
+        fileName=message.getFileName();
+        String format=fileName.substring(fileName.indexOf("."));
+        if(format.equals(".png") || format.equals(".jpg") || format.equals(".jpeg")){
+            imgPicture.setVisible(true);
+            imgFile.setVisible(false);
+            try {
+                imgPicture.setImage(new Image(blob.getBinaryStream()));
+            }catch (Exception e){
+                imgPicture.setImage(null);
+            }
+        }else{
+            imgPicture.setVisible(false);
+            imgFile.setVisible(true);
+        }
+    }
+
     @FXML
     private void save(){
         FileChooser fileChooser=new FileChooser();

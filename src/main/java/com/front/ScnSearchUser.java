@@ -14,25 +14,27 @@ import java.util.ResourceBundle;
 public class ScnSearchUser implements Initializable{
 
     @FXML
-    Label userName, firstName, lastName;
+    Label userName, firstName, lastName, userName1, firstName1, lastName1;
 
-    public void openPV() {
-        PV.openPV(userName.getText());
+    @FXML
+    public void unfollow() {
+        System.out.println("========");
     }
 
+    @FXML
     public void follow() {
-        Page.openPage(userName.getText());
+        System.out.println("zzzzzzzzz");
     }
 
-    public void cancel() {
-
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         userName.setText(User.getSelectedUser().getUserName());
         firstName.setText(User.getSelectedUser().getFirstName());
         lastName.setText(User.getSelectedUser().getLastName());
+        userName1.setText("Username");
+        firstName1.setText("Firstname");
+        lastName1.setText("Lastname");
     }
 
 }
