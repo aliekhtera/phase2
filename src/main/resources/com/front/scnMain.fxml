@@ -48,7 +48,15 @@
                               <Image url="@../../images/pageIcon.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="search" fitHeight="80.0" fitWidth="43.0" layoutX="11.0" layoutY="385.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="search" fitHeight="49.0" fitWidth="49.0" layoutX="5.0" layoutY="385.0" onMouseClicked="#search" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../images/searchIcon.png" />
+                           </image></ImageView>
+                        <ImageView fitHeight="80.0" fitWidth="86.0" layoutX="-13.0" layoutY="455.0" onMouseClicked="#addNewGroup" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../images/AddGroupIcon.png" />
+                           </image>
+                        </ImageView>
                      </children>
                   </Pane>
                </left>
@@ -113,7 +121,7 @@
                                     <Image url="@../../images/icnSettings.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="210.0" layoutY="10.0"  pickOnBounds="true">
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="210.0" layoutY="10.0" pickOnBounds="true">
                                  <image>
                                     <Image url="@../../images/icnRemove.png" />
                                  </image>

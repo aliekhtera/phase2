@@ -202,7 +202,6 @@ public class DataBaseGetter {
 
     }
 
-
     public ArrayList<Group> getGroupsOfUser(String userName) {
         ArrayList<Group> result = new ArrayList<>();
         try {

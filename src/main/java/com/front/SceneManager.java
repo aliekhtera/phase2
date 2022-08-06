@@ -123,19 +123,6 @@ public class SceneManager {
         }
     }
 
-    Scene getNewNewGroupScene(Group group) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("scnGroupSetting.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            ((ScnGroupSetting)fxmlLoader.getController()).setGroup(group);
-            return scene;
-        } catch (Exception e) {
-            StageManager.getInstance().showErrorDialog("Unknown Error!");
-            return getNewLoginScene();
-        }
-    }
-
-
     Scene getNewSearchScene() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("scnSearch.fxml"));
@@ -159,6 +146,16 @@ public class SceneManager {
     Scene getNewSearchUsernameScene() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("scnSearchUser.fxml"));
+            return new Scene(fxmlLoader.load());
+        }catch (Exception e){
+            StageManager.getInstance().showErrorDialog("Unknown Error!");
+            return getNewLoginScene();
+        }
+    }
+
+    Scene getNewNewGroupScene() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("scnNewGroup.fxml"));
             return new Scene(fxmlLoader.load());
         }catch (Exception e){
             StageManager.getInstance().showErrorDialog("Unknown Error!");
