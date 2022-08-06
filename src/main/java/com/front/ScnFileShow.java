@@ -48,6 +48,7 @@ public class ScnFileShow {
         txtText.setVisible(true);
         if(blob==null){
             btnSave.setVisible(false);
+            imgFile.setVisible(false);
             return;
         }
         fileName=message.getFileName();
