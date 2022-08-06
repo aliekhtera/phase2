@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -419,6 +420,7 @@ public class ScnMain implements Initializable {
     }
 
     //////////////// Message ///////////////////////////////////////
+
     private void likeMessageClick(String id) {
 
     }
@@ -451,29 +453,13 @@ public class ScnMain implements Initializable {
     }
 
     ////////////////////// Group ///////////////////////
-    @FXML
-    private void removeUserGroup() {
-      if(lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1)  {
-          if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
-              groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
-          }
-      }
-    }
-
-    @FXML
-    private void banUserGroup() {
-        if(lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1)  {
-            if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
-                groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
-            }
-        }
-    }
 
     @FXML
     private void groupSettings() {
         if(lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1)  {
             if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
                 groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
+                StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewGroupSettingScene(), "Group");
             }
         }
     }
@@ -481,6 +467,15 @@ public class ScnMain implements Initializable {
     @FXML
     private void sendNewMessageGroup() {
 
+    }
+
+    private void addNewMember() {
+        if(lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1)  {
+            if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
+                groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
+                StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewMembersScene(), "Members");
+            }
+        }
     }
 
     /////////////////// PV //////////////////

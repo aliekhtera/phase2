@@ -10,6 +10,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.IOException;
 
@@ -84,5 +85,14 @@ public class StageManager {
     }
 
 
+    void openNewStage(Scene scene, String title, Window window) {
+        Stage newStage = new Stage();
+        newStage.setTitle(title);
+        newStage.setResizable(false);
+        newStage.initModality(Modality.WINDOW_MODAL);
+        newStage.initOwner(window);
+        newStage.setScene(scene);
+        newStage.showAndWait();
+    }
 
 }

@@ -24,15 +24,11 @@ public class ScnSearchGroup implements Initializable {
         Group.getGroup().removeUser(admin, User.getLoggedInUser(), Group.getGroup());
     }
 
-    public void cancel() {
-
-    }
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         groupName.setText(Group.getGroup().getGroupName());
         groupMembers.setText(Integer.toString(Group.getGroup().getMembers().size()) + "members");
         groupAdmin.setText(Group.getGroup().getAdmin().getUserName());
     }
+
 }

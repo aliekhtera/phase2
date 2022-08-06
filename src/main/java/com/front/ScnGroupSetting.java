@@ -13,18 +13,18 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ScnGroupSetting {
-    Group group;
+     Group group;
     @FXML
-    TextField txtGroupID, txtGroupName, txtAddNewMember;
+     TextField txtGroupID, txtGroupName, txtAddNewMember;
 
     @FXML
-    private ImageView imgProfile;
-    private String pictureURL;
+     ImageView imgProfile;
+     String pictureURL;
     static String nullUrl = String.valueOf(ScnGroupSetting.class.getResource("nullUserImage.png"));
     Label label;
 
     @FXML
-    private void groupEdit() {
+     void groupEdit() {
         String url = imgProfile.getImage().getUrl();
         File file;
         if (url == null) {
@@ -43,11 +43,12 @@ public class ScnGroupSetting {
         if (StageManager.getInstance().showDialog(Group.editGroup(txtGroupName.getText() ,  group.getMembers() , file, group.getGroupID()))){
             initialize(null, null);
         }
+
     }
 
     @FXML
-    private void members() {
-        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewMembersScene(), "Members!");
+     void members() {
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewMembersScene(), "Members!", imgProfile.getScene().getWindow());
     }
 
     @FXML
@@ -89,4 +90,5 @@ public class ScnGroupSetting {
     public void setGroup(Group group) {
         this.group = group;
     }
+
 }
