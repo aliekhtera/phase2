@@ -31,6 +31,7 @@ public class ScnSearch implements Initializable {
 
     @FXML
     public void searchGroupID() {
+        Group.setSelectedGroup(txtID.getText());
         StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewSearchGroupScene(), "Result!");
     }
 
@@ -72,7 +73,6 @@ public class ScnSearch implements Initializable {
         String type = stringChoiceBox.getValue();
         return type;
     }
-
 
     public void setUser(User user) {
         this.user = user;

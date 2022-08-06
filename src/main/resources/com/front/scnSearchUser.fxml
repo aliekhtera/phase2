@@ -5,27 +5,43 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.front.ScnSearchUser">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgba(192,192,192,1);" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.front.ScnSearchUser">
    <children>
-      <Label fx:id="userName" alignment="CENTER" layoutX="139.0" layoutY="50.0" prefHeight="58.0" prefWidth="308.0" text="Username">
+      <Label fx:id="userName" alignment="CENTER" layoutX="-32.0" layoutY="41.0" prefHeight="58.0" prefWidth="308.0" text="Username">
          <font>
-            <Font size="25.0" />
+            <Font name="A Nahar-Bold" size="25.0" />
          </font>
       </Label>
-      <Label fx:id="firstName" alignment="CENTER" layoutX="139.0" layoutY="117.0" prefHeight="58.0" prefWidth="308.0" text="Firstname">
+      <Label fx:id="firstName" alignment="CENTER" layoutX="-32.0" layoutY="117.0" prefHeight="58.0" prefWidth="308.0" text="Firstname">
          <font>
-            <Font size="25.0" />
+            <Font name="A Nahar-Bold" size="25.0" />
          </font>
       </Label>
-      <Label fx:id="lastName" alignment="CENTER" layoutX="139.0" layoutY="193.0" prefHeight="58.0" prefWidth="308.0" text="Lastname">
+      <Label fx:id="lastName" alignment="CENTER" layoutX="-32.0" layoutY="193.0" prefHeight="58.0" prefWidth="308.0" text="Lastname">
          <font>
-            <Font size="25.0" />
+            <Font name="A Nahar-Bold" size="25.0" />
          </font>
       </Label>
-      <Button layoutX="113.0" layoutY="281.0" mnemonicParsing="false" onAction="#follow" prefHeight="43.0" prefWidth="97.0" text="Follow" />
-      <Button layoutX="377.0" layoutY="281.0" mnemonicParsing="false" onAction="#unfollow" prefHeight="43.0" prefWidth="97.0" text="Unfollow" />
-      <Label fx:id="userName1" layoutX="266.0" layoutY="41.0" text="Username" />
-      <Label fx:id="firstName1" layoutX="267.0" layoutY="108.0" text="Firstname" />
-      <Label fx:id="lastName1" layoutX="267.0" layoutY="184.0" text="Lastname" />
+      <Button layoutX="108.0" layoutY="281.0" mnemonicParsing="false" onAction="#followUnFollow" prefHeight="43.0" prefWidth="130.0" text="Follow / Unfollow">
+         <font>
+            <Font name="A Nahar-Medium" size="16.0" />
+         </font></Button>
+      <Label fx:id="userName1" layoutX="78.0" layoutY="32.0" text="Username :">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font></Label>
+      <Label fx:id="firstName1" layoutX="79.0" layoutY="108.0" text="Firstname :">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font></Label>
+      <Label fx:id="lastName1" layoutX="79.0" layoutY="184.0" text="Lastname :">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font></Label>
+      <Button layoutX="333.0" layoutY="281.0" mnemonicParsing="false" onAction="#directMessage" prefHeight="43.0" prefWidth="130.0" text="Direct Message">
+         <font>
+            <Font name="A Nahar-Medium" size="16.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

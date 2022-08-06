@@ -45,11 +45,12 @@ public class SceneNewGroup implements Initializable {
 
         users.add(User.getLoggedInUser());
 
+
         Group group = new Group(users, messages, User.getLoggedInUser(), User.getLoggedInUser(), txtGroupName.getText(), txtGroupID.getText(), banned);
 
         DataBaseSetter.getInstance().addNewGroupToDataBase(group);
         try {
-                StageManager.getInstance().showDialog(MethodReturns.DONE);
+                StageManager.getInstance().showCreateGroupDialog("Group was created");
                 StageManager.getInstance().changeScene(SceneManager.getInstance().getNewMainScene());
         } catch (Exception e) {
             StageManager.getInstance().showDialog(MethodReturns.UNKNOWN_DATABASE_ERROR);

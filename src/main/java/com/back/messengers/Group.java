@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Group extends Messenger {
-    static private Group selectedGroup;
+    static private String  selectedGroup;
     static private Group openedGroup;
     private int keyID;//-1 for null
     private ArrayList<User> members;
@@ -332,4 +332,13 @@ public class Group extends Messenger {
     public String toString() {
         return "Group : " +groupName+" ("+groupID+")";
     }
+
+    public static String getSelectedGroup() {
+        return selectedGroup;
+    }
+
+    public static void setSelectedGroup(String selectedGroup) {
+        Group.selectedGroup = selectedGroup;
+    }
+
 }

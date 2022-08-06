@@ -101,4 +101,101 @@ public class StageManager {
         newStage.showAndWait();
     }
 
+    boolean showLoginDialog(MethodReturns input) {
+        if (input==null){
+            return false;
+        }
+        if(input.equals(MethodReturns.DONE)){
+            loginDialog();
+            return true;
+        }
+        String text = " ";
+        switch (input) {
+
+        }
+        showErrorDialog(text);
+        return false;
+    }
+
+    boolean showSignUpDialog(MethodReturns input) {
+        if (input==null){
+            return false;
+        }
+        if(input.equals(MethodReturns.DONE)){
+            signupDialog();
+            return true;
+        }
+        String text = " ";
+        switch (input) {
+
+        }
+        showErrorDialog(text);
+        return false;
+    }
+
+    void loginDialog(){
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Login!");
+        ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().add(buttonType);
+        dialog.setContentText("You LoggedIn Seccessfully!");
+        dialog.showAndWait();
+    }
+
+    void signupDialog(){
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Signup!");
+        ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().add(buttonType);
+        dialog.setContentText("You SignedUp Successfully !");
+        dialog.showAndWait();
+    }
+
+    void showUnFollowDialog(String content) {
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Unfollow!");
+        ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().add(buttonType);
+        dialog.setContentText(content);
+        dialog.showAndWait();
+    }
+
+    void showFollowDialog(String content) {
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Follow!");
+        ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().add(buttonType);
+        dialog.setContentText(content);
+        dialog.showAndWait();
+    }
+
+    void showCreateGroupDialog(String content) {
+
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("New Group!");
+        ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().add(buttonType);
+        dialog.setContentText(content);
+        dialog.showAndWait();
+
+    }
+
+    void showJoinDialog(String content) {
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Join!");
+        ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().add(buttonType);
+        dialog.setContentText(content);
+        dialog.showAndWait();
+    }
+
+    void showLeaveDialog(String content) {
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Leave!");
+        ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().add(buttonType);
+        dialog.setContentText(content);
+        dialog.showAndWait();
+    }
+
 }
