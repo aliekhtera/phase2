@@ -322,7 +322,7 @@ public class DataBaseSetter {
         try {
             String ban = GeneralMethods.getInstance().textCompressor(group.getBannedAccounts());
             String m = GeneralMethods.getInstance().textCompressor(group.getMessagesID());
-            ArrayList<String > mem = new ArrayList<>();
+            ArrayList<String> mem = new ArrayList<>();
             for (User member : group.getMembers()) {
                 mem.add(member.getUserName());
             }

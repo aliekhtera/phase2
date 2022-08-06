@@ -553,6 +553,11 @@ public class ScnMain implements Initializable {
     ////////////////////// Group ///////////////////////
 
     @FXML
+    private void addNewGroup() {
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewNewGroupScene(), "New Group");
+    }
+
+    @FXML
     private void groupSettings() {
         if(lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1)  {
             if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
@@ -629,6 +634,9 @@ public class ScnMain implements Initializable {
         }
         User.blockUnBlockUser(user.getUserName());
     }
+
+    //////////////////////////////////////
+
 
 
 }

@@ -63,6 +63,13 @@ public class FrontManager extends Application {
             case GROUP_ID:
                 flag = (DataBaseGetter.getInstance().getGroup(text) != null);
                 break;
+            case NEW_GROUP_ID:
+                flag = (DataBaseGetter.getInstance().getGroup(text) == null);
+                break;
+            case NEW_GROUP_NAME:
+                flag = (l > 0);
+                break;
+
         }
         if (flag == null) {
             return;

@@ -61,7 +61,6 @@ public class ScnLogin implements Initializable {
 
     }
 
-
     @FXML
     private void txtLpChecker(){
      FrontManager.textFieldSetter(txtLp,ControllerType.PASSWORD);
