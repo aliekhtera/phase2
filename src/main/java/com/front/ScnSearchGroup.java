@@ -44,5 +44,4 @@ public class ScnSearchGroup implements Initializable {
         admin.setText("Admin :");
     }
 
-
 }

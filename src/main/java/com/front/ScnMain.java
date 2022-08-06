@@ -57,7 +57,6 @@ public class ScnMain implements Initializable {
         messageFiller();
     }
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         {
@@ -291,6 +290,7 @@ public class ScnMain implements Initializable {
     private void messengersListRefresh() {
         listsRefresh();
         Node c = lstUsers;
+
         for (Node child : cpnMessengersList.getChildren()) {
             if (child != null) {
                 if (child.getId() != null) {
@@ -303,6 +303,7 @@ public class ScnMain implements Initializable {
         }
         cpnMessengersList.getChildren().clear();
         cpnMessengersList.getChildren().add(c);
+
         if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 0) {
             ArrayList<String> times = new ArrayList<>();
             ArrayList<User> others = new ArrayList<>();
@@ -322,48 +323,25 @@ public class ScnMain implements Initializable {
             }
         }
 
-        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 1) {
-            cpnMessengersList.setPrefHeight(lstUsers.getFixedCellSize() * (groupList.size() + 1));
-            lstUsers.setPrefHeight(lstUsers.getFixedCellSize() * (groupList.size() + 1));
-            ArrayList<String> temp = new ArrayList<>();
-            for (int i = 0; i < groupList.size(); i++) {
-                temp.add("");
-                Group group = groupList.get(i);
-                Image profile = DataBaseGetter.getInstance().getGroupProfile(group.getGroupID());
-                if (profile == null) {
-                    profile = new Image(ScnSettings.nullUrl);
-                }
-                ImageView tempImageView = new ImageView(profile);
-                Label unLabel = new Label(), dLabel = new Label();
-                unLabel.setText(group.getGroupName());
+        else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 1) {
+
+            ArrayList<String> times = new ArrayList<>();
+            ArrayList<Group> groups = new ArrayList<>();
+
+            for (Group group : groupList) {
                 if (group.getMessages().size() > 0) {
                     Message m = group.getMessages().get(group.getMessages().size() - 1);
-                    dLabel.setText(m.getSentDate());
-                } else {
-                    dLabel.setText("No Message");
+                    times.add(m.getSentDate());
                 }
-                unLabel.setFont(new Font("Calibri", 25));
-                dLabel.setFont(new Font("Calibri", 15));
-
-                tempImageView.setFitWidth(lstUsers.getFixedCellSize() * 0.8);
-                tempImageView.setFitHeight(lstUsers.getFixedCellSize() * 0.8);
-                tempImageView.setLayoutY(lstUsers.getFixedCellSize() * (i + 0.1));
-                tempImageView.setLayoutX(lstUsers.getFixedCellSize() * 0.1);
-                unLabel.setLayoutX(lstUsers.getWidth() * 0.5);
-                dLabel.setLayoutX(lstUsers.getWidth() * 0.5);
-                unLabel.setLayoutY(lstUsers.getFixedCellSize() * (i + 0.1));
-                dLabel.setLayoutY(lstUsers.getFixedCellSize() * (i + 0.5));
-                tempImageView.setMouseTransparent(false);
-                dLabel.setMouseTransparent(false);
-                unLabel.setMouseTransparent(false);
-                cpnMessengersList.getChildren().add(dLabel);
-                cpnMessengersList.getChildren().add(unLabel);
-                cpnMessengersList.getChildren().add(tempImageView);
+                else {
+                    times.add("No Message");
+                }
+                groups.add(group);
+                messengerGroupListRefresh(groups, times);
             }
-            lstUsers.setItems(FXCollections.observableList(temp));
-        }
+            }
 
-        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 2) {
+        else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 2) {
             ArrayList<String> f = myPage.getFollowers();
             ArrayList<User> users = new ArrayList<>();
             ArrayList<String> times = new ArrayList<>();
@@ -381,6 +359,9 @@ public class ScnMain implements Initializable {
         }
 
     }
+
+
+
 
     private void messengersListRefresh(ArrayList<User> users, ArrayList<String> times) {
         cpnMessengersList.setPrefHeight(lstUsers.getFixedCellSize() * (users.size() + 1));
@@ -417,6 +398,43 @@ public class ScnMain implements Initializable {
         }
         lstUsers.setItems(FXCollections.observableList(temp));
     }
+
+    private void messengerGroupListRefresh(ArrayList<Group> groups, ArrayList<String> times) {
+        cpnMessengersList.setPrefHeight(lstUsers.getFixedCellSize() * (groups.size() + 1));
+        lstUsers.setPrefHeight(lstUsers.getFixedCellSize() * (groups.size() + 1));
+        ArrayList<String> temp = new ArrayList<>();
+        for (int i = 0; i < groups.size() && i < times.size(); i++) {
+            temp.add("");
+            Group group = groups.get(i);
+            Image profile = DataBaseGetter.getInstance().getGroupProfile(group.getGroupID());
+            if (profile == null) {
+                profile = new Image(ScnSettings.nullUrl);
+            }
+            ImageView tempImageView = new ImageView(profile);
+            Label unLabel = new Label(), dLabel = new Label();
+            unLabel.setText(group.getGroupName());
+            dLabel.setText(times.get(i));
+             unLabel.setFont(new Font("Calibri", 25));
+             dLabel.setFont(new Font("Calibri", 15));
+
+            tempImageView.setFitWidth(lstUsers.getFixedCellSize() * 0.8);
+            tempImageView.setFitHeight(lstUsers.getFixedCellSize() * 0.8);
+            tempImageView.setLayoutY(lstUsers.getFixedCellSize() * (i + 0.1));
+            tempImageView.setLayoutX(lstUsers.getFixedCellSize() * 0.1);
+            unLabel.setLayoutX(lstUsers.getWidth() * 0.5);
+            dLabel.setLayoutX(lstUsers.getWidth() * 0.5);
+            unLabel.setLayoutY(lstUsers.getFixedCellSize() * (i + 0.1));
+            dLabel.setLayoutY(lstUsers.getFixedCellSize() * (i + 0.5));
+            tempImageView.setMouseTransparent(false);
+            dLabel.setMouseTransparent(false);
+            unLabel.setMouseTransparent(false);
+            cpnMessengersList.getChildren().add(dLabel);
+            cpnMessengersList.getChildren().add(unLabel);
+            cpnMessengersList.getChildren().add(tempImageView);
+        }
+        lstUsers.setItems(FXCollections.observableList(temp));
+    }
+
 
     @FXML
     private void messageFiller() {
@@ -490,6 +508,8 @@ public class ScnMain implements Initializable {
 
 
     }
+
+    ///////////////////////////Search///////////////////////////////
 
     @FXML
     private void search() {
@@ -603,11 +623,13 @@ public class ScnMain implements Initializable {
     @FXML
     private void groupSettings() {
         if (lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1) {
-            if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
-                groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
-                StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewGroupSettingScene(), "Group");
-            }
+            return;
         }
+        if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
+            return;
+        }
+        Group group = groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewGroupSettingScene(), "Group Setting");
     }
 
     @FXML
