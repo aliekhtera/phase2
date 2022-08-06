@@ -58,7 +58,6 @@ public class ScnMain implements Initializable {
         // lstUsers.setItems(FXCollections.observableList(m));
     }
 
-
     private Pane messageToPane(Message message) {
         double width = 530;
         ArrayList<Node> nodes = new ArrayList<>();
@@ -68,7 +67,6 @@ public class ScnMain implements Initializable {
         profile.setFitHeight(0.15 * width);
         nodes.add(profile);
 
-
         Label sender = new Label();
         sender.setWrapText(false);
         sender.setPrefWidth(width * 0.6);
@@ -76,7 +74,6 @@ public class ScnMain implements Initializable {
         sender.setLayoutX(width * 0.166);
         sender.setLayoutY(profile.getFitHeight() / 2);
         nodes.add(sender);
-
 
         double icnSize = (width * 0.6) / 9;
         double i = 0.16 * width;
@@ -323,31 +320,26 @@ public class ScnMain implements Initializable {
                 i++;
             }
             lstUsers.setItems(FXCollections.observableList(temp));
-
         }
 
-        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 1) {/*
+        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 1) {
             ArrayList<String> temp = new ArrayList<>();
             groupList = DataBaseGetter.getInstance().getGroupsOfUser(User.getLoggedInUser().getUserName());
             double i = 0;
+
             cpnMessengersList.setPrefHeight(lstUsers.getFixedCellSize() * (groupList.size() + 1));
             lstUsers.setPrefHeight(lstUsers.getFixedCellSize() * (groupList.size() + 1));
             for (Group group : groupList) {
                 temp.add("");
-                Image profile = ;
+                Image profile = DataBaseGetter.getInstance().getGroupProfile(group.getGroupID());
                 if (profile == null) {
                     profile = new Image(ScnSettings.nullUrl);
                 }
                 ImageView tempImageView = new ImageView(profile);
-
-
                 i++;
             }
-            */
         }
-
         // todo Group
-
     }
 
     @FXML
@@ -386,8 +378,8 @@ public class ScnMain implements Initializable {
             panes.get(i).setLayoutX(w);
             vbxMessages.getChildren().add(panes.get(i));
         }
-    }
 
+    }
 
     private void titleFiller() {
         if (lstUsers.getSelectionModel().getSelectedIndex() < 0) {
@@ -422,28 +414,26 @@ public class ScnMain implements Initializable {
 
     }
 
-
+    private void search() {
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewSearchScene(), "Search!");
+    }
 
     //////////////// Message ///////////////////////////////////////
     private void likeMessageClick(String id) {
 
     }
 
-
     private void deleteMessageClick(String id) {
 
     }
-
 
     private void editMessageClick(String id) {
 
     }
 
-
     private void forwardMessageClick(String id) {
 
     }
-
 
     private void getRepliedMessageClick(String id) {
     }
@@ -452,11 +442,9 @@ public class ScnMain implements Initializable {
 
     }
 
-
     private void showLikesMessageClick(String id) {
 
     }
-
 
     private void showViewsMessageClick(String id) {
 
@@ -465,17 +453,29 @@ public class ScnMain implements Initializable {
     ////////////////////// Group ///////////////////////
     @FXML
     private void removeUserGroup() {
-
+      if(lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1)  {
+          if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
+              groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
+          }
+      }
     }
 
     @FXML
     private void banUserGroup() {
-
+        if(lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1)  {
+            if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
+                groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
+            }
+        }
     }
 
     @FXML
     private void groupSettings() {
-
+        if(lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1)  {
+            if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
+                groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
+            }
+        }
     }
 
     @FXML

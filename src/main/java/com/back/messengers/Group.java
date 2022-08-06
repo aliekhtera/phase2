@@ -171,7 +171,7 @@ public class Group extends Messenger {
         return bannedAccounts;
     }
 
-    private static void setGroup(Group openedGroup) {
+    public static void setGroup(Group openedGroup) {
         Group.openedGroup = new Group(openedGroup.getMembers(), openedGroup.getMessages(), openedGroup.getAdmin(), openedGroup.getUser(), openedGroup.groupName, openedGroup.getGroupID(), openedGroup.getBannedAccounts());
     }
 

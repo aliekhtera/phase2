@@ -13,10 +13,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ScnGroupSetting {
-
-    Group group = Group.getGroup();
+    Group group;
     @FXML
-    TextField txtGroupID,txtGroupName,txtAddNewMember;
+    TextField txtGroupID, txtGroupName, txtAddNewMember;
 
     @FXML
     private ImageView imgProfile;
@@ -75,7 +74,7 @@ public class ScnGroupSetting {
         txtGroupName.setText(group.getGroupName());
         txtAddNewMember.setText("Enter UserName");
 
-        label.setText("Add member");
+        label.setText("Add new member :");
 
         Image groupP= DataBaseGetter.getInstance().getGroupProfile(group.getGroupID());
         if(groupP==null){
@@ -87,4 +86,7 @@ public class ScnGroupSetting {
 
     }
 
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 }
