@@ -124,9 +124,9 @@ public class PV extends Messenger {
     }
 
     @Override
-    public MethodReturns forwardMessage(int messageID,Messenger messenger) {
+    public  MethodReturns forwardMessage(int messageID) {
         Message message=DataBaseGetter.getInstance().getMessage(Integer.toString(messageID));
-        return messenger.sendMessage(message.getText(),null,true);
+        return sendMessage(message.getText(),null,true);
     }
 
     public MethodReturns sendMessage(Message message){
@@ -142,4 +142,18 @@ public class PV extends Messenger {
         return DataBaseSetter.getInstance().editMessagesOfPV(this);
     }
 
+    @Override
+    public String toString() {
+        try {
+            if (user1.isUserNameEqual(User.getLoggedInUser().getUserName())) {
+                return user2.getUserName();
+            } else if (user2.isUserNameEqual(User.getLoggedInUser().getUserName())){
+                return user1.getUserName();
+            }else{
+                return "";
+            }
+        }catch (Exception e){
+            return "";
+        }
+    }
 }

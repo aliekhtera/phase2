@@ -1,7 +1,9 @@
 package com.front;
 
+import com.back.messages.LikeView;
 import com.back.messages.Message;
 import com.back.messengers.Group;
+import com.back.messengers.Messenger;
 import com.back.messengers.PV;
 
 import com.back.messengers.Page;
@@ -70,6 +72,7 @@ public class ScnMain implements Initializable {
     }
 
     private Pane messageToPane(Message message) {
+        message.viewedByLoggedInUser();
         double width = 530;
         ArrayList<Node> nodes = new ArrayList<>();
 
@@ -235,7 +238,7 @@ public class ScnMain implements Initializable {
             }
 
             {
-                ImageView tempIcn = new ImageView(FrontManager.getIcnViews());
+                ImageView tempIcn = new ImageView(FrontManager.getIcnViews(message.getLikes().size()));
                 tempIcn.setFitWidth(icnSize);
                 tempIcn.setFitHeight(icnSize);
                 tempIcn.setLayoutX(i);
@@ -507,29 +510,48 @@ public class ScnMain implements Initializable {
             return;
         }
         int iD = Integer.parseInt(id);
-        int index = lstMessengerGroups.getSelectionModel().getSelectedIndex();
-        if (index == 0) {
+        int index = lstUsers.getSelectionModel().getSelectedIndex();
+        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 0) {
             pvList.get(index).deleteMessage(iD);
-        } else if (index == 1) {
+        } else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 1) {
             groupList.get(index).deleteMessage(iD);
-        } else if (index == 2) {
+        } else if (lstMessengerGroups.getSelectionModel().getSelectedIndex()  == 2) {
             myPage.deletePost(iD);
         }
         listsRefresh();
     }
 
     private void editMessageClick(String id) {
-        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewNewMessageScene(DataBaseGetter.getInstance().getMessage(id), null, false), "Edit Message");
+        Message message=DataBaseGetter.getInstance().getMessage(id);
+        if(message==null){
+            return;
+        }
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewNewMessageScene(message, null, false), "Edit Message");
         listsRefresh();
     }
 
     private void forwardMessageClick(String id) {
+        List<Messenger> messengers=new ArrayList<>();
+        messengers.addAll(pvList);
+        messengers.addAll(groupList);
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(messengers,true ),"Forward Message");
+        if(messengers.size()!=2){
+            return;
+        }
+        if(messengers.get(1)!=null){
+            return;
+        }
+        messengers.get(0).forwardMessage(Integer.parseInt(id));
         listsRefresh();
 
     }
 
     private void getRepliedMessageClick(String id) {
-        listsRefresh();
+        int iD=DataBaseGetter.getInstance().getMessage(id).getRepliedTo();
+        if(iD<0){
+            return;
+        }
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewRepliedMessageScene(iD+""),"" );
     }
 
     private void fileMessageClick(String id) {
@@ -540,13 +562,21 @@ public class ScnMain implements Initializable {
     }
 
     private void showLikesMessageClick(String id) {
-        listsRefresh();
-
+        Message m=DataBaseGetter.getInstance().getMessage(id);
+        ArrayList<String> list=new ArrayList<>();
+        for (LikeView like : m.getLikes()) {
+            list.add(like.getUserName());
+        }
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(list,false), "Likes");
     }
 
     private void showViewsMessageClick(String id) {
-        listsRefresh();
-
+        Message m=DataBaseGetter.getInstance().getMessage(id);
+        ArrayList<String> list=new ArrayList<>();
+        for (LikeView like : m.getLikes()) {
+            list.add(like.getUserName());
+        }
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(list,false), "Views");
     }
 
     private void replyMessageClick(String id) {

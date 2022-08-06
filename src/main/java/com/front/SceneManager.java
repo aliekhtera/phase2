@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
 import java.sql.Blob;
+import java.util.List;
 
 public class SceneManager {
     private static SceneManager instance = new SceneManager();
@@ -162,5 +163,31 @@ public class SceneManager {
             return getNewLoginScene();
         }
     }
+
+    Scene getNewRepliedMessageScene(String messageId) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("scnFileShow.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            ((ScnFileShow) fxmlLoader.getController()).init(messageId);
+            return scene;
+        }catch (Exception e){
+            StageManager.getInstance().showErrorDialog("Unknown Error!");
+            return getNewLoginScene();
+        }
+    }
+
+    Scene getNewListShowScene(List list,boolean selectable){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("scnListShow.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            ((ScnListShow) fxmlLoader.getController()).setListShow(list,selectable);
+            return scene;
+        }catch (Exception e){
+            StageManager.getInstance().showErrorDialog("Unknown Error!");
+            return getNewLoginScene();
+        }
+    }
+
+
 
 }

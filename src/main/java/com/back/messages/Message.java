@@ -233,7 +233,7 @@ public class Message {
         if (m == null) {
             return MethodReturns.NO_SUCH_OBJECT;
         }
-        if (!m.getSender().getFirstName().equals(User.getLoggedInUser().getUserName())) {
+        if (!m.getSender().getUserName().equals(User.getLoggedInUser().getUserName())) {
             return MethodReturns.NO_SUCH_OBJECT;
         }
 
@@ -352,6 +352,7 @@ public class Message {
     public boolean getBooleanIsEdited(){
         return isEdited;
     }
+
     public boolean getBooleanIsForwarded(){
         return isForwarded;
     }

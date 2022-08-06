@@ -122,7 +122,6 @@ public class FrontManager extends Application {
     }
 
 
-
     static String getIcnLiked(boolean isLiked) {
         if (isLiked) {
             return FrontManager.class.getResource("icnLike.png").toString();
@@ -159,8 +158,11 @@ public class FrontManager extends Application {
         return FrontManager.class.getResource("icnDelete.png").toString();
     }
 
-    static String getIcnViews() {
-        return FrontManager.class.getResource("icnViews.png").toString();
+    static String getIcnViews(int n) {
+        if (n>1)
+            return FrontManager.class.getResource("icnViews.png").toString();
+        else
+            return FrontManager.class.getResource("icnNViews.png").toString();
     }
 
     static String getIcnShowLikes() {

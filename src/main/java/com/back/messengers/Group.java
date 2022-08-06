@@ -215,9 +215,9 @@ public class Group extends Messenger {
     }
 
     @Override
-    public MethodReturns forwardMessage(int messageID,Messenger messenger) {
+    public MethodReturns forwardMessage(int messageID) {
         Message message=DataBaseGetter.getInstance().getMessage(Integer.toString(messageID));
-        return messenger.sendMessage(message.getText(),null,true);
+        return sendMessage(message.getText(),null,true);
     }
 
     public MethodReturns sendMessage(Message message){
@@ -326,4 +326,8 @@ public class Group extends Messenger {
         return DataBaseSetter.getInstance().editAllGroupFields(temp, profile);
     }
 
+    @Override
+    public String toString() {
+        return "Group : " +groupName+" ("+groupID+")";
+    }
 }
