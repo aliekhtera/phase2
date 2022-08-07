@@ -12,10 +12,9 @@ public class DataBaseManager {
     private Connection connection;
     public void initialize() throws SQLException {
         if(connection==null){
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/oop_phase2","oop","Oop12345") ;
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/oop_projectdb","oop","Oop12345") ;
         }
     }
-
 
     public Statement getStatement() throws SQLException {
         return connection.createStatement();

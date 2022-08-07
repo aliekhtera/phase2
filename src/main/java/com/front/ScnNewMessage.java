@@ -26,7 +26,6 @@ public class ScnNewMessage {
 
     private final static String fileAddress = ScnNewMessage.class.getResource("icnFile.png").toString();
 
-
     public void setMessage(Message mainMessage, Message rep, boolean isForwarded) {
         this.message = mainMessage;
         fileEdit = false;
@@ -49,8 +48,6 @@ public class ScnNewMessage {
         }
 
     }
-
-
 
     @FXML
     private void done() {

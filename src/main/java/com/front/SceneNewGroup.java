@@ -22,9 +22,11 @@ public class SceneNewGroup implements Initializable {
     private TextField txtGroupID, txtGroupName;
     @FXML
     private Label label;
+
     @FXML
     ImageView imgProfile;
     String pictureURL;
+    //////// ????????
     static String nullUrl = String.valueOf(ScnGroupSetting.class.getResource("nullUserImage.png"));
 
     @FXML
@@ -35,16 +37,20 @@ public class SceneNewGroup implements Initializable {
         }
     }
 
+    @FXML
     public void createGroup() {
         ArrayList<User> users = new ArrayList<>();
         ArrayList<String > banned = new ArrayList<>();
         ArrayList<Message> messages = new ArrayList<>();
 
+        users.add(User.getLoggedInUser());
+
+
         Group group = new Group(users, messages, User.getLoggedInUser(), User.getLoggedInUser(), txtGroupName.getText(), txtGroupID.getText(), banned);
 
         DataBaseSetter.getInstance().addNewGroupToDataBase(group);
         try {
-                StageManager.getInstance().showDialog(MethodReturns.DONE);
+                StageManager.getInstance().showCreateGroupDialog("Group was created");
                 StageManager.getInstance().changeScene(SceneManager.getInstance().getNewMainScene());
         } catch (Exception e) {
             StageManager.getInstance().showDialog(MethodReturns.UNKNOWN_DATABASE_ERROR);
@@ -54,6 +60,8 @@ public class SceneNewGroup implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         label.setText("Create Group");
+        txtGroupID.setText("GroupID");
+        txtGroupName.setText("GroupName");
     }
 
     @FXML
@@ -65,6 +73,5 @@ public class SceneNewGroup implements Initializable {
     private void TxtGroupNameChecker() {
         FrontManager.textFieldSetter(txtGroupName, ControllerType.NEW_GROUP_NAME);
     }
-
 
 }

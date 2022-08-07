@@ -18,7 +18,7 @@
          <left>
             <BorderPane prefHeight="691.0" prefWidth="335.0" BorderPane.alignment="CENTER">
                <left>
-                  <Pane prefHeight="691.0" prefWidth="59.0" BorderPane.alignment="CENTER">
+                  <Pane prefHeight="691.0" prefWidth="59.0" style="-fx-background-color: rgba(80,80,80,1);" BorderPane.alignment="CENTER">
                      <children>
                         <ImageView fitHeight="52.0" fitWidth="46.0" layoutX="7.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -28,7 +28,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
-                        <ListView fx:id="lstMessengerGroups" fixedCellSize="100.0" layoutY="80.0" onMouseClicked="#messengersListRefresh" prefHeight="305.0" prefWidth="64.0">
+                        <ListView fx:id="lstMessengerGroups" fixedCellSize="100.0" layoutY="80.0" onMouseClicked="#messengersListRefresh" prefHeight="305.0" prefWidth="64.0" style="-fx-background-color: rgba(80,80,80,1);">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
@@ -65,7 +65,7 @@
                      <content>
                         <Pane fx:id="cpnMessengersList" prefHeight="678.0" prefWidth="265.0">
                            <children>
-                              <ListView fx:id="lstUsers" fixedCellSize="100.0" onMouseClicked="#messageFiller" prefHeight="678.0" prefWidth="265.0" />
+                              <ListView fx:id="lstUsers" fixedCellSize="100.0" onMouseClicked="#messageFiller" prefHeight="678.0" prefWidth="265.0" style="-fx-border-color: rgba(169,169,169,1);" />
                            </children>
                         </Pane>
                      </content>
@@ -81,7 +81,7 @@
                         <ImageView fitHeight="691.0" fitWidth="895.0" pickOnBounds="true" />
                         <ScrollPane prefHeight="608.0" prefWidth="896.0" style="-fx-background-color: rgba(0,0,0,0);">
                            <content>
-                              <VBox fx:id="vbxMessages" prefHeight="603.0" prefWidth="886.0" style="-fx-background-color: rgba(0,0,0,0);" />
+                              <VBox fx:id="vbxMessages" prefHeight="603.0" prefWidth="886.0" style="-fx-background-color: rgba(220,220,220,1);" />
                            </content>
                         </ScrollPane>
                      </children>

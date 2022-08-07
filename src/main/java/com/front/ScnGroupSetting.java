@@ -13,13 +13,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ScnGroupSetting {
-     Group group;
+     Group group = Group.getGroup();
+
     @FXML
      TextField txtGroupID, txtGroupName, txtAddNewMember;
 
     @FXML
-     ImageView imgProfile;
-     String pictureURL;
+    ImageView imgProfile;
+    String pictureURL;
     static String nullUrl = String.valueOf(ScnGroupSetting.class.getResource("nullUserImage.png"));
     Label label;
 

@@ -59,7 +59,6 @@ public class DataBaseGetter {
 
     }
 
-
     public ArrayList<String> getBusinessUserNames() {
         ArrayList<String> result = new ArrayList<>();
         try {
@@ -205,36 +204,34 @@ public class DataBaseGetter {
     public ArrayList<Group> getGroupsOfUser(String userName) {
         ArrayList<Group> result = new ArrayList<>();
         try {
-
             String sql = "SELECT * FROM tbl_group";
             ResultSet resultSet = DataBaseManager.getInstance().getStatement().executeQuery(sql);
             while (true) {
                 resultSet.next();
-                User admin = getUser(resultSet.getString("admin"));
-                String groupName = resultSet.getString("groupName");
-                String groupID = resultSet.getString("groupID") ;
                 ArrayList<User> members = new ArrayList<>();
-                ArrayList<String> banned = GeneralMethods.getInstance().textDecompressor(resultSet.getString("bannedAccounts"));
-                ArrayList<String > users = GeneralMethods.getInstance().textDecompressor(resultSet.getString("users"));
-                ArrayList<Message> messages = new ArrayList<>();
-                ArrayList<String> messageId = GeneralMethods.getInstance().textDecompressor(resultSet.getString("messages"));
-
-                for (String s : messageId) {
-                    Message temp = getMessage(s);
-                    if (temp != null) {
-                        messages.add(temp);
+                ArrayList<String> users = GeneralMethods.getInstance().textDecompressor(resultSet.getString("users"));
+                if (users.contains(userName)) {
+                    for (String user : users) {
+                        User temp = getUser(user);
+                        if (temp != null) {
+                            members.add(temp);
+                        }
                     }
-                }
-                for (String user : users) {
-                    User temp = getUser(user);
-                    if (temp != null) {
-                        members.add(temp);
-                    }
-                }
+                    User admin = getUser(resultSet.getString("admin"));
+                    String groupName = resultSet.getString("groupName");
+                    String groupID = resultSet.getString("groupID");
+                    ArrayList<String> banned = GeneralMethods.getInstance().textDecompressor(resultSet.getString("bannedAccounts"));
+                    ArrayList<Message> messages = new ArrayList<>();
+                    ArrayList<String> messageId = GeneralMethods.getInstance().textDecompressor(resultSet.getString("messages"));
 
-                if (users != null && admin != null && groupName != null && groupID != null ) {
-                    Group group = new Group(members, messages, admin, User.getLoggedInUser(), groupName, groupID, banned );
-                    if (group.getMembers().contains(getInstance().getUser(userName))) {
+                    for (String s : messageId) {
+                        Message temp = getMessage(s);
+                        if (temp != null) {
+                            messages.add(temp);
+                        }
+                    }
+                    if (users != null && admin != null && groupName != null && groupID != null) {
+                        Group group = new Group(members, messages, admin, User.getLoggedInUser(), groupName, groupID, banned);
                         result.add(group);
                     }
                 }

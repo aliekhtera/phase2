@@ -2,33 +2,46 @@ package com.front;
 
 import com.back.messengers.Group;
 import com.back.usersPackage.User;
+import com.dataBase.DataBaseGetter;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ScnSearchGroup implements Initializable {
-    @FXML
-    Label groupName, groupMembers, groupAdmin;
+    Group group;
 
+    @FXML
+    Label groupName, groupMembers, groupAdmin, name, members, admin;
+
+    @FXML
     public void join() {
-        User admin = Group.getGroup().getAdmin();
-        Group.getGroup().addUser(admin, User.getLoggedInUser(), Group.getGroup());
+        User admin = group.getAdmin();
+        group.addUser(admin, User.getLoggedInUser(), group);
+        StageManager.getInstance().showJoinDialog("You joined the group");
     }
 
+    @FXML
     public void leave() {
-        User admin = Group.getGroup().getAdmin();
-        Group.getGroup().removeUser(admin, User.getLoggedInUser(), Group.getGroup());
+        User admin = group.getAdmin();
+        group.removeUser(admin, User.getLoggedInUser(), group);
+        StageManager.getInstance().showLeaveDialog("You left the group");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        groupName.setText(Group.getGroup().getGroupName());
-        groupMembers.setText(Integer.toString(Group.getGroup().getMembers().size()) + "members");
-        groupAdmin.setText(Group.getGroup().getAdmin().getUserName());
+        group = DataBaseGetter.getInstance().getGroup(Group.getSelectedGroup());
+        groupName.setText(group.getGroupName());
+        groupMembers.setText(Integer.toString(group.getMembers().size() )+ " members");
+        groupAdmin.setText(group.getAdmin().getUserName());
+
+        name.setText("Name :");
+        members.setText("Members :");
+        admin.setText("Admin :");
     }
 
 }

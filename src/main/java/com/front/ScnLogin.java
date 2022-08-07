@@ -32,7 +32,7 @@ public class ScnLogin implements Initializable {
     @FXML
     private void signUp() {
         try {
-            StageManager.getInstance().showDialog(User.signUpNewUser(txtSun.getText(), txtSp.getText(), txtSFirst.getText(), txtSLast.getText(),
+            StageManager.getInstance().showSignUpDialog(User.signUpNewUser(txtSun.getText(), txtSp.getText(), txtSFirst.getText(), txtSLast.getText(),
                     UserType.indexToUserType(cmbSSQ.getSelectionModel().getSelectedIndex())
                     , txtSSA.getText(), cmbSSQ.getSelectionModel().getSelectedIndex()));
 
@@ -44,7 +44,7 @@ public class ScnLogin implements Initializable {
     @FXML
     private void login() {
         try {
-            if (StageManager.getInstance().showDialog(User.loginUser(txtLun.getText(), txtLp.getText()))) {
+            if (StageManager.getInstance().showLoginDialog(User.loginUser(txtLun.getText(), txtLp.getText()))) {
                 StageManager.getInstance().changeScene(SceneManager.getInstance().getNewMainScene());
             }
         } catch (Exception e) {

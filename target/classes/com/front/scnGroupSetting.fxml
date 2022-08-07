@@ -7,6 +7,8 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="660.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.front.ScnGroupSetting">
@@ -15,19 +17,41 @@
             <panes>
                 <TitledPane animated="false" text="GroupSetting">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: rgba(192,192,192,1);">
                             <children>
                                 <ImageView fx:id="imgProfile" fitHeight="150.0" fitWidth="150.0" layoutX="74.0" layoutY="14.0" onMouseClicked="#changeProfileImage" pickOnBounds="true" preserveRatio="true">
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
                                     </cursor>
                                 </ImageView>
-                                <TextField fx:id="txtGroupID" disable="true" editable="false" layoutX="45.0" layoutY="175.0" prefHeight="33.0" prefWidth="208.0" promptText="User Name" text="Group ID" />
-                                <TextField fx:id="txtGroupName" layoutX="45.0" layoutY="218.0" onKeyTyped="#checkTxtGroupName" prefHeight="33.0" prefWidth="208.0" promptText="First Name" text="Group Name" />
-                                <TextField fx:id="txtAddNewMember" layoutX="45.0" layoutY="315.0" onKeyTyped="#checkTxtAddNewMember" prefHeight="33.0" prefWidth="208.0" promptText="Last Name" text="Enter UserName" />
-                                <Button layoutX="101.0" layoutY="393.0" mnemonicParsing="false" onAction="#groupEdit" prefHeight="39.0" prefWidth="95.0" text="Save" />
-                                <Text layoutX="49.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add new member :" wrappingWidth="200.53667449951172" />
-                                <Button layoutX="61.0" layoutY="462.0" mnemonicParsing="false" onAction="#members" prefHeight="33.0" prefWidth="175.0" text="Members" />
+                                <TextField fx:id="txtGroupID" disable="true" editable="false" layoutX="45.0" layoutY="175.0" prefHeight="33.0" prefWidth="208.0" promptText="User Name" text="Group ID">
+                           <font>
+                              <Font name="A Nahar-Medium" size="15.0" />
+                           </font></TextField>
+                                <TextField fx:id="txtGroupName" layoutX="45.0" layoutY="218.0" onKeyTyped="#checkTxtGroupName" prefHeight="33.0" prefWidth="208.0" promptText="First Name" text="Group Name">
+                           <font>
+                              <Font name="A Nahar-Medium" size="15.0" />
+                           </font></TextField>
+                                <TextField fx:id="txtAddNewMember" layoutX="45.0" layoutY="315.0" onKeyTyped="#checkTxtAddNewMember" prefHeight="33.0" prefWidth="208.0" promptText="Last Name" text="Enter UserName">
+                           <font>
+                              <Font name="A Nahar-Medium" size="15.0" />
+                           </font></TextField>
+                                <Button layoutX="101.0" layoutY="393.0" mnemonicParsing="false" onAction="#groupEdit" prefHeight="39.0" prefWidth="95.0" text="Save">
+                           <font>
+                              <Font name="A Nahar-Bold" size="16.0" />
+                           </font></Button>
+                                <Text layoutX="49.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add new member :" wrappingWidth="200.53667449951172">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font></Text>
+                                <Button layoutX="61.0" layoutY="462.0" mnemonicParsing="false" onAction="#members" prefHeight="33.0" prefWidth="175.0" text="Members">
+                           <font>
+                              <Font name="A Nahar-Bold" size="16.0" />
+                           </font></Button>
+                        <Line endX="79.00001525878906" layoutX="144.0" layoutY="14.0" startX="-70.9999771118164" />
+                        <Line endX="75.00001525878906" endY="-1.9073486328125E-6" layoutX="149.0" layoutY="164.0" startX="-74.9999771118164" startY="-1.9073486328125E-6" />
+                        <Line endX="-20.999977111816406" endY="63.0" layoutX="95.0" layoutY="101.0" startX="-20.999977111816406" startY="-87.0" />
+                        <Line endX="78.50001525878906" endY="92.5" layoutX="146.0" layoutY="71.0" startX="78.00001525878906" startY="-57.0" />
                             </children>
                         </AnchorPane>
                     </content>
