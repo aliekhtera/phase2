@@ -101,6 +101,7 @@ public class StageManager {
         newStage.showAndWait();
     }
 
+
     boolean showLoginDialog(MethodReturns input) {
         if (input==null){
             return false;
