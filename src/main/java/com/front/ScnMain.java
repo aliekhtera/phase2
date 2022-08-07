@@ -873,7 +873,17 @@ public class ScnMain implements Initializable {
             return;
         }
         Group group = groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
-        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewGroupSettingScene(), "Group Setting");
+        Boolean ban = false;
+        for (String s : DataBaseGetter.getInstance().getbannedAccounts(group)) {
+            if (s.equals(User.getLoggedInUser().getUserName())) {
+                ban = true;
+            }
+        }
+        if (ban) {
+            StageManager.getInstance().showErrorDialog("You are banned");
+        } else {
+            StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewGroupSettingScene(), "Group Setting");
+        }
     }
 
     @FXML
@@ -885,20 +895,58 @@ public class ScnMain implements Initializable {
             return;
         }
         Group group = groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
-        Message message = new Message(User.getLoggedInUser(), "", "", "", false, -1, false, new ArrayList<>(), new ArrayList<>());
-        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewNewMessageScene(message, null, false), "New Message");
-        group.sendMessage(message);
-        listsRefresh();
+
+        Boolean ban = false;
+        for (String s : DataBaseGetter.getInstance().getbannedAccounts(group)) {
+            if (s.equals(User.getLoggedInUser().getUserName())) {
+                ban = true;
+            }
+        }
+        if (ban) {
+            StageManager.getInstance().showErrorDialog("You are banned");
+        } else {
+            Message message = new Message(User.getLoggedInUser(), "", "", "", false, -1, false, new ArrayList<>(), new ArrayList<>());
+            StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewNewMessageScene(message, null, false), "New Message");
+            group.sendMessage(message);
+            listsRefresh();
+        }
+
     }
 
     @FXML
     private void ban () {
-        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewBanScene(), "Ban");
+        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1) {
+            return;
+        }
+        if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
+            return;
+        }
+        Group group = groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
+
+        if (User.getLoggedInUser().getUserName().equals(group.getAdmin().getUserName())) {
+            StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewBanScene(), "Ban");
+        } else {
+            StageManager.getInstance().showErrorDialog("You aren't admin");
+        }
+
     }
 
     @FXML
     private void remove () {
-        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewRemoveScene(), "Remove");
+        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1) {
+            return;
+        }
+        if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
+            return;
+        }
+        Group group = groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
+
+        if (User.getLoggedInUser().getUserName().equals(group.getAdmin().getUserName())) {
+            StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewRemoveScene(), "Remove");
+        } else {
+            StageManager.getInstance().showErrorDialog("You aren't admin");
+        }
+
     }
 
 

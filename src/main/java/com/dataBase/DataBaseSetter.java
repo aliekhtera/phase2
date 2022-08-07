@@ -318,6 +318,7 @@ public class DataBaseSetter {
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public MethodReturns addNewGroupToDataBase(Group group) {
         try {
             String ban = GeneralMethods.getInstance().textCompressor(group.getBannedAccounts());
@@ -327,12 +328,12 @@ public class DataBaseSetter {
                 mem.add(member.getUserName());
             }
             String members = GeneralMethods.getInstance().textCompressor(mem);
-            String sql = insertInToStatement("tbl_group", "users", members, "admin", group.getAdmin().getUserName(), "messages", m, "groupName", group.getGroupName(),"groupID", group.getGroupID(), "bannedAccounts", ban);
+            String sql = insertInToStatement("tbl_group", "users", members, "admin", group.getAdmin().getUserName(), "messages", m, "groupName", group.getGroupName(), "groupID", group.getGroupID(), "bannedAccounts", ban);
             DataBaseManager.getInstance().getStatement().execute(sql);
 
-            ResultSet resultSet=DataBaseManager.getInstance().getStatement().executeQuery("SELECT * FROM tbl_grroup ORDER BY idtbl_group DESC LIMIT 1 ;");
+            ResultSet resultSet = DataBaseManager.getInstance().getStatement().executeQuery("SELECT * FROM tbl_group ORDER BY idtbl_group DESC LIMIT 1 ;");
             resultSet.next();
-            int id=resultSet.getInt("idtbl_message");
+            int id = resultSet.getInt("idtbl_group");
             group.setKeyID(id);
 
             return MethodReturns.DONE;
@@ -345,7 +346,7 @@ public class DataBaseSetter {
     public MethodReturns editMessagesOfGroup(Group newGroup) {
         String ban = GeneralMethods.getInstance().textCompressor(newGroup.getBannedAccounts());
         String m = GeneralMethods.getInstance().textCompressor(newGroup.getMessagesID());
-        ArrayList<String > mem = new ArrayList<>();
+        ArrayList<String> mem = new ArrayList<>();
         for (User member : newGroup.getMembers()) {
             mem.add(member.getUserName());
         }
@@ -353,7 +354,7 @@ public class DataBaseSetter {
         try {
 
             DataBaseManager.getInstance().getStatement().execute("UPDATE tbl_group SET messages = '" + m +
-                    "' WHERE  ((groupID = '" + newGroup.getGroupID() +  "' AND groupName = '" + newGroup.getGroupName()  +  "' AND admin = '" + newGroup.getAdmin().getUserName() + "' AND users = '" + members+ "' AND bannedAccounts = '" + ban +"' )) ;") ;
+                    "' WHERE  ((groupID = '" + newGroup.getGroupID() + "' AND groupName = '" + newGroup.getGroupName() + "' AND admin = '" + newGroup.getAdmin().getUserName() + "' AND users = '" + members + "' AND bannedAccounts = '" + ban + "' )) ;");
 
             return MethodReturns.DONE;
 
@@ -363,18 +364,14 @@ public class DataBaseSetter {
     }
 
     public MethodReturns addNewMemberToGroup(Group newGroup) {
-        String m = GeneralMethods.getInstance().textCompressor(newGroup.getMessagesID());
-        String ban = GeneralMethods.getInstance().textCompressor(newGroup.getBannedAccounts());
-        ArrayList<String > mem = new ArrayList<>();
+        ArrayList<String> mem = new ArrayList<>();
         for (User member : newGroup.getMembers()) {
             mem.add(member.getUserName());
         }
         String members = GeneralMethods.getInstance().textCompressor(mem);
         try {
-
-            DataBaseManager.getInstance().getStatement().execute("UPDATE tbl_group SET messages = '" + m +
-                    "' WHERE  ((groupID = '" + newGroup.getGroupID() +  "' AND groupName = '" + newGroup.getGroupName()  +  "' AND admin = '" + newGroup.getAdmin().getUserName() + "' AND users = '" + members + "' AND bannedAccounts = '" + ban +"' )) ;") ;
-
+            String sql = "UPDATE tbl_group SET users =" + "'" + members + "' WHERE groupID = '" + newGroup.getGroupID() + "' ;";
+            DataBaseManager.getInstance().getStatement().execute(sql);
             return MethodReturns.DONE;
 
         } catch (Exception e) {
@@ -383,17 +380,9 @@ public class DataBaseSetter {
     }
 
     public MethodReturns changeGroupName(Group newGroup, String newName) {
-        String ban = GeneralMethods.getInstance().textCompressor(newGroup.getBannedAccounts());
-        String m = GeneralMethods.getInstance().textCompressor(newGroup.getMessagesID());
-        ArrayList<String > mem = new ArrayList<>();
-        for (User member : newGroup.getMembers()) {
-            mem.add(member.getUserName());
-        }
-        String members = GeneralMethods.getInstance().textCompressor(mem);
         try {
-            DataBaseManager.getInstance().getStatement().execute("UPDATE tbl_group SET messages = '" + m +
-                    "' WHERE  ((groupID = '" + newGroup.getGroupID() +  "' AND groupName = '" + newName  +  "' AND admin = '" + newGroup.getAdmin().getUserName() + "' AND users = '" + members + "' AND bannedAccounts = '" + ban +"' )) ;") ;
-
+            String sql = "UPDATE tbl_group SET groupName =" + "'" + newName + "' WHERE groupID = '" + newGroup.getGroupID() + "' ;";
+            DataBaseManager.getInstance().getStatement().execute(sql);
             return MethodReturns.DONE;
 
         } catch (Exception e) {
@@ -401,37 +390,12 @@ public class DataBaseSetter {
         }
     }
 
-    public MethodReturns changeGroupID(Group newGroup, String newID) {
-        String m = GeneralMethods.getInstance().textCompressor(newGroup.getMessagesID());
-        ArrayList<String > mem = new ArrayList<>();
-        for (User member : newGroup.getMembers()) {
-            mem.add(member.getUserName());
-        }
-        String members = GeneralMethods.getInstance().textCompressor(mem);
+    public MethodReturns removeMemberFromGroup(Group newGroup, ArrayList<String> members) {
+
+        String mem = GeneralMethods.getInstance().textCompressor(members);
         try {
-            String ban = GeneralMethods.getInstance().textCompressor(newGroup.getBannedAccounts());
-            DataBaseManager.getInstance().getStatement().execute("UPDATE tbl_group SET messages = '" + m +
-                    "' WHERE  ((groupID = '" + newID +  "' AND groupName = '" + newGroup.getGroupName() +  "' AND admin = '" + newGroup.getAdmin().getUserName() + "' AND users = '" + members +  "' AND bannedAccounts = '" + ban +"' )) ;") ;
-
-            return MethodReturns.DONE;
-
-        } catch (Exception e) {
-            return MethodReturns.UNKNOWN_DATABASE_ERROR;
-        }
-    }
-
-    public MethodReturns removeMemberFromGroup (Group newGroup) {
-        String m = GeneralMethods.getInstance().textCompressor(newGroup.getMessagesID());
-        ArrayList<String > mem = new ArrayList<>();
-        for (User member : newGroup.getMembers()) {
-            mem.add(member.getUserName());
-        }
-        String members = GeneralMethods.getInstance().textCompressor(mem);
-        String ban = GeneralMethods.getInstance().textCompressor(newGroup.getBannedAccounts());
-        try {
-            DataBaseManager.getInstance().getStatement().execute("UPDATE tbl_group SET messages = '" + m +
-                    "' WHERE  ((groupID = '" + newGroup.getGroupID() +  "' AND groupName = '" + newGroup.getGroupName()  +  "' AND admin = '" + newGroup.getAdmin().getUserName() + "' AND users = '" + members + "' AND bannedAccounts = '" + ban +"' )) ;") ;
-
+            String sql = "UPDATE tbl_group SET users =" + "'" + mem + "' WHERE groupID = '" + newGroup.getGroupID() + "' ;";
+            DataBaseManager.getInstance().getStatement().execute(sql);
             return MethodReturns.DONE;
 
         } catch (Exception e) {
@@ -440,27 +404,19 @@ public class DataBaseSetter {
     }
 
     public MethodReturns bannedAccounts(Group newGroup, String userName) {
-        if (newGroup.getMembers().contains(DataBaseGetter.getInstance().getUser(userName))) {
-            newGroup.getBannedAccounts().add(userName);
-            String m = GeneralMethods.getInstance().textCompressor(newGroup.getMessagesID());
-            ArrayList<String > mem = new ArrayList<>();
-            for (User member : newGroup.getMembers()) {
-                mem.add(member.getUserName());
-            }
-            String members = GeneralMethods.getInstance().textCompressor(mem);
-            String ban = GeneralMethods.getInstance().textCompressor(newGroup.getBannedAccounts());
-            try {
-                DataBaseManager.getInstance().getStatement().execute("UPDATE tbl_group SET messages = '" + m +
-                        "' WHERE  ((groupID = '" + newGroup.getGroupID() +  "' AND groupName = '" + newGroup.getGroupName()  +  "' AND admin = '" + newGroup.getAdmin().getUserName() + "' AND users = '" + members + "' AND bannedAccounts = '" + ban +"' )) ;") ;
+        ArrayList<String > bans = new ArrayList<>();
+        for (String bannedAccount : DataBaseGetter.getInstance().getGroup(newGroup.getGroupID()).getBannedAccounts()) {
+            bans.add(bannedAccount);
+        }
+        bans.add(userName);
+        String ban = GeneralMethods.getInstance().textCompressor(bans);
+        try {
+            String sql = "UPDATE tbl_group SET bannedAccounts =" + "'" + ban + "' WHERE groupID = '" + newGroup.getGroupID() + "' ;";
+            DataBaseManager.getInstance().getStatement().execute(sql);
+            return MethodReturns.DONE;
 
-                return MethodReturns.DONE;
-
-            } catch (Exception e) {
-                return MethodReturns.UNKNOWN_DATABASE_ERROR;
-            }
-        } else {
-            System.out.println("Doesn't exist");
-            return null;
+        } catch (Exception e) {
+            return MethodReturns.UNKNOWN_DATABASE_ERROR;
         }
     }
 

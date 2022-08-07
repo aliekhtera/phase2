@@ -50,7 +50,7 @@
                         </ImageView>
                         <ImageView fx:id="search" fitHeight="49.0" fitWidth="49.0" layoutX="5.0" layoutY="385.0" onMouseClicked="#search" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../images/searchIcon.png" />
+                              <Image url="@../../images/SearchIcon.png" />
                            </image></ImageView>
                         <ImageView fitHeight="80.0" fitWidth="86.0" layoutX="-13.0" layoutY="455.0" onMouseClicked="#addNewGroup" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -65,7 +65,7 @@
                      <content>
                         <Pane fx:id="cpnMessengersList" prefHeight="678.0" prefWidth="265.0">
                            <children>
-                              <ListView fx:id="lstUsers" fixedCellSize="100.0" onMouseClicked="#messageFiller" prefHeight="678.0" prefWidth="265.0" style="-fx-border-color: rgba(169,169,169,1);" />
+                              <ListView fx:id="lstUsers" fixedCellSize="100.0" onMouseClicked="#messageFiller" prefHeight="678.0" prefWidth="265.0" style="-fx-border-color: rgba(200,200,200,1);" />
                            </children>
                         </Pane>
                      </content>
@@ -123,12 +123,12 @@
                               </ImageView>
                               <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="210.0" layoutY="10.0" onMouseClicked="#ban" pickOnBounds="true">
                                  <image>
-                                    <Image url="@../../images/icnRemove.png" />
+                                    <Image url="@../../images/icnBan.png" />
                                  </image>
                               </ImageView>
                               <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="290.0" layoutY="10.0" onMouseClicked="#remove" pickOnBounds="true">
                                  <image>
-                                    <Image url="@../../images/icnBan.png" />
+                                    <Image url="@../../images/icnRemove.png" />
                                  </image>
                               </ImageView>
                            </children></Pane>

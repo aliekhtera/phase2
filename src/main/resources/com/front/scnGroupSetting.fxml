@@ -31,7 +31,7 @@
                            <font>
                               <Font name="A Nahar-Medium" size="15.0" />
                            </font></TextField>
-                                <TextField fx:id="txtAddNewMember" layoutX="45.0" layoutY="315.0" onKeyTyped="#checkTxtAddNewMember" prefHeight="33.0" prefWidth="208.0" promptText="Enter Username">
+                                <TextField fx:id="txtAddNewMember" layoutX="45.0" layoutY="315.0" onKeyTyped="#checkTxtAddNewMember" prefHeight="33.0" prefWidth="208.0" promptText="Add Member">
                            <font>
                               <Font name="A Nahar-Medium" size="15.0" />
                            </font></TextField>
@@ -50,6 +50,9 @@
                             </children>
                         </AnchorPane>
                     </content>
+               <font>
+                  <Font name="A Nahar-Bold" size="18.0" />
+               </font>
                 </TitledPane>
             </panes>
         </Accordion>

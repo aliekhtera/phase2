@@ -227,69 +227,65 @@ public class Group extends Messenger {
 
     ///////////////////////////////////Admin////////////////////////////////////////////////////////////////////
 
-
     public MethodReturns addUser(User admin, User user, Group group) {
+        Boolean bool = false;
         try {
-            if (User.getLoggedInUser().getUserName().equals(admin.getUserName())) {
+            for (User member : group.getMembers()) {
+                if (member.getUserName().equals(user.getUserName())) {
+                    bool = true;
+                }
+            }
+
+            if (bool) {
+                System.out.println("This username already exists");
+                return null;
+            }
+            else {
                 group.getMembers().add(user);
                 DataBaseSetter.getInstance().addNewMemberToGroup(group);
+                System.out.println(user.getUserName() + " was added");
                 return MethodReturns.DONE;
             }
-        } catch (Exception e) {
-            return null;
-        }
-        return null;
 
-    }
-
-    public MethodReturns removeUser (User admin, User user, Group group) {
-        try {
-            if (User.getLoggedInUser().getUserName().equals(admin.getUserName())) {
-                group.getMembers().remove(user);
-                DataBaseSetter.getInstance().removeMemberFromGroup(group);
-                return MethodReturns.DONE;
-            }
-        } catch (Exception e) {
-            return null;
-        }
-        return null;
-    }
-
-    public MethodReturns changeGroupName (User admin, Group group, String newName) {
-        try {
-            if (User.getLoggedInUser().getUserName().equals(group.getAdmin())) {
-                DataBaseSetter.getInstance().changeGroupName(group, newName);
-                return MethodReturns.DONE;
-            }
-            return null;
         }
         catch (Exception e) {
             return null;
         }
     }
 
-    public MethodReturns changeGroupID (User admin, Group group, String newID) {
+    public MethodReturns removeUser (User admin, User user, Group group) {
         try {
-            if (User.getLoggedInUser().getUserName().equals(group.getAdmin())) {
-                DataBaseSetter.getInstance().changeGroupID(group, newID);
-                return MethodReturns.DONE;
+            ArrayList<String > members = new ArrayList<>();
+            for (User member : group.getMembers()) {
+                if(!(member.getUserName().equals(user.getUserName())))  {
+                    members.add(member.getUserName());
+                }
             }
-        } catch (Exception e) {
+            DataBaseSetter.getInstance().removeMemberFromGroup(group, members);
+            return MethodReturns.DONE;
+        }
+        catch (Exception e) {
             return null;
         }
-        return null;
+    }
+
+    public MethodReturns changeGroupName (User admin, Group group, String newName) {
+        try {
+            DataBaseSetter.getInstance().changeGroupName(group, newName);
+            return MethodReturns.DONE;
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 
     public MethodReturns banMember (User admin, Group group, String  username) {
         try {
-            if (User.getLoggedInUser().getUserName().equals(group.getAdmin())) {
-                DataBaseSetter.getInstance().bannedAccounts(group, username);
-                return MethodReturns.DONE;
-            }
+            DataBaseSetter.getInstance().bannedAccounts(group, username);
+            return MethodReturns.DONE;
         } catch (Exception e) {
             return null;
         }
-        return null;
     }
 
     public static MethodReturns editGroup(String GroupName, ArrayList<User> members, File profile, String groupID) {
