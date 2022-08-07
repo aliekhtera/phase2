@@ -669,18 +669,16 @@ public class ScnMain implements Initializable {
         listsRefresh();
     }
 
-    private void addNewMember() {
-        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1) {
-          return;
-        }
-
-        if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
-          return;
-        }
-
-        groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
-        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewMembersScene(), "Members");
+    @FXML
+    private void ban () {
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewBanScene(), "Ban");
     }
+
+    @FXML
+    private void remove () {
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewRemoveScene(), "Remove");
+    }
+
 
     /////////////////// PV //////////////////
 

@@ -4,6 +4,7 @@ import com.back.messengers.Group;
 import com.back.usersPackage.User;
 import com.back.usersPackage.UserType;
 import com.dataBase.DataBaseGetter;
+import com.dataBase.DataBaseSetter;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,21 +32,47 @@ public class ScnSearch implements Initializable {
 
     @FXML
     public void searchGroupID() {
+
         Group.setSelectedGroup(txtID.getText());
-        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewSearchGroupScene(), "Result!");
+        String groupID = Group.getSelectedGroup();
+        Group group1 = DataBaseGetter.getInstance().getGroup(groupID);
+
+        if (group1 != null) {
+            StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewSearchGroupScene(), "Result!");
+        } else {
+            StageManager.getInstance().showErrorDialog("There isn't any group with this ID");
+        }
+
     }
 
     @FXML
     public void searchUserID() {
-        User.setSelectedUser(DataBaseGetter.getInstance().getUser(txtID.getText()));
-        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewSearchUsernameScene(), "Result!");
+        User user2 = DataBaseGetter.getInstance().getUser(txtID.getText());
+        if (user2 == null) {
+            return;
+        }
+
+        User.setSelectedUser(user2);
+        String userName = User.getSelectedUser().getUserName();
+        User user1 = DataBaseGetter.getInstance().getUser(userName);
+
+        if (user1 == null) {
+            return;
+        }
+        if (user1 != null) {
+            StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewSearchUsernameScene(), "Result!");
+        }
+        else {
+            StageManager.getInstance().showErrorDialog("There isn't any user with this ID");
+        }
+
     }
 
     @FXML
     public void checkID() {
         String s = getType();
         if (s == "User") {
-            FrontManager.textFieldSetter(txtID, ControllerType.OLD_USERNAME);
+            FrontManager.textFieldSetter(txtID, ControllerType.USERNAME);
         } else {
             FrontManager.textFieldSetter(txtID, ControllerType.GROUP_ID);
         }

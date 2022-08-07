@@ -244,7 +244,6 @@ public class DataBaseGetter {
 
     public Group getGroup(String groupId) {
         try {
-
             ResultSet resultSet = DataBaseManager.getInstance().getStatement().executeQuery("SELECT * FROM tbl_group WHERE groupID =" + "'" + groupId + "'" + " ;");
             //      ResultSet resultSet = DataBaseManager.getInstance().getStatement().executeQuery(sql);
             while (true) {
@@ -276,7 +275,8 @@ public class DataBaseGetter {
                     return group;
                 }
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             return null;
         }
     }
@@ -284,7 +284,7 @@ public class DataBaseGetter {
     public ArrayList<User> getMembers(Group group) {
         ArrayList<User> result = new ArrayList<>();
         try {
-
+            System.out.println(")))))))))" + group.getGroupID());
             String sql = "SELECT * FROM tbl_group WHERE (groupID = " + "'" + group.getGroupID() +"') ;";
             ResultSet resultSet = DataBaseManager.getInstance().getStatement().executeQuery(sql);
             while (true) {

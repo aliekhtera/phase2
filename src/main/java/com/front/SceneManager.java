@@ -176,6 +176,21 @@ public class SceneManager {
         }
     }
 
+    Scene getNewBanScene() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("scnBan.fxml"));
+            return new Scene(fxmlLoader.load());
+        }catch (Exception e){
+            return getNewLoginScene();
+        }
+    }
 
-
+    Scene getNewRemoveScene() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("scnRemove.fxml"));
+            return new Scene(fxmlLoader.load());
+        }catch (Exception e){
+            return getNewLoginScene();
+        }
+    }
 }

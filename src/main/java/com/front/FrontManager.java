@@ -52,16 +52,17 @@ public class FrontManager extends Application {
                 flag = (l > 0 && l < 45 && DataBaseGetter.getInstance().getUser(text) != null);
                 break;
             case SECURITY_ANSWER:
-                flag = (l > 0 && l < 45);
-                break;
             case LAST_NAME:
-                flag = (l > 0 && l < 45);
-                break;
             case FIRST_NAME:
                 flag = (l > 0 && l < 45);
                 break;
             case GROUP_ID:
+            case REMOVE:
+            case BAN:
                 flag = (DataBaseGetter.getInstance().getGroup(text) != null);
+                break;
+            case USERNAME :
+                flag = (DataBaseGetter.getInstance().getUser(text) != null);
                 break;
             case NEW_GROUP_ID:
                 flag = (DataBaseGetter.getInstance().getGroup(text) == null);

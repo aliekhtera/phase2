@@ -10,7 +10,7 @@
 
 <AnchorPane prefHeight="402.0" prefWidth="399.0" style="-fx-background-color: rgba(169,169,169,1);" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.front.SceneNewGroup">
    <children>
-      <TextField fx:id="txtGroupID" layoutX="72.0" layoutY="201.0" onKeyTyped="#txtGroupIDChecker" prefHeight="42.0" prefWidth="254.0" text="GroupID">
+      <TextField fx:id="txtGroupID" layoutX="72.0" layoutY="201.0" onKeyTyped="#txtGroupIDChecker" prefHeight="42.0" prefWidth="254.0" promptText="GroupID">
          <font>
             <Font name="A Nahar-Medium" size="18.0" />
          </font></TextField>
@@ -18,7 +18,7 @@
          <font>
             <Font name="A Nahar-Bold" size="18.0" />
          </font></Button>
-      <TextField fx:id="txtGroupName" layoutX="72.0" layoutY="258.0" onKeyTyped="#TxtGroupNameChecker" prefHeight="42.0" prefWidth="254.0" text="GroupName">
+      <TextField fx:id="txtGroupName" layoutX="72.0" layoutY="258.0" onKeyTyped="#TxtGroupNameChecker" prefHeight="42.0" prefWidth="254.0" promptText="GroupName">
          <font>
             <Font name="A Nahar-Medium" size="18.0" />
          </font></TextField>

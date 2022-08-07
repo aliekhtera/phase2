@@ -73,7 +73,7 @@ public class ScnGroupSetting implements Initializable {
 
     @FXML
      void members() {
-        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewMembersScene(), "Members!", imgProfile.getScene().getWindow());
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewMembersScene(), "Members!");
     }
 
     @FXML
