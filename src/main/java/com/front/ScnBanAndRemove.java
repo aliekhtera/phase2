@@ -9,7 +9,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ScnBanAndRemove {
-     Group group = Group.getGroup();
+     Group group;
 
     @FXML
     Label label ;

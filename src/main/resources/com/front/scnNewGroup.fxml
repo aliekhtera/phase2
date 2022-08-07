@@ -22,7 +22,7 @@
          <font>
             <Font name="A Nahar-Medium" size="18.0" />
          </font></TextField>
-      <Label fx:id="label" layoutX="137.0" layoutY="20.0" text="Create new group">
+      <Label fx:id="label" layoutX="155.0" layoutY="14.0" text="Create new group">
          <font>
             <Font name="A Nahar-Bold" size="20.0" />
          </font></Label>

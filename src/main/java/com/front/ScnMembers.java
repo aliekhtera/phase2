@@ -21,7 +21,7 @@ public class ScnMembers implements Initializable {
     private Label label;
 
     String user;
-    Group group = Group.getGroup();
+    Group group;
 
     public  void banAndRemove() {
         StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewBanAndRemoveScene(), "Ban And Remove");
