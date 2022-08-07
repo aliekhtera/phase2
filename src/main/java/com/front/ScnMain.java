@@ -39,6 +39,10 @@ public class ScnMain implements Initializable {
         return scnMain;
     }
 
+    Group group1;
+
+
+
     @FXML
     private ListView<String> lstUsers, lstMessengerGroups;
     @FXML
@@ -583,8 +587,6 @@ public class ScnMain implements Initializable {
     }
 
 
-
-
     private void messengersListRefresh(ArrayList<User> users, ArrayList<String> times) {
         cpnMessengersList.setPrefHeight(lstUsers.getFixedCellSize() * (users.size() + 1));
         lstUsers.setPrefHeight(lstUsers.getFixedCellSize() * (users.size() + 1));
@@ -670,6 +672,11 @@ public class ScnMain implements Initializable {
             return;
         }
 
+        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 1) {
+            Group group = groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
+            messageFiller(group.getMessages());
+            return;
+        }
     }
 
     private void messageFiller(List<Message> messages) {
@@ -708,7 +715,7 @@ public class ScnMain implements Initializable {
             return;
         }
 
-        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 0) {
+        else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 0) {
             PV pv = pvList.get(lstUsers.getSelectionModel().getSelectedIndex());
             User otherUser;
             if (pv.getUser1().getUserName().equals(User.getLoggedInUser())) {
@@ -724,6 +731,22 @@ public class ScnMain implements Initializable {
             lblTitle.setText(otherUser.getFirstName() + " " + otherUser.getLastName());
             cpnPVTitle.setVisible(true);
             cpnGroupTitle.setVisible(false);
+            cpnPageTitle.setVisible(false);
+            return;
+        }
+
+        else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 1) {
+            Group group = groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
+            Group.setOpenedGroup(group.getGroupID());
+
+            Image image = DataBaseGetter.getInstance().getGroupProfile(group.getGroupID());
+            if (image == null) {
+                image = new Image(ScnSettings.nullUrl);
+            }
+            imgTitle.setImage(FrontManager.cropImage(image));
+            lblTitle.setText(group.getGroupName());
+            cpnPVTitle.setVisible(false);
+            cpnGroupTitle.setVisible(true);
             cpnPageTitle.setVisible(false);
             return;
         }
@@ -834,7 +857,6 @@ public class ScnMain implements Initializable {
         listsRefresh();
     }
 
-
     ////////////////////// Group ///////////////////////
 
     @FXML
@@ -871,11 +893,15 @@ public class ScnMain implements Initializable {
 
     private void addNewMember() {
         if (lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1) {
-            if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
-                groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
-                StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewMembersScene(), "Members");
-            }
+          return;
         }
+
+        if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
+          return;
+        }
+
+        groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewMembersScene(), "Members");
     }
 
     /////////////////// PV //////////////////
@@ -925,5 +951,8 @@ public class ScnMain implements Initializable {
 
     //////////////////////////////////////
 
+    public void setGroup1(Group group1) {
+        this.group1 = group1;
+    }
 
 }

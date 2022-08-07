@@ -271,7 +271,7 @@ public class DataBaseGetter {
                     }
                 }
 
-                if (users != null && admin != null && groupName != null && groupID != null ) {
+                if (admin != null && groupName != null && groupID != null ) {
                     Group group = new Group(members, messages, admin, User.getLoggedInUser(), groupName, groupID, banned );
                     return group;
                 }

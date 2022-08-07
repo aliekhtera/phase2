@@ -12,8 +12,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Group extends Messenger {
+
     static private String  selectedGroup;
-    static private Group openedGroup;
+    static private String  openedGroup;
     private int keyID;//-1 for null
     private ArrayList<User> members;
     private ArrayList <Message> messages;
@@ -170,17 +171,6 @@ public class Group extends Messenger {
 
     public ArrayList<String> getBannedAccounts() {
         return bannedAccounts;
-    }
-
-    public static void setGroup(Group openedGroup) {
-        Group.openedGroup = new Group(openedGroup.getMembers(), openedGroup.getMessages(), openedGroup.getAdmin(), openedGroup.getUser(), openedGroup.groupName, openedGroup.getGroupID(), openedGroup.getBannedAccounts());
-    }
-
-    public static Group getGroup() {
-        if (openedGroup == null) {
-            return null;
-        }
-        return new Group(openedGroup.getMembers(), openedGroup.getMessages(), openedGroup.getAdmin(), openedGroup.getUser(), openedGroup.groupName, openedGroup.getGroupID(), openedGroup.getBannedAccounts());
     }
 
     /////////////////////////Message////////////////////////////////////////////////////////////////////////////
@@ -341,4 +331,11 @@ public class Group extends Messenger {
         Group.selectedGroup = selectedGroup;
     }
 
+    public static void setOpenedGroup(String openedGroup) {
+        Group.openedGroup = openedGroup;
+    }
+
+    public static String getOpenedGroup() {
+        return openedGroup;
+    }
 }

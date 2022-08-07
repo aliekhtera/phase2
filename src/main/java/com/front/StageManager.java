@@ -199,5 +199,14 @@ public class StageManager {
         dialog.showAndWait();
     }
 
+    void showAddMemberDialog(String content) {
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Add Member!");
+        ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().add(buttonType);
+        dialog.setContentText(content);
+        dialog.showAndWait();
+    }
+
 
 }
