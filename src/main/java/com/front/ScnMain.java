@@ -15,33 +15,38 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.chart.PieChart;
-import javafx.scene.Scene;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class ScnMain implements Initializable {
+    private static ScnMain scnMain;
+
+    public static ScnMain getScnMain() {
+        return scnMain;
+    }
+
     @FXML
-    ListView<String> lstUsers, lstMessengerGroups;
+    private ListView<String> lstUsers, lstMessengerGroups;
     @FXML
-    Pane cpnMessengersList, cpnPageTitle, cpnGroupTitle, cpnPVTitle;
+    private Pane cpnMessengersList, cpnPageTitle, cpnGroupTitle, cpnPVTitle;
     @FXML
-    ImageView imgTitle;
+    private ImageView imgTitle;
     @FXML
-    Label lblTitle;
+    private Label lblTitle;
     @FXML
     private VBox vbxMessages;
 
@@ -50,7 +55,7 @@ public class ScnMain implements Initializable {
     private List<Group> groupList;
     private Page myPage;
 
-    private void listsRefresh() {
+    public void listsRefresh() {
         pvList = DataBaseGetter.getInstance().getPVsOfUser(User.getLoggedInUser().getUserName());
         groupList = DataBaseGetter.getInstance().getGroupsOfUser(User.getLoggedInUser().getUserName());
         myPage = DataBaseGetter.getInstance().getPage(User.getLoggedInUser().getUserName());
@@ -67,7 +72,7 @@ public class ScnMain implements Initializable {
             }
             lstMessengerGroups.setItems(FXCollections.observableList(temp));
         }
-
+        scnMain=this;
         // lstUsers.setItems(FXCollections.observableList(m));
     }
 
@@ -110,7 +115,7 @@ public class ScnMain implements Initializable {
             i += icnSize * 1.1;
         }
 
-        {
+        if (message.getSenderUserName().equals(User.getLoggedInUser().getUserName())) {
             ImageView tempIcn = new ImageView(FrontManager.getIcnDelete());
             tempIcn.setFitWidth(icnSize);
             tempIcn.setFitHeight(icnSize);
@@ -152,12 +157,15 @@ public class ScnMain implements Initializable {
             tempIcn.setFitHeight(icnSize);
             tempIcn.setLayoutX(i);
             tempIcn.setLayoutY(y);
-            tempIcn.setCursor(Cursor.HAND);
+            if (message.getSenderUserName().equals(User.getLoggedInUser().getUserName())) {
+                tempIcn.setCursor(Cursor.HAND);
+            }
             tempIcn.setId("e" + message.getKeyID());
             tempIcn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    editMessageClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
+                    if (message.getSenderUserName().equals(User.getLoggedInUser().getUserName()))
+                        editMessageClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
                 }
             });
             nodes.add(tempIcn);
@@ -286,6 +294,221 @@ public class ScnMain implements Initializable {
         result.setId(message.getStringKeyID());
         return result;
     }
+
+    private AnchorPane postToPane(Message message) {
+      return   SceneManager.getInstance().postToAnchorPane(null,message);
+       /* message.viewedByLoggedInUser();
+        double width = 530;
+        ArrayList<Node> nodes = new ArrayList<>();
+
+        Blob blob = DataBaseGetter.getInstance().getMessageFile(message);
+        ImageView pic = new ImageView();
+        if (blob == null) {
+            pic.setFitWidth(0.01);
+            pic.setFitHeight(0.01);
+            pic.setLayoutX(0.01);
+        } else {
+            try {
+                pic = new ImageView(FrontManager.cropImage(new Image(blob.getBinaryStream())));
+                pic.setFitWidth(0.6 * width);
+                pic.setFitHeight(0.6 * width);
+                pic.setLayoutX(0.2 * width);
+                nodes.add(pic);
+            } catch (SQLException e) {
+                pic.setFitWidth(0.01);
+                pic.setFitHeight(0.01);
+                pic.setLayoutX(0.01);
+            }
+        }
+
+
+        Label sender = new Label();
+        sender.setWrapText(false);
+        sender.setPrefWidth(width * 0.4);
+        sender.setText(message.getSender().getUserName());
+        sender.setLayoutX(width * 0.166);
+        sender.setLayoutY(pic.getFitHeight() + width * 0.1);
+        nodes.add(sender);
+
+
+        double icnSize = (width * 0.5) / 10;
+        double i = sender.getLayoutX() + sender.getWidth();
+        double y = sender.getLayoutY();
+        {
+            ImageView tempIcn = new ImageView(FrontManager.getIcnLiked(message.isLoggedUserLiked()));
+            tempIcn.setFitWidth(icnSize);
+            tempIcn.setFitHeight(icnSize);
+            tempIcn.setLayoutX(i);
+            tempIcn.setLayoutY(y);
+            tempIcn.setId("a" + message.getKeyID());
+            tempIcn.setCursor(Cursor.HAND);
+            tempIcn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    likeMessageClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
+                }
+            });
+            nodes.add(tempIcn);
+            i += icnSize * 1.1;
+        }
+
+        if (message.getSenderUserName().equals(User.getLoggedInUser().getUserName())) {
+            ImageView tempIcn = new ImageView(FrontManager.getIcnDelete());
+            tempIcn.setFitWidth(icnSize);
+            tempIcn.setFitHeight(icnSize);
+            tempIcn.setLayoutX(i);
+            tempIcn.setLayoutY(y);
+            tempIcn.setCursor(Cursor.HAND);
+            tempIcn.setId("c" + message.getKeyID());
+            tempIcn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    deleteMessageClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
+                }
+            });
+            nodes.add(tempIcn);
+            i += icnSize * 1.1;
+        }
+
+        {
+            ImageView tempIcn = new ImageView(FrontManager.getIcnNewComment());
+            tempIcn.setFitWidth(icnSize);
+            tempIcn.setFitHeight(icnSize);
+            tempIcn.setLayoutX(i);
+            tempIcn.setLayoutY(y);
+            tempIcn.setCursor(Cursor.HAND);
+            tempIcn.setId("d" + message.getKeyID());
+            tempIcn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    addCommentClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
+                }
+            });
+            nodes.add(tempIcn);
+            i += icnSize * 1.1;
+        }
+
+        {
+            ImageView tempIcn = new ImageView(FrontManager.getIcnEdited(message.getBooleanIsEdited()));
+            tempIcn.setFitWidth(icnSize);
+            tempIcn.setFitHeight(icnSize);
+            tempIcn.setLayoutX(i);
+            tempIcn.setLayoutY(y);
+            if (message.getSenderUserName().equals(User.getLoggedInUser().getUserName())) {
+                tempIcn.setCursor(Cursor.HAND);
+            }
+            tempIcn.setId("e" + message.getKeyID());
+            tempIcn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (message.getSenderUserName().equals(User.getLoggedInUser().getUserName()))
+                        editMessageClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
+                }
+            });
+            nodes.add(tempIcn);
+            i += icnSize * 1.1;
+        }
+
+        {
+            ImageView tempIcn = new ImageView(FrontManager.getIcnComments());
+            tempIcn.setFitWidth(icnSize);
+            tempIcn.setFitHeight(icnSize);
+            tempIcn.setLayoutX(i);
+            tempIcn.setLayoutY(y);
+            tempIcn.setCursor(Cursor.HAND);
+            tempIcn.setId("h" + message.getKeyID());
+            tempIcn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    getCommentsClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
+                }
+            });
+            nodes.add(tempIcn);
+            i += icnSize * 1.1;
+        }
+
+
+        if (message.getSender().isUserNameEqual(User.getLoggedInUser().getUserName())) {
+            {
+                ImageView tempIcn = new ImageView(FrontManager.getIcnShowLikes());
+                tempIcn.setFitWidth(icnSize);
+                tempIcn.setFitHeight(icnSize);
+                tempIcn.setLayoutX(i);
+                tempIcn.setLayoutY(y);
+                tempIcn.setCursor(Cursor.HAND);
+                tempIcn.setId("j" + message.getKeyID());
+                tempIcn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        showLikesPostsClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
+                    }
+                });
+                nodes.add(tempIcn);
+                i += icnSize * 1.1;
+            }
+
+            {
+                ImageView tempIcn = new ImageView(FrontManager.getIcnViews(message.getLikes().size()));
+                tempIcn.setFitWidth(icnSize);
+                tempIcn.setFitHeight(icnSize);
+                tempIcn.setLayoutX(i);
+                tempIcn.setLayoutY(y);
+                tempIcn.setCursor(Cursor.HAND);
+                tempIcn.setId("k" + message.getKeyID());
+                tempIcn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        showViewsPostClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
+                    }
+                });
+                nodes.add(tempIcn);
+            }
+        }
+
+
+        Label text = new Label(message.getText());
+        text.setMouseTransparent(true);
+        text.setWrapText(true);
+        text.setPrefWidth(width * 0.8);
+        text.setLayoutY(width * 0.13);
+        text.setLayoutX(width * 0.16);
+        nodes.add(text);
+
+
+        Label sentTime = new Label(message.getSentTime());
+        sentTime.setMouseTransparent(true);
+        sentTime.setLayoutY(text.getLayoutY() + text.getHeight() + width * 0.02);
+        sentTime.setLayoutX(width * 0.02);
+        nodes.add(sentTime);
+
+        Label sentDate = new Label(message.getSentDate());
+        sentDate.setMouseTransparent(true);
+        sentDate.setLayoutY(text.getLayoutY() + text.getHeight() + sentTime.getHeight() + width * 0.05);
+        sentDate.setLayoutX(width * 0.02);
+        nodes.add(sentDate);
+
+
+        double h = Math.max(sentDate.getLayoutY() + sentDate.getHeight(), text.getLayoutY() + text.getHeight()) + width * 0.04;
+        Pane result = new Pane();
+        result.setPrefWidth(width);
+        result.setPrefHeight(h);
+        result.getChildren().addAll(nodes);
+        result.setId(message.getStringKeyID());
+        return result;*/
+    }
+
+    private void showViewsPostClick(String id) {
+    }
+
+    private void showLikesPostsClick(String substring) {
+    }
+
+    private void getCommentsClick(String substring) {
+    }
+
+    private void addCommentClick(String substring) {
+    }
+
 
     @FXML
     private void messengersListRefresh() {
@@ -515,15 +738,15 @@ public class ScnMain implements Initializable {
             pvList.get(index).deleteMessage(iD);
         } else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 1) {
             groupList.get(index).deleteMessage(iD);
-        } else if (lstMessengerGroups.getSelectionModel().getSelectedIndex()  == 2) {
+        } else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 2) {
             myPage.deletePost(iD);
         }
         listsRefresh();
     }
 
     private void editMessageClick(String id) {
-        Message message=DataBaseGetter.getInstance().getMessage(id);
-        if(message==null){
+        Message message = DataBaseGetter.getInstance().getMessage(id);
+        if (message == null) {
             return;
         }
         StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewNewMessageScene(message, null, false), "Edit Message");
@@ -531,14 +754,14 @@ public class ScnMain implements Initializable {
     }
 
     private void forwardMessageClick(String id) {
-        List<Messenger> messengers=new ArrayList<>();
+        List<Messenger> messengers = new ArrayList<>();
         messengers.addAll(pvList);
         messengers.addAll(groupList);
-        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(messengers,true ),"Forward Message");
-        if(messengers.size()!=2){
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(messengers, true), "Forward Message");
+        if (messengers.size() != 2) {
             return;
         }
-        if(messengers.get(1)!=null){
+        if (messengers.get(1) != null) {
             return;
         }
         messengers.get(0).forwardMessage(Integer.parseInt(id));
@@ -547,11 +770,11 @@ public class ScnMain implements Initializable {
     }
 
     private void getRepliedMessageClick(String id) {
-        int iD=DataBaseGetter.getInstance().getMessage(id).getRepliedTo();
-        if(iD<0){
+        int iD = DataBaseGetter.getInstance().getMessage(id).getRepliedTo();
+        if (iD < 0) {
             return;
         }
-        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewRepliedMessageScene(iD+""),"" );
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewRepliedMessageScene(iD + ""), "");
     }
 
     private void fileMessageClick(String id) {
@@ -562,21 +785,21 @@ public class ScnMain implements Initializable {
     }
 
     private void showLikesMessageClick(String id) {
-        Message m=DataBaseGetter.getInstance().getMessage(id);
-        ArrayList<String> list=new ArrayList<>();
+        Message m = DataBaseGetter.getInstance().getMessage(id);
+        ArrayList<String> list = new ArrayList<>();
         for (LikeView like : m.getLikes()) {
             list.add(like.getUserName());
         }
-        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(list,false), "Likes");
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(list, false), "Likes");
     }
 
     private void showViewsMessageClick(String id) {
-        Message m=DataBaseGetter.getInstance().getMessage(id);
-        ArrayList<String> list=new ArrayList<>();
-        for (LikeView like : m.getLikes()) {
+        Message m = DataBaseGetter.getInstance().getMessage(id);
+        ArrayList<String> list = new ArrayList<>();
+        for (LikeView like : m.getViews()) {
             list.add(like.getUserName());
         }
-        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(list,false), "Views");
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(list, false), "Views");
     }
 
     private void replyMessageClick(String id) {
@@ -680,7 +903,6 @@ public class ScnMain implements Initializable {
     }
 
     //////////////////////////////////////
-
 
 
 }

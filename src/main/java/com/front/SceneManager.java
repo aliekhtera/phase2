@@ -2,8 +2,11 @@ package com.front;
 
 import com.back.messages.Message;
 import com.back.messengers.Group;
+import com.back.messengers.Page;
+import com.dataBase.DataBaseGetter;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 
 import java.sql.Blob;
 import java.util.List;
@@ -188,6 +191,22 @@ public class SceneManager {
         }
     }
 
-
+    AnchorPane postToAnchorPane(Page page,Message post){
+        try {
+            FXMLLoader fxmlLoader ;
+            Blob blob=DataBaseGetter.getInstance().getMessageFile(post);
+            if(blob==null){
+                fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("apnNPost.fxml"));
+            }else{
+                fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("apnPost.fxml"));
+            }
+            AnchorPane anchorPane = fxmlLoader.load();
+            ((ApnPost) fxmlLoader.getController()).setClass(post,page,blob);
+            return anchorPane;
+        }catch (Exception e){
+            StageManager.getInstance().showErrorDialog("Unknown Error!");
+            return null;
+        }
+    }
 
 }

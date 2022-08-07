@@ -94,5 +94,4 @@ public class StageManager {
         newStage.setScene(scene);
         newStage.showAndWait();
     }
-
 }

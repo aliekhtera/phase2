@@ -19,6 +19,7 @@ public class FrontManager extends Application {
         launch(args);
     }
 
+
     @Override
     public void start(Stage stage) throws IOException {
         stage.setTitle("");// todo title
@@ -159,7 +160,7 @@ public class FrontManager extends Application {
     }
 
     static String getIcnViews(int n) {
-        if (n>1)
+        if (n > 1)
             return FrontManager.class.getResource("icnViews.png").toString();
         else
             return FrontManager.class.getResource("icnNViews.png").toString();
@@ -173,4 +174,11 @@ public class FrontManager extends Application {
         return FrontManager.class.getResource("icnFile.png").toString();
     }
 
+    public static String getIcnNewComment() {
+        return FrontManager.class.getResource("icnFile.png").toString();
+    }
+
+    public static String getIcnComments() {
+        return FrontManager.class.getResource("icnFile.png").toString();
+    }
 }
