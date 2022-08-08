@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 import java.sql.Blob;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class ScnComments {
     private int postId;
     @FXML
     private VBox vbxMain;
+
     void setClass(Page page, int postid) {
         this.page = page;
         postId = postid;
@@ -39,7 +41,7 @@ public class ScnComments {
 
     private void messageFiller() {
         List<Message> comments = page.getPostComments(postId);
-vbxMain.getChildren().clear();
+        vbxMain.getChildren().clear();
         for (Message comment : comments) {
             vbxMain.getChildren().add(messageToPane(comment));
         }
@@ -66,6 +68,7 @@ vbxMain.getChildren().clear();
         sender.setText(message.getSender().getUserName());
         sender.setLayoutX(width * 0.166);
         sender.setLayoutY(profile.getFitHeight() / 2);
+        sender.setFont(new Font("calibri", 20));
         nodes.add(sender);
 
         double icnSize = (width * 0.6) / 9;
@@ -177,18 +180,21 @@ vbxMain.getChildren().clear();
         text.setLayoutY(width * 0.13);
         text.setLayoutX(width * 0.16);
         nodes.add(text);
+        text.setFont(new Font("calibri", 15));
 
 
         Label sentTime = new Label(message.getSentTime());
         sentTime.setMouseTransparent(true);
         sentTime.setLayoutY(text.getLayoutY() + text.getHeight() + width * 0.02);
         sentTime.setLayoutX(width * 0.02);
+        sentTime.setFont(new Font("calibri", 12));
         nodes.add(sentTime);
 
         Label sentDate = new Label(message.getSentDate());
         sentDate.setMouseTransparent(true);
         sentDate.setLayoutY(text.getLayoutY() + text.getHeight() + sentTime.getHeight() + width * 0.05);
         sentDate.setLayoutX(width * 0.02);
+        sentDate.setFont(new Font("calibri", 12));
         nodes.add(sentDate);
 
 

@@ -62,7 +62,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Label layoutX="14.0" layoutY="41.0" prefHeight="18.0" prefWidth="222.0">
+      <Label fx:id="lblTime" layoutX="14.0" layoutY="41.0" prefHeight="18.0" prefWidth="222.0">
          <font>
             <Font name="Impact" size="15.0" />
          </font>

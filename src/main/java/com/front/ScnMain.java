@@ -28,7 +28,6 @@ import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -69,7 +68,11 @@ public class ScnMain implements Initializable {
         for (String f : myPage.getFollowings()) {
             pageList.add(Page.openPage(f));
         }
+        int index = lstUsers.getSelectionModel().getSelectedIndex();
         messengersListRefresh();
+        if (index < lstUsers.getItems().size() && index >= 0) {
+            lstUsers.getSelectionModel().select(index);
+        }
         messageFiller();
     }
 
@@ -92,9 +95,9 @@ public class ScnMain implements Initializable {
         ArrayList<Node> nodes = new ArrayList<>();
 
         ImageView profile = new ImageView();
-        Image profileImage=DataBaseGetter.getInstance().getUserProfile(message.getSenderUserName());
-        if(profileImage==null){
-            profileImage=new Image(ScnSettings.nullUrl);
+        Image profileImage = DataBaseGetter.getInstance().getUserProfile(message.getSenderUserName());
+        if (profileImage == null) {
+            profileImage = new Image(ScnSettings.nullUrl);
         }
         profile.setImage(FrontManager.cropImage(profileImage));
         profile.setFitWidth(0.15 * width);
@@ -107,6 +110,7 @@ public class ScnMain implements Initializable {
         sender.setText(message.getSender().getUserName());
         sender.setLayoutX(width * 0.166);
         sender.setLayoutY(profile.getFitHeight() / 2);
+        sender.setFont(new Font("calibri",20));
         nodes.add(sender);
 
         double icnSize = (width * 0.6) / 9;
@@ -285,6 +289,8 @@ public class ScnMain implements Initializable {
         text.setPrefWidth(width * 0.8);
         text.setLayoutY(width * 0.13);
         text.setLayoutX(width * 0.16);
+        text.setFont(new Font("calibri",15));
+
         nodes.add(text);
 
 
@@ -292,16 +298,19 @@ public class ScnMain implements Initializable {
         sentTime.setMouseTransparent(true);
         sentTime.setLayoutY(text.getLayoutY() + text.getHeight() + width * 0.02);
         sentTime.setLayoutX(width * 0.02);
+        sentTime.setFont(new Font("calibri",12));
         nodes.add(sentTime);
 
         Label sentDate = new Label(message.getSentDate());
         sentDate.setMouseTransparent(true);
         sentDate.setLayoutY(text.getLayoutY() + text.getHeight() + sentTime.getHeight() + width * 0.05);
         sentDate.setLayoutX(width * 0.02);
+        sentDate.setFont(new Font("calibri",12));
+
         nodes.add(sentDate);
 
 
-     //   double h = Math.max(sentDate.getLayoutY() + sentDate.getHeight(), text.getLayoutY() + text.getHeight()) + width * 0.04;
+        //   double h = Math.max(sentDate.getLayoutY() + sentDate.getHeight(), text.getLayoutY() + text.getHeight()) + width * 0.04;
         AnchorPane result = new AnchorPane();
         result.setPrefWidth(width);
         result.getChildren().addAll(nodes);
@@ -450,9 +459,10 @@ public class ScnMain implements Initializable {
             dLabel.setLayoutX(lstUsers.getWidth() * 0.5);
             unLabel.setLayoutY(lstUsers.getFixedCellSize() * (i + 0.1));
             dLabel.setLayoutY(lstUsers.getFixedCellSize() * (i + 0.5));
-            tempImageView.setMouseTransparent(false);
-            dLabel.setMouseTransparent(false);
-            unLabel.setMouseTransparent(false);
+            tempImageView.setMouseTransparent(true);
+            dLabel.setMouseTransparent(true);
+            unLabel.setMouseTransparent(true);
+            unLabel.setMaxWidth(lstUsers.getWidth()*0.48);
             cpnMessengersList.getChildren().add(dLabel);
             cpnMessengersList.getChildren().add(unLabel);
             cpnMessengersList.getChildren().add(tempImageView);
@@ -480,7 +490,7 @@ public class ScnMain implements Initializable {
             return;
         }
 
-        if(lstMessengerGroups.getSelectionModel().getSelectedIndex()==2){
+        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 2) {
             Page page = pageList.get(lstUsers.getSelectionModel().getSelectedIndex());
             postFiller(page.getPosts());
         }
@@ -503,18 +513,30 @@ public class ScnMain implements Initializable {
         for (int i = panes.size() - 1; i >= 0; i--) {
             double w = vbxMessages.getWidth() - panes.get(i).getPrefWidth();
             if (messages.get(i).getSenderUserName().equals(User.getLoggedInUser().getUserName())) {
-                w *= 0.8;
+                w *= 0.99;
+                panes.get(i).setStyle("-fx-background-color: rgb(44,215,54);");
             } else {
-                w *= 0.2;
+                w *= 0.01;
+                panes.get(i).setStyle("-fx-background-color: rgb(30,203,234);");
+
             }
+            AnchorPane temp=new AnchorPane();
             panes.get(i).setLayoutX(w);
-            vbxMessages.getChildren().add(panes.get(i));
+            temp.getChildren().add(panes.get(i));
+            panes.get(i).setLayoutX(w);
+            vbxMessages.getChildren().add(temp);
+            Label space=new Label("  ");
+            space.setPrefWidth(vbxMessages.getWidth());
+            space.setPrefHeight(20);
+            if(i>0){
+                vbxMessages.getChildren().add(space);
+            }
             panes.get(i).setLayoutX(w);
         }
 
     }
 
-    private void postFiller(List<Message> posts){
+    private void postFiller(List<Message> posts) {
         double l = 0;
         ArrayList<AnchorPane> panes = new ArrayList<>();
         for (Message post : posts) {
@@ -530,7 +552,7 @@ public class ScnMain implements Initializable {
         for (int i = panes.size() - 1; i >= 0; i--) {
             double w = vbxMessages.getWidth() - panes.get(i).getPrefWidth();
             vbxMessages.getChildren().add(panes.get(i));
-            panes.get(i).setLayoutX(w/2);
+            panes.get(i).setLayoutX(w / 2);
         }
     }
 
@@ -772,7 +794,7 @@ public class ScnMain implements Initializable {
     }
 
     @FXML
-    private void ban () {
+    private void ban() {
         if (lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1) {
             return;
         }
@@ -803,7 +825,7 @@ public class ScnMain implements Initializable {
     }
 
     @FXML
-    private void remove () {
+    private void remove() {
         if (lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1) {
             return;
         }
@@ -935,7 +957,7 @@ public class ScnMain implements Initializable {
                 page.follow();
             }
             titleFiller();
-           // listsRefresh();
+            // listsRefresh();
         } catch (Exception e) {
 
         }
@@ -955,7 +977,7 @@ public class ScnMain implements Initializable {
                 myPage.block(page.getOwnerUserName());
             }
             titleFiller();
-           // listsRefresh();
+            // listsRefresh();
         } catch (Exception e) {
 
         }
@@ -974,7 +996,7 @@ public class ScnMain implements Initializable {
                 pn.add(Page.openPage(f).getPageName());
             }
             StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(pn, false), "Followers");
-          //  listsRefresh();
+            //  listsRefresh();
         } catch (Exception e) {
 
         }
@@ -993,7 +1015,7 @@ public class ScnMain implements Initializable {
                 pn.add(Page.openPage(f).getPageName());
             }
             StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(pn, false), "Followings");
-     //       listsRefresh();
+            //       listsRefresh();
         } catch (Exception e) {
 
         }
