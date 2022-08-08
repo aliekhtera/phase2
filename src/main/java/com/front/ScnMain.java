@@ -110,6 +110,7 @@ public class ScnMain implements Initializable {
         sender.setText(message.getSender().getUserName());
         sender.setLayoutX(width * 0.166);
         sender.setLayoutY(profile.getFitHeight() / 2);
+        sender.setFont(new Font("calibri",20));
         nodes.add(sender);
 
         double icnSize = (width * 0.6) / 9;
@@ -288,6 +289,8 @@ public class ScnMain implements Initializable {
         text.setPrefWidth(width * 0.8);
         text.setLayoutY(width * 0.13);
         text.setLayoutX(width * 0.16);
+        text.setFont(new Font("calibri",15));
+
         nodes.add(text);
 
 
@@ -295,12 +298,15 @@ public class ScnMain implements Initializable {
         sentTime.setMouseTransparent(true);
         sentTime.setLayoutY(text.getLayoutY() + text.getHeight() + width * 0.02);
         sentTime.setLayoutX(width * 0.02);
+        sentTime.setFont(new Font("calibri",12));
         nodes.add(sentTime);
 
         Label sentDate = new Label(message.getSentDate());
         sentDate.setMouseTransparent(true);
         sentDate.setLayoutY(text.getLayoutY() + text.getHeight() + sentTime.getHeight() + width * 0.05);
         sentDate.setLayoutX(width * 0.02);
+        sentDate.setFont(new Font("calibri",12));
+
         nodes.add(sentDate);
 
 
@@ -453,9 +459,10 @@ public class ScnMain implements Initializable {
             dLabel.setLayoutX(lstUsers.getWidth() * 0.5);
             unLabel.setLayoutY(lstUsers.getFixedCellSize() * (i + 0.1));
             dLabel.setLayoutY(lstUsers.getFixedCellSize() * (i + 0.5));
-            tempImageView.setMouseTransparent(false);
-            dLabel.setMouseTransparent(false);
-            unLabel.setMouseTransparent(false);
+            tempImageView.setMouseTransparent(true);
+            dLabel.setMouseTransparent(true);
+            unLabel.setMouseTransparent(true);
+            unLabel.setMaxWidth(lstUsers.getWidth()*0.48);
             cpnMessengersList.getChildren().add(dLabel);
             cpnMessengersList.getChildren().add(unLabel);
             cpnMessengersList.getChildren().add(tempImageView);
@@ -506,12 +513,24 @@ public class ScnMain implements Initializable {
         for (int i = panes.size() - 1; i >= 0; i--) {
             double w = vbxMessages.getWidth() - panes.get(i).getPrefWidth();
             if (messages.get(i).getSenderUserName().equals(User.getLoggedInUser().getUserName())) {
-                w *= 0.8;
+                w *= 0.99;
+                panes.get(i).setStyle("-fx-background-color: rgb(44,215,54);");
             } else {
-                w *= 0.2;
+                w *= 0.01;
+                panes.get(i).setStyle("-fx-background-color: rgb(30,203,234);");
+
             }
+            AnchorPane temp=new AnchorPane();
             panes.get(i).setLayoutX(w);
-            vbxMessages.getChildren().add(panes.get(i));
+            temp.getChildren().add(panes.get(i));
+            panes.get(i).setLayoutX(w);
+            vbxMessages.getChildren().add(temp);
+            Label space=new Label("  ");
+            space.setPrefWidth(vbxMessages.getWidth());
+            space.setPrefHeight(20);
+            if(i>0){
+                vbxMessages.getChildren().add(space);
+            }
             panes.get(i).setLayoutX(w);
         }
 
