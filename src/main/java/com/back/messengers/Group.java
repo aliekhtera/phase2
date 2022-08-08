@@ -237,13 +237,11 @@ public class Group extends Messenger {
             }
 
             if (bool) {
-                System.out.println("This username already exists");
                 return null;
             }
             else {
                 group.getMembers().add(user);
                 DataBaseSetter.getInstance().addNewMemberToGroup(group);
-                System.out.println(user.getUserName() + " was added");
                 return MethodReturns.DONE;
             }
 
