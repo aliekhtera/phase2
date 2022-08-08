@@ -22,7 +22,7 @@ public class ApnPost {
     @FXML
     ImageView imgDelete, imgLike, imgViews, imgPic;
     @FXML
-    Label lblText, lblSender, lblTime;
+    Label lblText, lblSender,lblTime;
 
     public void setClass(Message post, Page page, Blob blob) {
         this.page = page;
@@ -38,6 +38,7 @@ public class ApnPost {
         imgDelete.setVisible(post.getSender().isUserNameEqual(User.getLoggedInUser().getUserName()));
         imgViews.setVisible(post.getSender().isUserNameEqual(User.getLoggedInUser().getUserName()));
         lblText.setText(post.getText());
+        lblTime.setText(post.getSentTime() +"   "+post.getSentDate());
     }
 
     @FXML

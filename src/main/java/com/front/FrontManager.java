@@ -161,7 +161,7 @@ public class FrontManager extends Application {
     }
 
     static String getIcnViews(int n) {
-        if (n > 1)
+        if (n > 0)
             return FrontManager.class.getResource("icnViews.png").toString();
         else
             return FrontManager.class.getResource("icnNViews.png").toString();
