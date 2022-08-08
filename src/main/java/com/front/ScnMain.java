@@ -8,6 +8,7 @@ import com.back.messengers.PV;
 
 import com.back.messengers.Page;
 import com.back.usersPackage.User;
+import com.back.usersPackage.UserType;
 import com.dataBase.DataBaseGetter;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
@@ -85,12 +86,17 @@ public class ScnMain implements Initializable {
         // lstUsers.setItems(FXCollections.observableList(m));
     }
 
-    private Pane messageToPane(Message message) {
+    private AnchorPane messageToPane(Message message) {
         message.viewedByLoggedInUser();
         double width = 530;
         ArrayList<Node> nodes = new ArrayList<>();
 
-        ImageView profile = new ImageView(FrontManager.cropImage(DataBaseGetter.getInstance().getUserProfile(message.getSenderUserName())));
+        ImageView profile = new ImageView();
+        Image profileImage=DataBaseGetter.getInstance().getUserProfile(message.getSenderUserName());
+        if(profileImage==null){
+            profileImage=new Image(ScnSettings.nullUrl);
+        }
+        profile.setImage(FrontManager.cropImage(profileImage));
         profile.setFitWidth(0.15 * width);
         profile.setFitHeight(0.15 * width);
         nodes.add(profile);
@@ -295,10 +301,9 @@ public class ScnMain implements Initializable {
         nodes.add(sentDate);
 
 
-        double h = Math.max(sentDate.getLayoutY() + sentDate.getHeight(), text.getLayoutY() + text.getHeight()) + width * 0.04;
-        Pane result = new Pane();
+     //   double h = Math.max(sentDate.getLayoutY() + sentDate.getHeight(), text.getLayoutY() + text.getHeight()) + width * 0.04;
+        AnchorPane result = new AnchorPane();
         result.setPrefWidth(width);
-        result.setPrefHeight(h);
         result.getChildren().addAll(nodes);
         result.setId(message.getStringKeyID());
         return result;
@@ -308,7 +313,7 @@ public class ScnMain implements Initializable {
         message.viewedByLoggedInUser();
         return SceneManager.getInstance().postToAnchorPane(pageList.get(lstUsers.getSelectionModel().getSelectedIndex()), message);
     }
-    
+
     private void messengersListRefresh() {
         Node c = lstUsers;
 
@@ -388,8 +393,6 @@ public class ScnMain implements Initializable {
 
     }
 
-
-
     private void messengerGroupListRefresh(ArrayList<Group> groups, ArrayList<String> times) {
         cpnMessengersList.setPrefHeight(lstUsers.getFixedCellSize() * (groups.size() + 1));
         lstUsers.setPrefHeight(lstUsers.getFixedCellSize() * (groups.size() + 1));
@@ -425,7 +428,6 @@ public class ScnMain implements Initializable {
         }
         lstUsers.setItems(FXCollections.observableList(temp));
     }
-
 
     private void messengersListRefresh(ArrayList<Image> images, ArrayList<String> names, ArrayList<String> times) {
         cpnMessengersList.setPrefHeight(lstUsers.getFixedCellSize() * (names.size() + 1));
@@ -501,12 +503,13 @@ public class ScnMain implements Initializable {
         for (int i = panes.size() - 1; i >= 0; i--) {
             double w = vbxMessages.getWidth() - panes.get(i).getPrefWidth();
             if (messages.get(i).getSenderUserName().equals(User.getLoggedInUser().getUserName())) {
-                w *= 3 / 4;
+                w *= 0.8;
             } else {
-                w *= 1 / 4;
+                w *= 0.2;
             }
             panes.get(i).setLayoutX(w);
             vbxMessages.getChildren().add(panes.get(i));
+            panes.get(i).setLayoutX(w);
         }
 
     }
@@ -575,6 +578,7 @@ public class ScnMain implements Initializable {
             } else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 2) {
 
                 Page page = pageList.get(lstUsers.getSelectionModel().getSelectedIndex());
+                page.viewThisPage();
                 Image image = DataBaseGetter.getInstance().getUserProfile(page.getOwnerUserName());
                 if (image == null) {
                     image = new Image(ScnSettings.nullUrl);
@@ -584,7 +588,7 @@ public class ScnMain implements Initializable {
                 lblTitle.setText(page.getPageName());
                 boolean temp = User.getLoggedInUser().isUserNameEqual(page.getOwnerUserName());
 
-                imgViews.setVisible(temp);
+                imgViews.setVisible(temp && User.getLoggedInUser().getUserType().equals(UserType.BUSINESS_USER));
                 imgNewPost.setVisible(temp);
                 imgFollow.setVisible(!temp);
                 imgBlock.setVisible(!temp);
@@ -883,7 +887,7 @@ public class ScnMain implements Initializable {
             for (LikeView l : page.getPageViews()) {
                 v.add(l.getUserName() + " : " + l.getDate());
             }
-            StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(v, false), "Followings");
+            StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(v, false), "Views");
         } catch (Exception e) {
 
         }

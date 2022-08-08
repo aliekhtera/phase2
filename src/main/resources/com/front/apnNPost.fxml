@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="160.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.front.ApnPost">
    <children>
-      <Label fx:id="lblSender" layoutX="64.0" layoutY="74.0" prefHeight="26.0" prefWidth="184.0">
+      <Label fx:id="lblSender" layoutX="16.0" layoutY="76.0" prefHeight="26.0" prefWidth="190.0">
          <font>
             <Font name="Calibri Bold" size="21.0" />
          </font>
@@ -58,5 +58,13 @@
             <Font name="Impact" size="15.0" />
          </font>
       </Label>
+      <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="210.0" layoutY="71.0" onMouseClicked="#newComment" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <image>
+            <Image url="@icnReply.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

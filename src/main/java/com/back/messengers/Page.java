@@ -88,9 +88,7 @@ public class Page {
         return DataBaseSetter.getInstance().editPagePosts(this).equals(MethodReturns.DONE);
     }
 
-    public boolean newComment(String text, int id) {
-        Message rep = DataBaseGetter.getInstance().getMessage(Integer.toString(id));
-        Message temp = Message.newMessage(text, rep, false);
+    public boolean newComment(Message temp, int id) {
         if (temp == null) {
             return false;
         }

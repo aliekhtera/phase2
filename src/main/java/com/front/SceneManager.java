@@ -220,4 +220,16 @@ public class SceneManager {
         }
     }
 
+    Scene getNewCommentScene(Page page,int postId){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("scnComments.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            ((ScnComments) fxmlLoader.getController()).setClass(page,postId);
+            return scene;
+        }catch (Exception e){
+            StageManager.getInstance().showErrorDialog("Unknown Error!");
+            return getNewLoginScene();
+        }
+    }
+
 }

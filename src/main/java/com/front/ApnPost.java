@@ -2,6 +2,7 @@ package com.front;
 
 import com.back.messages.LikeView;
 import com.back.messages.Message;
+import com.back.messengers.Group;
 import com.back.messengers.Page;
 import com.back.usersPackage.User;
 import com.back.usersPackage.UserType;
@@ -53,6 +54,7 @@ public class ApnPost {
 
     @FXML
     private void comments() {
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewCommentScene(page,post.getKeyID()),"Comments" );
         ScnMain.getScnMain().listsRefresh();
     }
 
@@ -85,6 +87,13 @@ public class ApnPost {
         }
         StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(views, false), "Likes");
 
+    }
+
+    @FXML
+    private void newComment(){
+        Message message = new Message(User.getLoggedInUser(), "", "", "", false, -1, false, new ArrayList<>(), new ArrayList<>());
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewNewMessageScene(message,post, false), "New Message");
+        page.newComment(message,post.getKeyID());
     }
 
 }
