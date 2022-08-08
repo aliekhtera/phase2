@@ -52,6 +52,9 @@
                      </children>
                   </AnchorPane>
             </content>
+               <font>
+                  <Font name="A Nahar-Medium" size="18.0" />
+               </font>
           </TitledPane>
         </panes>
       </Accordion>

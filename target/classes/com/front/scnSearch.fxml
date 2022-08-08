@@ -10,7 +10,7 @@
 <AnchorPane prefHeight="298.0" prefWidth="442.0" style="-fx-background-color: rgba(220,220,220,1);" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.front.ScnSearch">
    <children>
       <ChoiceBox fx:id="stringChoiceBox" layoutX="150.0" layoutY="114.0" prefHeight="34.0" prefWidth="138.0" />
-      <TextField fx:id="txtID" layoutX="111.0" layoutY="158.0" onKeyTyped="#checkID" prefHeight="42.0" prefWidth="218.0" text="Enter ID">
+      <TextField fx:id="txtID" layoutX="111.0" layoutY="158.0" onKeyTyped="#checkID" prefHeight="42.0" prefWidth="218.0" promptText="Enter ID">
          <font>
             <Font name="A Nahar-Medium" size="15.0" />
          </font></TextField>

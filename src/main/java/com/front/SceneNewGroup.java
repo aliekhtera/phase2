@@ -39,12 +39,16 @@ public class SceneNewGroup implements Initializable {
 
     @FXML
     public void createGroup() {
+
         ArrayList<User> users = new ArrayList<>();
         ArrayList<String > banned = new ArrayList<>();
         ArrayList<Message> messages = new ArrayList<>();
 
         users.add(User.getLoggedInUser());
 
+        if (DataBaseGetter.getInstance().getGroup(txtGroupID.getText()) != null) {
+            return;
+        }
 
         Group group = new Group(users, messages, User.getLoggedInUser(), User.getLoggedInUser(), txtGroupName.getText(), txtGroupID.getText(), banned);
 
@@ -55,6 +59,8 @@ public class SceneNewGroup implements Initializable {
         } catch (Exception e) {
             StageManager.getInstance().showDialog(MethodReturns.UNKNOWN_DATABASE_ERROR);
         }
+
+
     }
 
     @Override

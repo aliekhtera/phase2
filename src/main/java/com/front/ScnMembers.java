@@ -23,17 +23,14 @@ public class ScnMembers implements Initializable {
     String user;
     Group group;
 
-    public  void banAndRemove() {
-        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewBanAndRemoveScene(), "Ban And Remove");
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        group = DataBaseGetter.getInstance().getGroup(Group.getOpenedGroup());
 
         for (User member : DataBaseGetter.getInstance().getGroup(group.getGroupID()).getMembers()) {
             listView.getItems().add(member.getUserName());
         }
-
         listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {

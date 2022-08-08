@@ -31,49 +31,51 @@ public class ScnGroupSetting implements Initializable {
 
     @FXML
      void groupEdit() {
-
-        String url = imgProfile.getImage().getUrl();
-        File file;
-        if (url == null) {
-            if (pictureURL == null) {
-                file = null;
-            } else {
-                file = new File(pictureURL);
+        if (User.getLoggedInUser().getUserName().equals(group.getAdmin().getUserName())) {
+            String url = imgProfile.getImage().getUrl();
+            File file;
+            if (url == null) {
+                if (pictureURL == null) {
+                    file = null;
+                } else {
+                    file = new File(pictureURL);
+                }
             }
-        }
-        else if (url.equals(nullUrl)) {
-            file = null;
+            else if (url.equals(nullUrl)) {
+                file = null;
+            }
+            else {
+                file = new File(url);
+            }
+
+            User user = DataBaseGetter.getInstance().getUser( txtAddNewMember.getText());
+            if(user == null) {
+                return;
+            }
+            ArrayList<User > users = DataBaseGetter.getInstance().getMembers(group);
+            boolean mem = false;
+            for (User user1 : users) {
+                if (user1.getUserName().equals(user.getUserName())) {
+                    mem = true;
+                    break;
+                }
+            }
+            if ( (! mem )&& (user != null) ) {
+                group.addUser(group.getAdmin(), user, group);
+            }
+
+            group.changeGroupName(group.getAdmin(), group, txtGroupName.getText());
+            Group  group1 = DataBaseGetter.getInstance().getGroup(group.getGroupID());
+            StageManager.getInstance().showDoneDialog();
         }
         else {
-            file = new File(url);
+            StageManager.getInstance().showErrorDialog("You can't change the information because you are not admin");
         }
-
-        User user = DataBaseGetter.getInstance().getUser( txtAddNewMember.getText());
-        ArrayList<User > users = DataBaseGetter.getInstance().getMembers(group);
-        boolean mem = false;
-        for (User user1 : users) {
-            if (user1.getUserName().equals(user.getUserName())) {
-                mem = true;
-                break;
-            }
-        }
-
-        if ( (! mem )&& (user != null) ) {
-            group.getMembers().add(user);
-            DataBaseSetter.getInstance().addNewMemberToGroup(group);
-            System.out.println(user.getUserName());
-        }
-
-        DataBaseSetter.getInstance().changeGroupName(group, txtGroupName.getText());
-        System.out.println(txtGroupName.getText());
-
-        StageManager.getInstance().showDoneDialog();
-
     }
 
     @FXML
      void members() {
-        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewMembersScene(), "Members!", imgProfile.getScene().getWindow());
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewMembersScene(), "Members!");
     }
 
     @FXML
