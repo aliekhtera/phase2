@@ -23,6 +23,7 @@ public class ScnSearchGroup implements Initializable {
         User admin = group.getAdmin();
         group.addUser(admin, User.getLoggedInUser(), group);
         StageManager.getInstance().showJoinDialog("You joined the group");
+        ScnMain.getScnMain().listsRefresh();
     }
 
     @FXML
@@ -30,6 +31,7 @@ public class ScnSearchGroup implements Initializable {
         User admin = group.getAdmin();
         group.removeUser(admin, User.getLoggedInUser(), group);
         StageManager.getInstance().showLeaveDialog("You left the group");
+        ScnMain.getScnMain().listsRefresh();
     }
 
     @Override

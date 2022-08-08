@@ -28,7 +28,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
-                        <ListView fx:id="lstMessengerGroups" fixedCellSize="100.0" layoutY="80.0" onMouseClicked="#messengersListRefresh" prefHeight="305.0" prefWidth="64.0" style="-fx-background-color: rgba(80,80,80,1);">
+                        <ListView fx:id="lstMessengerGroups" fixedCellSize="100.0" layoutY="80.0" onMouseClicked="#listsRefresh" prefHeight="305.0" prefWidth="64.0" style="-fx-background-color: rgba(80,80,80,1);">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
@@ -50,7 +50,7 @@
                         </ImageView>
                         <ImageView fx:id="search" fitHeight="49.0" fitWidth="49.0" layoutX="5.0" layoutY="385.0" onMouseClicked="#search" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../images/SearchIcon.png" />
+                              <Image url="@../../images/searchIcon.png" />
                            </image></ImageView>
                         <ImageView fitHeight="80.0" fitWidth="86.0" layoutX="-13.0" layoutY="455.0" onMouseClicked="#addNewGroup" pickOnBounds="true" preserveRatio="true">
                            <image>

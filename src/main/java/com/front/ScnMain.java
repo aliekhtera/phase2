@@ -58,6 +58,7 @@ public class ScnMain implements Initializable {
     private Page myPage;
     private List<Page> pageList;
 
+    @FXML
     public void listsRefresh() {
         pvList = DataBaseGetter.getInstance().getPVsOfUser(User.getLoggedInUser().getUserName());
         groupList = DataBaseGetter.getInstance().getGroupsOfUser(User.getLoggedInUser().getUserName());
@@ -67,8 +68,8 @@ public class ScnMain implements Initializable {
         for (String f : myPage.getFollowings()) {
             pageList.add(Page.openPage(f));
         }
+        messengersListRefresh();
         messageFiller();
-
     }
 
     @Override
@@ -304,211 +305,11 @@ public class ScnMain implements Initializable {
     }
 
     private AnchorPane postToPane(Message message) {
+        message.viewedByLoggedInUser();
         return SceneManager.getInstance().postToAnchorPane(pageList.get(lstUsers.getSelectionModel().getSelectedIndex()), message);
-       /* message.viewedByLoggedInUser();
-        double width = 530;
-        ArrayList<Node> nodes = new ArrayList<>();
-
-        Blob blob = DataBaseGetter.getInstance().getMessageFile(message);
-        ImageView pic = new ImageView();
-        if (blob == null) {
-            pic.setFitWidth(0.01);
-            pic.setFitHeight(0.01);
-            pic.setLayoutX(0.01);
-        } else {
-            try {
-                pic = new ImageView(FrontManager.cropImage(new Image(blob.getBinaryStream())));
-                pic.setFitWidth(0.6 * width);
-                pic.setFitHeight(0.6 * width);
-                pic.setLayoutX(0.2 * width);
-                nodes.add(pic);
-            } catch (SQLException e) {
-                pic.setFitWidth(0.01);
-                pic.setFitHeight(0.01);
-                pic.setLayoutX(0.01);
-            }
-        }
-
-
-        Label sender = new Label();
-        sender.setWrapText(false);
-        sender.setPrefWidth(width * 0.4);
-        sender.setText(message.getSender().getUserName());
-        sender.setLayoutX(width * 0.166);
-        sender.setLayoutY(pic.getFitHeight() + width * 0.1);
-        nodes.add(sender);
-
-
-        double icnSize = (width * 0.5) / 10;
-        double i = sender.getLayoutX() + sender.getWidth();
-        double y = sender.getLayoutY();
-        {
-            ImageView tempIcn = new ImageView(FrontManager.getIcnLiked(message.isLoggedUserLiked()));
-            tempIcn.setFitWidth(icnSize);
-            tempIcn.setFitHeight(icnSize);
-            tempIcn.setLayoutX(i);
-            tempIcn.setLayoutY(y);
-            tempIcn.setId("a" + message.getKeyID());
-            tempIcn.setCursor(Cursor.HAND);
-            tempIcn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    likeMessageClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
-                }
-            });
-            nodes.add(tempIcn);
-            i += icnSize * 1.1;
-        }
-
-        if (message.getSenderUserName().equals(User.getLoggedInUser().getUserName())) {
-            ImageView tempIcn = new ImageView(FrontManager.getIcnDelete());
-            tempIcn.setFitWidth(icnSize);
-            tempIcn.setFitHeight(icnSize);
-            tempIcn.setLayoutX(i);
-            tempIcn.setLayoutY(y);
-            tempIcn.setCursor(Cursor.HAND);
-            tempIcn.setId("c" + message.getKeyID());
-            tempIcn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    deleteMessageClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
-                }
-            });
-            nodes.add(tempIcn);
-            i += icnSize * 1.1;
-        }
-
-        {
-            ImageView tempIcn = new ImageView(FrontManager.getIcnNewComment());
-            tempIcn.setFitWidth(icnSize);
-            tempIcn.setFitHeight(icnSize);
-            tempIcn.setLayoutX(i);
-            tempIcn.setLayoutY(y);
-            tempIcn.setCursor(Cursor.HAND);
-            tempIcn.setId("d" + message.getKeyID());
-            tempIcn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    addCommentClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
-                }
-            });
-            nodes.add(tempIcn);
-            i += icnSize * 1.1;
-        }
-
-        {
-            ImageView tempIcn = new ImageView(FrontManager.getIcnEdited(message.getBooleanIsEdited()));
-            tempIcn.setFitWidth(icnSize);
-            tempIcn.setFitHeight(icnSize);
-            tempIcn.setLayoutX(i);
-            tempIcn.setLayoutY(y);
-            if (message.getSenderUserName().equals(User.getLoggedInUser().getUserName())) {
-                tempIcn.setCursor(Cursor.HAND);
-            }
-            tempIcn.setId("e" + message.getKeyID());
-            tempIcn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    if (message.getSenderUserName().equals(User.getLoggedInUser().getUserName()))
-                        editMessageClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
-                }
-            });
-            nodes.add(tempIcn);
-            i += icnSize * 1.1;
-        }
-
-        {
-            ImageView tempIcn = new ImageView(FrontManager.getIcnComments());
-            tempIcn.setFitWidth(icnSize);
-            tempIcn.setFitHeight(icnSize);
-            tempIcn.setLayoutX(i);
-            tempIcn.setLayoutY(y);
-            tempIcn.setCursor(Cursor.HAND);
-            tempIcn.setId("h" + message.getKeyID());
-            tempIcn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    getCommentsClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
-                }
-            });
-            nodes.add(tempIcn);
-            i += icnSize * 1.1;
-        }
-
-
-        if (message.getSender().isUserNameEqual(User.getLoggedInUser().getUserName())) {
-            {
-                ImageView tempIcn = new ImageView(FrontManager.getIcnShowLikes());
-                tempIcn.setFitWidth(icnSize);
-                tempIcn.setFitHeight(icnSize);
-                tempIcn.setLayoutX(i);
-                tempIcn.setLayoutY(y);
-                tempIcn.setCursor(Cursor.HAND);
-                tempIcn.setId("j" + message.getKeyID());
-                tempIcn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        showLikesPostsClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
-                    }
-                });
-                nodes.add(tempIcn);
-                i += icnSize * 1.1;
-            }
-
-            {
-                ImageView tempIcn = new ImageView(FrontManager.getIcnViews(message.getLikes().size()));
-                tempIcn.setFitWidth(icnSize);
-                tempIcn.setFitHeight(icnSize);
-                tempIcn.setLayoutX(i);
-                tempIcn.setLayoutY(y);
-                tempIcn.setCursor(Cursor.HAND);
-                tempIcn.setId("k" + message.getKeyID());
-                tempIcn.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        showViewsPostClick(((ImageView) mouseEvent.getSource()).getId().substring(1));
-                    }
-                });
-                nodes.add(tempIcn);
-            }
-        }
-
-
-        Label text = new Label(message.getText());
-        text.setMouseTransparent(true);
-        text.setWrapText(true);
-        text.setPrefWidth(width * 0.8);
-        text.setLayoutY(width * 0.13);
-        text.setLayoutX(width * 0.16);
-        nodes.add(text);
-
-
-        Label sentTime = new Label(message.getSentTime());
-        sentTime.setMouseTransparent(true);
-        sentTime.setLayoutY(text.getLayoutY() + text.getHeight() + width * 0.02);
-        sentTime.setLayoutX(width * 0.02);
-        nodes.add(sentTime);
-
-        Label sentDate = new Label(message.getSentDate());
-        sentDate.setMouseTransparent(true);
-        sentDate.setLayoutY(text.getLayoutY() + text.getHeight() + sentTime.getHeight() + width * 0.05);
-        sentDate.setLayoutX(width * 0.02);
-        nodes.add(sentDate);
-
-
-        double h = Math.max(sentDate.getLayoutY() + sentDate.getHeight(), text.getLayoutY() + text.getHeight()) + width * 0.04;
-        Pane result = new Pane();
-        result.setPrefWidth(width);
-        result.setPrefHeight(h);
-        result.getChildren().addAll(nodes);
-        result.setId(message.getStringKeyID());
-        return result;*/
     }
-
-
-    @FXML
+    
     private void messengersListRefresh() {
-        listsRefresh();
         Node c = lstUsers;
 
         for (Node child : cpnMessengersList.getChildren()) {
@@ -588,6 +389,7 @@ public class ScnMain implements Initializable {
     }
 
 
+
     private void messengerGroupListRefresh(ArrayList<Group> groups, ArrayList<String> times) {
         cpnMessengersList.setPrefHeight(lstUsers.getFixedCellSize() * (groups.size() + 1));
         lstUsers.setPrefHeight(lstUsers.getFixedCellSize() * (groups.size() + 1));
@@ -657,7 +459,6 @@ public class ScnMain implements Initializable {
 
 
     }
-
 
     @FXML
     private void messageFiller() {

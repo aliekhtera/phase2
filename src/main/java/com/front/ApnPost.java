@@ -1,5 +1,6 @@
 package com.front;
 
+import com.back.messages.LikeView;
 import com.back.messages.Message;
 import com.back.messengers.Page;
 import com.back.usersPackage.User;
@@ -11,6 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.sql.Blob;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ApnPost {
     Message post;
@@ -18,7 +21,7 @@ public class ApnPost {
     @FXML
     ImageView imgDelete, imgLike, imgViews, imgPic;
     @FXML
-    Label lblText,lblSender,lblTime;
+    Label lblText, lblSender, lblTime;
 
     public void setClass(Message post, Page page, Blob blob) {
         this.page = page;
@@ -37,36 +40,51 @@ public class ApnPost {
     }
 
     @FXML
-    private void delete(){
+    private void delete() {
         page.deletePost(post.getKeyID());
         ScnMain.getScnMain().listsRefresh();
     }
+
     @FXML
-    private void like(){
+    private void like() {
         post.likeDislikeByLoggedInUser();
         ScnMain.getScnMain().listsRefresh();
     }
+
     @FXML
-    private void comments(){
+    private void comments() {
         ScnMain.getScnMain().listsRefresh();
     }
+
     @FXML
-    private void views(){
-        if(post.getSender().getUserType().equals(UserType.NORMAL_USER)){
-
-        }else{
-
+    private void views() {
+        List<String> views = new ArrayList<>();
+        if (post.getSender().getUserType().equals(UserType.BUSINESS_USER)) {
+            for (LikeView view : post.getViews()) {
+                views.add(view.getDate() + "  " + view.getTime() + "  : (" + view.getUserName() + ")");
+            }
+        } else {
+            for (LikeView view : post.getViews()) {
+                views.add(view.getUserName());
+            }
         }
-        ScnMain.getScnMain().listsRefresh();
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(views, false), "Views");
     }
+
     @FXML
-    private void showLikes(){
-        if(post.getSender().getUserType().equals(UserType.NORMAL_USER)){
-
-        }else{
-
+    private void showLikes() {
+        List<String> views = new ArrayList<>();
+        if (post.getSender().getUserType().equals(UserType.BUSINESS_USER)) {
+            for (LikeView view : post.getLikes()) {
+                views.add(view.getDate() + "  " + view.getTime() + "  : (" + view.getUserName() + ")");
+            }
+        } else {
+            for (LikeView view : post.getLikes()) {
+                views.add(view.getUserName());
+            }
         }
-        ScnMain.getScnMain().listsRefresh();
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(views, false), "Likes");
+
     }
 
 }

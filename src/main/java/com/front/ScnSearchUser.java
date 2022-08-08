@@ -22,6 +22,7 @@ public class ScnSearchUser implements Initializable{
     public void directMessage() {
         PV.openPV(User.getLoggedInUser().getUserName(), userName.getText());
         StageManager.getInstance().showDoneDialog();
+        ScnMain.getScnMain().listsRefresh();
     }
 
     @FXML
@@ -42,7 +43,7 @@ public class ScnSearchUser implements Initializable{
             page.follow();
             StageManager.getInstance().showFollowDialog("You follow " + page.getPageName());
         }
-
+        ScnMain.getScnMain().listsRefresh();
     }
 
 
