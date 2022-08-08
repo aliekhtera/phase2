@@ -66,8 +66,6 @@ public class SceneNewGroup implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         label.setText("Create Group");
-        txtGroupID.setText("GroupID");
-        txtGroupName.setText("GroupName");
     }
 
     @FXML

@@ -717,6 +717,7 @@ public class ScnMain implements Initializable {
     @FXML
     private void addNewGroup() {
         StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewNewGroupScene(), "New Group");
+        ScnMain.getScnMain().listsRefresh();
     }
 
     @FXML
@@ -739,6 +740,8 @@ public class ScnMain implements Initializable {
         } else {
             StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewGroupSettingScene(), "Group Setting");
         }
+
+        ScnMain.getScnMain().listsRefresh();
     }
 
     @FXML
@@ -779,11 +782,23 @@ public class ScnMain implements Initializable {
         }
         Group group = groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
 
-        if (User.getLoggedInUser().getUserName().equals(group.getAdmin().getUserName())) {
-            StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewBanScene(), "Ban");
-        } else {
-            StageManager.getInstance().showErrorDialog("You aren't admin");
+        List<String> userNames = new ArrayList<>();
+        for (User member : group.getMembers()) {
+            userNames.add(member.getUserName());
         }
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(userNames, true), "Ban" );
+        if (userNames.size() != 2 ) {
+            return;
+        }
+        if (userNames.get(1) != null) {
+            return;
+        }
+        if (!(userNames.get(0).equals(group.getAdmin().getUserName())) ){
+            group.banMember(group.getAdmin(), group, userNames.get(0));
+
+        }
+
+        ScnMain.getScnMain().listsRefresh();
 
     }
 
@@ -794,14 +809,27 @@ public class ScnMain implements Initializable {
         }
         if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
             return;
+
         }
         Group group = groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
 
-        if (User.getLoggedInUser().getUserName().equals(group.getAdmin().getUserName())) {
-            StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewRemoveScene(), "Remove");
-        } else {
-            StageManager.getInstance().showErrorDialog("You aren't admin");
+        List<String> userNames = new ArrayList<>();
+        for (User member : group.getMembers()) {
+            userNames.add(member.getUserName());
         }
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(userNames, true), "Ban" );
+        if (userNames.size() != 2 ) {
+            return;
+        }
+        if (userNames.get(1) != null) {
+            return;
+        }
+        if (!(userNames.get(0).equals(group.getAdmin().getUserName())) ){
+            User user = DataBaseGetter.getInstance().getUser(userNames.get(0) );
+            group.removeUser(group.getAdmin(), user,group);
+
+        }
+        ScnMain.getScnMain().listsRefresh();
 
     }
 

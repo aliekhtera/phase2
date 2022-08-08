@@ -48,6 +48,9 @@ public class ScnGroupSetting implements Initializable {
                 file = new File(url);
             }
 
+            group.changeGroupName(group.getAdmin(), group, txtGroupName.getText());
+            Group  group1 = DataBaseGetter.getInstance().getGroup(group.getGroupID());
+
             User user = DataBaseGetter.getInstance().getUser( txtAddNewMember.getText());
             if(user == null) {
                 return;
@@ -64,13 +67,14 @@ public class ScnGroupSetting implements Initializable {
                 group.addUser(group.getAdmin(), user, group);
             }
 
-            group.changeGroupName(group.getAdmin(), group, txtGroupName.getText());
-            Group  group1 = DataBaseGetter.getInstance().getGroup(group.getGroupID());
+
             StageManager.getInstance().showDoneDialog();
         }
         else {
             StageManager.getInstance().showErrorDialog("You can't change the information because you are not admin");
         }
+
+        ScnMain.getScnMain().listsRefresh();
     }
 
     @FXML
