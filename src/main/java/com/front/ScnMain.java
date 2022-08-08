@@ -28,7 +28,6 @@ import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -69,7 +68,11 @@ public class ScnMain implements Initializable {
         for (String f : myPage.getFollowings()) {
             pageList.add(Page.openPage(f));
         }
+        int index = lstUsers.getSelectionModel().getSelectedIndex();
         messengersListRefresh();
+        if (index < lstUsers.getItems().size() && index >= 0) {
+            lstUsers.getSelectionModel().select(index);
+        }
         messageFiller();
     }
 
@@ -92,9 +95,9 @@ public class ScnMain implements Initializable {
         ArrayList<Node> nodes = new ArrayList<>();
 
         ImageView profile = new ImageView();
-        Image profileImage=DataBaseGetter.getInstance().getUserProfile(message.getSenderUserName());
-        if(profileImage==null){
-            profileImage=new Image(ScnSettings.nullUrl);
+        Image profileImage = DataBaseGetter.getInstance().getUserProfile(message.getSenderUserName());
+        if (profileImage == null) {
+            profileImage = new Image(ScnSettings.nullUrl);
         }
         profile.setImage(FrontManager.cropImage(profileImage));
         profile.setFitWidth(0.15 * width);
@@ -301,7 +304,7 @@ public class ScnMain implements Initializable {
         nodes.add(sentDate);
 
 
-     //   double h = Math.max(sentDate.getLayoutY() + sentDate.getHeight(), text.getLayoutY() + text.getHeight()) + width * 0.04;
+        //   double h = Math.max(sentDate.getLayoutY() + sentDate.getHeight(), text.getLayoutY() + text.getHeight()) + width * 0.04;
         AnchorPane result = new AnchorPane();
         result.setPrefWidth(width);
         result.getChildren().addAll(nodes);
@@ -480,7 +483,7 @@ public class ScnMain implements Initializable {
             return;
         }
 
-        if(lstMessengerGroups.getSelectionModel().getSelectedIndex()==2){
+        if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 2) {
             Page page = pageList.get(lstUsers.getSelectionModel().getSelectedIndex());
             postFiller(page.getPosts());
         }
@@ -514,7 +517,7 @@ public class ScnMain implements Initializable {
 
     }
 
-    private void postFiller(List<Message> posts){
+    private void postFiller(List<Message> posts) {
         double l = 0;
         ArrayList<AnchorPane> panes = new ArrayList<>();
         for (Message post : posts) {
@@ -530,7 +533,7 @@ public class ScnMain implements Initializable {
         for (int i = panes.size() - 1; i >= 0; i--) {
             double w = vbxMessages.getWidth() - panes.get(i).getPrefWidth();
             vbxMessages.getChildren().add(panes.get(i));
-            panes.get(i).setLayoutX(w/2);
+            panes.get(i).setLayoutX(w / 2);
         }
     }
 
@@ -769,7 +772,7 @@ public class ScnMain implements Initializable {
     }
 
     @FXML
-    private void ban () {
+    private void ban() {
         if (lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1) {
             return;
         }
@@ -788,7 +791,7 @@ public class ScnMain implements Initializable {
     }
 
     @FXML
-    private void remove () {
+    private void remove() {
         if (lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1) {
             return;
         }
@@ -907,7 +910,7 @@ public class ScnMain implements Initializable {
                 page.follow();
             }
             titleFiller();
-           // listsRefresh();
+            // listsRefresh();
         } catch (Exception e) {
 
         }
@@ -927,7 +930,7 @@ public class ScnMain implements Initializable {
                 myPage.block(page.getOwnerUserName());
             }
             titleFiller();
-           // listsRefresh();
+            // listsRefresh();
         } catch (Exception e) {
 
         }
@@ -946,7 +949,7 @@ public class ScnMain implements Initializable {
                 pn.add(Page.openPage(f).getPageName());
             }
             StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(pn, false), "Followers");
-          //  listsRefresh();
+            //  listsRefresh();
         } catch (Exception e) {
 
         }
@@ -965,7 +968,7 @@ public class ScnMain implements Initializable {
                 pn.add(Page.openPage(f).getPageName());
             }
             StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(pn, false), "Followings");
-     //       listsRefresh();
+            //       listsRefresh();
         } catch (Exception e) {
 
         }

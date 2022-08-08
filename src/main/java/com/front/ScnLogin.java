@@ -33,7 +33,7 @@ public class ScnLogin implements Initializable {
     private void signUp() {
         try {
             StageManager.getInstance().showSignUpDialog(User.signUpNewUser(txtSun.getText(), txtSp.getText(), txtSFirst.getText(), txtSLast.getText(),
-                    UserType.indexToUserType(cmbSSQ.getSelectionModel().getSelectedIndex())
+                    UserType.indexToUserType(cmbSut.getSelectionModel().getSelectedIndex())
                     , txtSSA.getText(), cmbSSQ.getSelectionModel().getSelectedIndex()));
 
         } catch (SQLException e) {
