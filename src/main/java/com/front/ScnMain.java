@@ -42,13 +42,12 @@ public class ScnMain implements Initializable {
     Group group1;
 
 
-
     @FXML
     private ListView<String> lstUsers, lstMessengerGroups;
     @FXML
     private Pane cpnMessengersList, cpnPageTitle, cpnGroupTitle, cpnPVTitle;
     @FXML
-    private ImageView imgTitle;
+    private ImageView imgTitle, imgNewPost, imgViews, imgFollow, imgBlock;
     @FXML
     private Label lblTitle;
     @FXML
@@ -57,12 +56,19 @@ public class ScnMain implements Initializable {
     private List<PV> pvList;
     private List<Group> groupList;
     private Page myPage;
+    private List<Page> pageList;
 
     public void listsRefresh() {
         pvList = DataBaseGetter.getInstance().getPVsOfUser(User.getLoggedInUser().getUserName());
         groupList = DataBaseGetter.getInstance().getGroupsOfUser(User.getLoggedInUser().getUserName());
         myPage = DataBaseGetter.getInstance().getPage(User.getLoggedInUser().getUserName());
+        pageList = new ArrayList<>();
+        pageList.add(myPage);
+        for (String f : myPage.getFollowings()) {
+            pageList.add(Page.openPage(f));
+        }
         messageFiller();
+
     }
 
     @Override
@@ -74,7 +80,7 @@ public class ScnMain implements Initializable {
             }
             lstMessengerGroups.setItems(FXCollections.observableList(temp));
         }
-        scnMain=this;
+        scnMain = this;
         // lstUsers.setItems(FXCollections.observableList(m));
     }
 
@@ -298,7 +304,7 @@ public class ScnMain implements Initializable {
     }
 
     private AnchorPane postToPane(Message message) {
-      return   SceneManager.getInstance().postToAnchorPane(null,message);
+        return SceneManager.getInstance().postToAnchorPane(pageList.get(lstUsers.getSelectionModel().getSelectedIndex()), message);
        /* message.viewedByLoggedInUser();
         double width = 530;
         ArrayList<Node> nodes = new ArrayList<>();
@@ -499,18 +505,6 @@ public class ScnMain implements Initializable {
         return result;*/
     }
 
-    private void showViewsPostClick(String id) {
-    }
-
-    private void showLikesPostsClick(String substring) {
-    }
-
-    private void getCommentsClick(String substring) {
-    }
-
-    private void addCommentClick(String substring) {
-    }
-
 
     @FXML
     private void messengersListRefresh() {
@@ -532,7 +526,8 @@ public class ScnMain implements Initializable {
 
         if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 0) {
             ArrayList<String> times = new ArrayList<>();
-            ArrayList<User> others = new ArrayList<>();
+            ArrayList<String> others = new ArrayList<>();
+            ArrayList<Image> images = new ArrayList<>();
             for (PV pv : pvList) {
                 if (pv.getMessages().size() > 0) {
                     Message m = pv.getMessages().get(pv.getMessages().size() - 1);
@@ -540,16 +535,21 @@ public class ScnMain implements Initializable {
                 } else {
                     times.add("No Message");
                 }
+                String other;
                 if (pv.getUser1().isUserNameEqual(User.getLoggedInUser().getUserName())) {
-                    others.add(pv.getUser2());
+                    other = pv.getUser2().getUserName();
                 } else {
-                    others.add(pv.getUser1());
+                    other = pv.getUser1().getUserName();
                 }
-                messengersListRefresh(others, times);
+                Image image = DataBaseGetter.getInstance().getUserProfile(other);
+                if (image == null) {
+                    image = new Image(ScnSettings.nullUrl);
+                }
+                images.add(image);
+                others.add(other);
             }
-        }
-
-        else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 1) {
+            messengersListRefresh(images, others, times);
+        } else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 1) {
 
             ArrayList<String> times = new ArrayList<>();
             ArrayList<Group> groups = new ArrayList<>();
@@ -558,49 +558,50 @@ public class ScnMain implements Initializable {
                 if (group.getMessages().size() > 0) {
                     Message m = group.getMessages().get(group.getMessages().size() - 1);
                     times.add(m.getSentDate());
-                }
-                else {
+                } else {
                     times.add("No Message");
                 }
                 groups.add(group);
                 messengerGroupListRefresh(groups, times);
             }
-            }
-
-        else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 2) {
-            ArrayList<String> f = myPage.getFollowers();
-            ArrayList<User> users = new ArrayList<>();
+        } else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 2) {
+            ArrayList<String> names = new ArrayList<>();
             ArrayList<String> times = new ArrayList<>();
-            for (String s : f) {
-                users.add(DataBaseGetter.getInstance().getUser(s));
-                Page page = DataBaseGetter.getInstance().getPage(s);
-                ArrayList<Message> posts = page.getPosts();
+            ArrayList<Image> images = new ArrayList<>();
+            for (Page p : pageList) {
+                names.add(p.getPageName());
+                Image image = DataBaseGetter.getInstance().getUserProfile(p.getOwnerUserName());
+                if (image == null) {
+                    image = new Image(ScnSettings.nullUrl);
+                }
+                images.add(image);
+                ArrayList<Message> posts = p.getPosts();
                 if (posts.size() > 0) {
                     times.add(posts.get(posts.size() - 1).getSentDate());
                 } else {
                     times.add("No Message");
                 }
             }
-            messengersListRefresh(users, times);
+            messengersListRefresh(images, names, times);
         }
 
     }
 
 
-    private void messengersListRefresh(ArrayList<User> users, ArrayList<String> times) {
-        cpnMessengersList.setPrefHeight(lstUsers.getFixedCellSize() * (users.size() + 1));
-        lstUsers.setPrefHeight(lstUsers.getFixedCellSize() * (users.size() + 1));
+    private void messengerGroupListRefresh(ArrayList<Group> groups, ArrayList<String> times) {
+        cpnMessengersList.setPrefHeight(lstUsers.getFixedCellSize() * (groups.size() + 1));
+        lstUsers.setPrefHeight(lstUsers.getFixedCellSize() * (groups.size() + 1));
         ArrayList<String> temp = new ArrayList<>();
-        for (int i = 0; i < users.size() && i < times.size(); i++) {
+        for (int i = 0; i < groups.size() && i < times.size(); i++) {
             temp.add("");
-            User user = users.get(i);
-            Image profile = DataBaseGetter.getInstance().getUserProfile(user.getUserName());
+            Group group = groups.get(i);
+            Image profile = DataBaseGetter.getInstance().getGroupProfile(group.getGroupID());
             if (profile == null) {
                 profile = new Image(ScnSettings.nullUrl);
             }
             ImageView tempImageView = new ImageView(profile);
             Label unLabel = new Label(), dLabel = new Label();
-            unLabel.setText(user.getUserName());
+            unLabel.setText(group.getGroupName());
             dLabel.setText(times.get(i));
             unLabel.setFont(new Font("Calibri", 25));
             dLabel.setFont(new Font("Calibri", 15));
@@ -623,23 +624,19 @@ public class ScnMain implements Initializable {
         lstUsers.setItems(FXCollections.observableList(temp));
     }
 
-    private void messengerGroupListRefresh(ArrayList<Group> groups, ArrayList<String> times) {
-        cpnMessengersList.setPrefHeight(lstUsers.getFixedCellSize() * (groups.size() + 1));
-        lstUsers.setPrefHeight(lstUsers.getFixedCellSize() * (groups.size() + 1));
+
+    private void messengersListRefresh(ArrayList<Image> images, ArrayList<String> names, ArrayList<String> times) {
+        cpnMessengersList.setPrefHeight(lstUsers.getFixedCellSize() * (names.size() + 1));
+        lstUsers.setPrefHeight(lstUsers.getFixedCellSize() * (names.size() + 1));
         ArrayList<String> temp = new ArrayList<>();
-        for (int i = 0; i < groups.size() && i < times.size(); i++) {
+        for (int i = 0; i < names.size() && i < times.size() && i < images.size(); i++) {
             temp.add("");
-            Group group = groups.get(i);
-            Image profile = DataBaseGetter.getInstance().getGroupProfile(group.getGroupID());
-            if (profile == null) {
-                profile = new Image(ScnSettings.nullUrl);
-            }
-            ImageView tempImageView = new ImageView(profile);
+            ImageView tempImageView = new ImageView(images.get(i));
             Label unLabel = new Label(), dLabel = new Label();
-            unLabel.setText(group.getGroupName());
+            unLabel.setText(names.get(i));
             dLabel.setText(times.get(i));
-             unLabel.setFont(new Font("Calibri", 25));
-             dLabel.setFont(new Font("Calibri", 15));
+            unLabel.setFont(new Font("Calibri", 25));
+            dLabel.setFont(new Font("Calibri", 15));
 
             tempImageView.setFitWidth(lstUsers.getFixedCellSize() * 0.8);
             tempImageView.setFitHeight(lstUsers.getFixedCellSize() * 0.8);
@@ -657,6 +654,8 @@ public class ScnMain implements Initializable {
             cpnMessengersList.getChildren().add(tempImageView);
         }
         lstUsers.setItems(FXCollections.observableList(temp));
+
+
     }
 
 
@@ -677,6 +676,12 @@ public class ScnMain implements Initializable {
             messageFiller(group.getMessages());
             return;
         }
+
+        if(lstMessengerGroups.getSelectionModel().getSelectedIndex()==2){
+            Page page = pageList.get(lstUsers.getSelectionModel().getSelectedIndex());
+            postFiller(page.getPosts());
+        }
+
     }
 
     private void messageFiller(List<Message> messages) {
@@ -705,53 +710,98 @@ public class ScnMain implements Initializable {
 
     }
 
+    private void postFiller(List<Message> posts){
+        double l = 0;
+        ArrayList<AnchorPane> panes = new ArrayList<>();
+        for (Message post : posts) {
+            AnchorPane temp = postToPane(post);
+            temp.setId(post.getStringKeyID());
+            panes.add(temp);
+            l += temp.getPrefHeight();
+        }
+
+        vbxMessages.getChildren().clear();
+        vbxMessages.setPrefHeight(l);
+
+        for (int i = panes.size() - 1; i >= 0; i--) {
+            double w = vbxMessages.getWidth() - panes.get(i).getPrefWidth();
+            vbxMessages.getChildren().add(panes.get(i));
+            panes.get(i).setLayoutX(w/2);
+        }
+    }
+
     private void titleFiller() {
-        if (lstUsers.getSelectionModel().getSelectedIndex() < 0) {
-            imgTitle.setImage(null);
-            lblTitle.setText("");
-            cpnPVTitle.setVisible(false);
-            cpnGroupTitle.setVisible(false);
-            cpnPageTitle.setVisible(false);
-            return;
-        }
+        try {
+            if (lstUsers.getSelectionModel().getSelectedIndex() < 0) {
+                imgTitle.setImage(null);
+                lblTitle.setText("");
+                cpnPVTitle.setVisible(false);
+                cpnGroupTitle.setVisible(false);
+                cpnPageTitle.setVisible(false);
+                return;
+            } else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 0) {
+                PV pv = pvList.get(lstUsers.getSelectionModel().getSelectedIndex());
+                User otherUser;
+                if (pv.getUser1().getUserName().equals(User.getLoggedInUser())) {
+                    otherUser = pv.getUser2();
+                } else {
+                    otherUser = pv.getUser1();
+                }
+                Image image = DataBaseGetter.getInstance().getUserProfile(otherUser.getUserName());
+                if (image == null) {
+                    image = new Image(ScnSettings.nullUrl);
+                }
+                imgTitle.setImage(FrontManager.cropImage(image));
+                lblTitle.setText(otherUser.getFirstName() + " " + otherUser.getLastName());
+                cpnPVTitle.setVisible(true);
+                cpnGroupTitle.setVisible(false);
+                cpnPageTitle.setVisible(false);
+                return;
+            } else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 1) {
+                Group group = groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
+                Group.setOpenedGroup(group.getGroupID());
 
-        else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 0) {
-            PV pv = pvList.get(lstUsers.getSelectionModel().getSelectedIndex());
-            User otherUser;
-            if (pv.getUser1().getUserName().equals(User.getLoggedInUser())) {
-                otherUser = pv.getUser2();
-            } else {
-                otherUser = pv.getUser1();
+                Image image = DataBaseGetter.getInstance().getGroupProfile(group.getGroupID());
+                if (image == null) {
+                    image = new Image(ScnSettings.nullUrl);
+                }
+                imgTitle.setImage(FrontManager.cropImage(image));
+                lblTitle.setText(group.getGroupName());
+                cpnPVTitle.setVisible(false);
+                cpnGroupTitle.setVisible(true);
+                cpnPageTitle.setVisible(false);
+                return;
+            } else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 2) {
+
+                Page page = pageList.get(lstUsers.getSelectionModel().getSelectedIndex());
+                Image image = DataBaseGetter.getInstance().getUserProfile(page.getOwnerUserName());
+                if (image == null) {
+                    image = new Image(ScnSettings.nullUrl);
+                }
+
+                imgTitle.setImage(FrontManager.cropImage(image));
+                lblTitle.setText(page.getPageName());
+                boolean temp = User.getLoggedInUser().isUserNameEqual(page.getOwnerUserName());
+
+                imgViews.setVisible(temp);
+                imgNewPost.setVisible(temp);
+                imgFollow.setVisible(!temp);
+                imgBlock.setVisible(!temp);
+                imgFollow.setImage(new Image(FrontManager.getIcnFollow(page.getFollowers().contains(User.getLoggedInUser().getUserName()))));
+                imgBlock.setImage(new Image(FrontManager.getIcnBlock(page.getBlocked().contains(User.getLoggedInUser().getUserName()))));
+                cpnPVTitle.setVisible(false);
+                cpnGroupTitle.setVisible(false);
+                cpnPageTitle.setVisible(true);
+                return;
             }
-            Image image = DataBaseGetter.getInstance().getUserProfile(otherUser.getUserName());
-            if (image == null) {
-                image = new Image(ScnSettings.nullUrl);
-            }
-            imgTitle.setImage(FrontManager.cropImage(image));
-            lblTitle.setText(otherUser.getFirstName() + " " + otherUser.getLastName());
-            cpnPVTitle.setVisible(true);
-            cpnGroupTitle.setVisible(false);
-            cpnPageTitle.setVisible(false);
-            return;
+        } catch (Exception e) {
+
         }
+    }
 
-        else if (lstMessengerGroups.getSelectionModel().getSelectedIndex() == 1) {
-            Group group = groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
-            Group.setOpenedGroup(group.getGroupID());
-
-            Image image = DataBaseGetter.getInstance().getGroupProfile(group.getGroupID());
-            if (image == null) {
-                image = new Image(ScnSettings.nullUrl);
-            }
-            imgTitle.setImage(FrontManager.cropImage(image));
-            lblTitle.setText(group.getGroupName());
-            cpnPVTitle.setVisible(false);
-            cpnGroupTitle.setVisible(true);
-            cpnPageTitle.setVisible(false);
-            return;
-        }
-
-
+    @FXML
+    private void openSettingScene() {
+        StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewSettingsScene(), "Settings");
     }
 
     ///////////////////////////Search///////////////////////////////
@@ -893,11 +943,11 @@ public class ScnMain implements Initializable {
 
     private void addNewMember() {
         if (lstMessengerGroups.getSelectionModel().getSelectedIndex() != 1) {
-          return;
+            return;
         }
 
         if (lstUsers.getSelectionModel().getSelectedIndex() == -1) {
-          return;
+            return;
         }
 
         groupList.get(lstUsers.getSelectionModel().getSelectedIndex());
@@ -953,6 +1003,120 @@ public class ScnMain implements Initializable {
 
     public void setGroup1(Group group1) {
         this.group1 = group1;
+    }
+
+    ////////// Page ////////////////////
+    @FXML
+    private void newPost() {
+        try {
+            if (lstUsers.getSelectionModel().getSelectedIndex() == -1 ||
+                    lstMessengerGroups.getSelectionModel().getSelectedIndex() != 2) {
+                return;
+            }
+            Page page = pageList.get(lstUsers.getSelectionModel().getSelectedIndex());
+            Message message = new Message(User.getLoggedInUser(), "", "", "", false, -1, false, new ArrayList<>(), new ArrayList<>());
+            StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewNewMessageScene(message, null, false, false), "New Post");
+            page.newPost(message);
+            listsRefresh();
+        } catch (Exception e) {
+
+        }
+    }
+
+    @FXML
+    private void pageView() {
+        try {
+            if (lstUsers.getSelectionModel().getSelectedIndex() == -1 ||
+                    lstMessengerGroups.getSelectionModel().getSelectedIndex() != 2) {
+                return;
+            }
+            Page page = pageList.get(lstUsers.getSelectionModel().getSelectedIndex());
+            ArrayList<String> v = new ArrayList<>();
+            for (LikeView l : page.getPageViews()) {
+                v.add(l.getUserName() + " : " + l.getDate());
+            }
+            StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(v, false), "Followings");
+        } catch (Exception e) {
+
+        }
+    }
+
+    @FXML
+    private void pageFollow() {
+        try {
+            if (lstUsers.getSelectionModel().getSelectedIndex() == -1 ||
+                    lstMessengerGroups.getSelectionModel().getSelectedIndex() != 2) {
+                return;
+            }
+            Page page = pageList.get(lstUsers.getSelectionModel().getSelectedIndex());
+            if (page.getFollowers().contains(User.getLoggedInUser().getUserName())) {
+                page.unfollow();
+            } else {
+                page.follow();
+            }
+            titleFiller();
+           // listsRefresh();
+        } catch (Exception e) {
+
+        }
+    }
+
+    @FXML
+    private void pageBlock() {
+        try {
+            if (lstUsers.getSelectionModel().getSelectedIndex() == -1 ||
+                    lstMessengerGroups.getSelectionModel().getSelectedIndex() != 2) {
+                return;
+            }
+            Page page = pageList.get(lstUsers.getSelectionModel().getSelectedIndex());
+            if (page.getBlocked().contains(User.getLoggedInUser().getUserName())) {
+                page.unblock(User.getLoggedInUser().getUserName());
+            } else {
+                myPage.block(page.getOwnerUserName());
+            }
+            titleFiller();
+           // listsRefresh();
+        } catch (Exception e) {
+
+        }
+    }
+
+    @FXML
+    private void pageShowFollowers() {
+        try {
+            if (lstUsers.getSelectionModel().getSelectedIndex() == -1 ||
+                    lstMessengerGroups.getSelectionModel().getSelectedIndex() != 2) {
+                return;
+            }
+            Page page = pageList.get(lstUsers.getSelectionModel().getSelectedIndex());
+            ArrayList<String> pn = new ArrayList<>();
+            for (String f : page.getFollowers()) {
+                pn.add(Page.openPage(f).getPageName());
+            }
+            StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(pn, false), "Followers");
+          //  listsRefresh();
+        } catch (Exception e) {
+
+        }
+    }
+
+    @FXML
+    void pageShowFollowings() {
+        try {
+            if (lstUsers.getSelectionModel().getSelectedIndex() == -1 ||
+                    lstMessengerGroups.getSelectionModel().getSelectedIndex() != 2) {
+                return;
+            }
+            Page page = pageList.get(lstUsers.getSelectionModel().getSelectedIndex());
+            ArrayList<String> pn = new ArrayList<>();
+            for (String f : page.getFollowings()) {
+                pn.add(Page.openPage(f).getPageName());
+            }
+            StageManager.getInstance().openNewStage(SceneManager.getInstance().getNewListShowScene(pn, false), "Followings");
+     //       listsRefresh();
+        } catch (Exception e) {
+
+        }
     }
 
 }

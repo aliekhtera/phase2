@@ -62,16 +62,20 @@ public class SceneManager {
         }
     }
 
-    Scene getNewNewMessageScene(Message main, Message rep, boolean isForwarded) {
+    Scene getNewNewMessageScene(Message main, Message rep, boolean isForwarded,boolean canSendFile) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(ScnLogin.class.getResource("scnNewMessage.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
-            ((ScnNewMessage)fxmlLoader.getController()).setMessage(main,rep,isForwarded);
+            ((ScnNewMessage)fxmlLoader.getController()).setMessage(main,rep,isForwarded,canSendFile);
             return scene;
         } catch (Exception e) {
             StageManager.getInstance().showErrorDialog("Unknown Error!");
             return getNewLoginScene();
         }
+    }
+
+    Scene getNewNewMessageScene(Message main, Message rep, boolean isForwarded) {
+        return getNewNewMessageScene(main,rep,isForwarded,true);
     }
 
     Scene getNewGroupSettingScene() {

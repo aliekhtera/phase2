@@ -181,4 +181,19 @@ public class FrontManager extends Application {
     public static String getIcnComments() {
         return FrontManager.class.getResource("icnFile.png").toString();
     }
+
+    static String getIcnBlock(boolean b) {
+        if (b)
+            return FrontManager.class.getResource("icnBlock.png").toString();
+        else
+            return FrontManager.class.getResource("icnNBlock.png").toString();
+    }
+
+    static String getIcnFollow(boolean b) {
+        if (!b)
+            return FrontManager.class.getResource("icnFollow.png").toString();
+        else
+            return FrontManager.class.getResource("icnNFollow.png").toString();
+    }
+
 }

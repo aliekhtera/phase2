@@ -20,7 +20,7 @@
                <left>
                   <Pane prefHeight="691.0" prefWidth="59.0" style="-fx-background-color: rgba(80,80,80,1);" BorderPane.alignment="CENTER">
                      <children>
-                        <ImageView fitHeight="52.0" fitWidth="46.0" layoutX="7.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="52.0" fitWidth="46.0" layoutX="7.0" layoutY="9.0" onMouseClicked="#openSettingScene" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../images/settingsIcon.png" />
                            </image>
@@ -132,7 +132,39 @@
                                  </image>
                               </ImageView>
                            </children></Pane>
-                        <Pane fx:id="cpnPageTitle" layoutX="441.0" layoutY="9.0" prefHeight="67.0" prefWidth="435.0" visible="false" />
+                        <Pane fx:id="cpnPageTitle" layoutX="441.0" layoutY="9.0" prefHeight="67.0" prefWidth="435.0" visible="false">
+                           <children>
+                              <ImageView onMouseClicked="#pageShowFollowers" fitHeight="50.0" fitWidth="50.0" layoutX="50.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../images/follwersIcn.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView onMouseClicked="#pageShowFollowings" fitHeight="50.0" fitWidth="50.0" layoutX="130.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../images/followingsIcn.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView onMouseClicked="#pageBlock" fx:id="imgBlock" fitHeight="50.0" fitWidth="50.0" layoutX="210.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../images/icnBan.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView onMouseClicked="#pageFollow" fx:id="imgFollow" fitHeight="50.0" fitWidth="50.0" layoutX="290.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../images/icnFollow.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView onMouseClicked="#pageView" fx:id="imgViews" fitHeight="50.0" fitWidth="50.0" layoutX="290.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@icnViews.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="imgNewPost" fitHeight="50.0" fitWidth="50.0" layoutX="210.0" layoutY="10.0" onMouseClicked="#newPost" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../images/icnNewMessage.png" />
+                                 </image>
+                              </ImageView>
+                           </children></Pane>
                      </children>
                   </Pane>
                </top>

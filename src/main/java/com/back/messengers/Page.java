@@ -11,6 +11,7 @@ import java.util.*;
 
 
 public class Page {
+   // public static ArrayList<Page> tempPages;
     final private String ownerUserName;
     private String pageName;
     final private ArrayList<Message> posts;
@@ -73,6 +74,17 @@ public class Page {
             return false;
         }
         posts.add(temp);
+        return DataBaseSetter.getInstance().editPagePosts(this).equals(MethodReturns.DONE);
+    }
+
+    public boolean newPost(Message post) {
+        if (post == null) {
+            return false;
+        }
+        if(post.getKeyID()<0){
+            return false;
+        }
+        posts.add(post);
         return DataBaseSetter.getInstance().editPagePosts(this).equals(MethodReturns.DONE);
     }
 

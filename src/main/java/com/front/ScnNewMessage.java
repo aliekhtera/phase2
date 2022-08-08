@@ -16,7 +16,7 @@ import java.sql.Blob;
 
 public class ScnNewMessage {
     @FXML
-    private ImageView imageView;
+    private ImageView imageView,imgFile;
     @FXML
     private TextArea txtText;
 
@@ -26,7 +26,8 @@ public class ScnNewMessage {
 
     private final static String fileAddress = ScnNewMessage.class.getResource("icnFile.png").toString();
 
-    public void setMessage(Message mainMessage, Message rep, boolean isForwarded) {
+    public void setMessage(Message mainMessage, Message rep, boolean isForwarded,boolean canSendFile) {
+        imgFile.setVisible(canSendFile);
         this.message = mainMessage;
         fileEdit = false;
         this.rep = rep;

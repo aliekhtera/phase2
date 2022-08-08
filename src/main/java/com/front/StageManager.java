@@ -139,7 +139,7 @@ public class StageManager {
         dialog.setTitle("Login!");
         ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().add(buttonType);
-        dialog.setContentText("You LoggedIn Seccessfully!");
+        dialog.setContentText("You LoggedIn Successfully!");
         dialog.showAndWait();
     }
 
